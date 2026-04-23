@@ -1,0 +1,9 @@
+id: rust-format-string
+language: [rust]
+severity: high
+category: security
+pattern: "format!\\s*\\(\\s*&?\\w+[^,)]\\)|println!\\s*\\(\\s*&?\\w+[^,)]\\)"
+message: "Passing user-controlled variables as the format string to format!/println! macros can cause panics with malformed format specifiers. While Rust prevents arbitrary code execution, it can crash the application causing denial of service. Use explicit format specifiers with placeholder syntax."
+fix:
+  bad: "println!(user_input)"
+  good: "println!(\"{}\", user_input)"

@@ -1,0 +1,9 @@
+id: php-wordpress-nonce
+language: [php]
+severity: high
+category: security
+pattern: "\\$_POST\\s*\\[.*\\](?!.*wp_verify_nonce|.*check_admin_referer|.*check_ajax_referer)"
+message: "WordPress form handlers without nonce verification are vulnerable to CSRF attacks. An attacker can trick an admin into clicking a link that performs actions on the WordPress site. Use wp_verify_nonce() or check_admin_referer() to validate the request origin."
+fix:
+  bad: "if ($_POST['action'] === 'delete') { delete_post($_POST['id']); }"
+  good: "if (!wp_verify_nonce($_POST['_wpnonce'], 'delete_action')) die('Security check failed'); delete_post($_POST['id']);"

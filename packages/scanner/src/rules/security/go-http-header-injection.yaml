@@ -1,0 +1,9 @@
+id: go-http-header-injection
+language: [go]
+severity: high
+category: security
+pattern: "w\\.Header\\(\\)\\.Set\\s*\\(.*r\\.(?:FormValue|URL|Header)"
+message: "Setting HTTP response headers with user input enables header injection. An attacker can inject CRLF characters to add arbitrary headers, set cookies, or split the HTTP response. Validate and sanitize all user input before including it in response headers."
+fix:
+  bad: "w.Header().Set(\"X-Custom\", r.FormValue(\"value\"))"
+  good: "val := strings.ReplaceAll(r.FormValue(\"value\"), \"\\n\", \"\"); w.Header().Set(\"X-Custom\", val)"

@@ -1,0 +1,9 @@
+id: python-select-star
+language: [python]
+severity: medium
+category: performance
+pattern: "(?:execute|raw|cursor).*SELECT\\s+\\*\\s+FROM|\\.objects\\.all\\s*\\(\\)"
+message: "SELECT * or Model.objects.all() fetches all columns and rows, consuming unnecessary memory and database bandwidth. For large tables, this can cause timeouts and memory issues. Select only needed columns with .values() or .only(), and add filtering with .filter()."
+fix:
+  bad: "User.objects.all()"
+  good: "User.objects.filter(is_active=True).only('id', 'name', 'email')"

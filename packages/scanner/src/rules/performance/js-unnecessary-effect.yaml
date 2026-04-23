@@ -1,0 +1,9 @@
+id: js-unnecessary-effect
+language: [javascript, typescript]
+severity: medium
+category: performance
+pattern: "useEffect\\s*\\(\\s*\\(\\)\\s*=>\\s*\\{[^}]*setState|useEffect\\s*\\(\\s*\\(\\)\\s*=>\\s*\\{[^}]*set[A-Z]"
+message: "Using useEffect to set state based on other state or props causes an extra render cycle. The component renders with stale state, then re-renders with the updated state, wasting CPU time and causing visual flickering. Use useMemo or calculate the derived value directly during render."
+fix:
+  bad: "useEffect(() => { setFullName(first + ' ' + last); }, [first, last])"
+  good: "const fullName = useMemo(() => first + ' ' + last, [first, last])"

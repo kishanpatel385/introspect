@@ -1,0 +1,9 @@
+id: go-path-traversal
+language: [go]
+severity: high
+category: security
+pattern: "http\\.ServeFile\\s*\\(.*r\\.(?:URL|FormValue)|filepath\\.Join\\s*\\(.*r\\.(?:URL|FormValue)"
+message: "Serving files or constructing paths using user input from HTTP requests can lead to path traversal. An attacker can use ../ sequences to access files outside the intended directory. Use filepath.Clean and verify the resolved path starts with the expected base directory."
+fix:
+  bad: "http.ServeFile(w, r, filepath.Join(\"./static\", r.URL.Path))"
+  good: "clean := filepath.Clean(r.URL.Path); full := filepath.Join(baseDir, clean); if !strings.HasPrefix(full, baseDir) { http.Error(w, \"forbidden\", 403); return }"

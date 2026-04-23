@@ -1,0 +1,9 @@
+id: java-spring-cors-allow-all
+language: [java]
+severity: high
+category: security
+pattern: "allowedOrigins\\s*\\(\\s*\"\\*\"\\s*\\)|addAllowedOrigin\\s*\\(\\s*\"\\*\"\\s*\\)"
+message: "Allowing all origins in Spring CORS configuration permits any website to make cross-origin requests. Combined with credentials, this exposes authenticated endpoints to any domain. Specify exact allowed origins that need access to the API."
+fix:
+  bad: "registry.addMapping(\"/**\").allowedOrigins(\"*\")"
+  good: "registry.addMapping(\"/**\").allowedOrigins(\"https://app.example.com\")"

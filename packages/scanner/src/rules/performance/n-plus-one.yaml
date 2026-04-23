@@ -1,0 +1,9 @@
+id: n-plus-one-query
+language: [javascript, typescript, python, php, ruby]
+severity: high
+category: performance
+pattern: "for\\s*\\(.*\\)\\s*\\{[^}]*(findOne|findById|findByPk|find_by|get_object|where\\(|query\\()|forEach\\([^)]*\\)\\s*=>\\s*\\{[^}]*(findOne|findById)"
+message: "Database query inside a loop causes N+1 performance problems — one query per iteration instead of a single batch query. This can slow page loads by 10-100x on large datasets and overwhelm the database with unnecessary round trips. Use eager loading, batch fetching, or a single query with an IN clause."
+fix:
+  bad: "users.forEach(u => db.findOne({ where: { id: u.id } }))"
+  good: "const results = await db.findAll({ where: { id: users.map(u => u.id) } })"

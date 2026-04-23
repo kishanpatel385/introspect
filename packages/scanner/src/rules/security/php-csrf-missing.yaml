@@ -1,0 +1,9 @@
+id: php-csrf-missing
+language: [php]
+severity: high
+category: security
+pattern: "\\$_POST\\s*\\[(?!.*(?:csrf|token|nonce|_token))"
+message: "Processing POST data without CSRF token validation allows cross-site request forgery attacks. An attacker can trick authenticated users into performing unwanted actions by embedding hidden forms on malicious sites. Generate and validate a CSRF token for every state-changing request."
+fix:
+  bad: "if ($_POST['action'] === 'delete') { deleteUser($_POST['id']); }"
+  good: "if (!hash_equals($_SESSION['csrf_token'], $_POST['_token'])) { die('CSRF mismatch'); } deleteUser($_POST['id']);"

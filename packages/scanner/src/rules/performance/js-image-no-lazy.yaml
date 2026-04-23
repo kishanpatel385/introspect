@@ -1,0 +1,9 @@
+id: js-image-no-lazy
+language: [javascript, typescript]
+severity: low
+category: performance
+pattern: "<img\\s+(?!.*loading\\s*=\\s*['\"]lazy)"
+message: "Images without lazy loading are fetched immediately, increasing initial page load time and bandwidth usage even for images below the fold. Add loading='lazy' to defer loading of off-screen images until the user scrolls near them."
+fix:
+  bad: "<img src='/large-image.jpg' alt='photo' />"
+  good: "<img src='/large-image.jpg' alt='photo' loading='lazy' />"

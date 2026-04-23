@@ -1,0 +1,9 @@
+id: python-no-type-hints
+language: [python]
+severity: low
+category: quality
+pattern: "def\\s+\\w+\\s*\\(\\s*(?:self\\s*,\\s*)?\\w+\\s*(?:,\\s*\\w+\\s*)*\\)\\s*:"
+message: "Functions without type hints reduce code readability and prevent static analysis tools (mypy, pyright) from catching type errors. Type hints serve as documentation and help IDEs provide better autocomplete and refactoring support. Add parameter and return type annotations."
+fix:
+  bad: "def calculate(price, quantity): return price * quantity"
+  good: "def calculate(price: float, quantity: int) -> float: return price * quantity"

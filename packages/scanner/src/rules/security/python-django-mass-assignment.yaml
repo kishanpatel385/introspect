@@ -1,0 +1,9 @@
+id: python-django-mass-assignment
+language: [python]
+severity: high
+category: security
+pattern: "\\.objects\\.create\\s*\\(\\s*\\*\\*request\\.|Model\\.save\\s*\\(|update\\s*\\(\\s*\\*\\*request"
+message: "Passing **request.data or **request.POST directly to Django model create/update enables mass assignment. An attacker can set fields like is_staff, is_superuser, or balance. Use Django forms or serializers with explicit field lists to control which fields can be set."
+fix:
+  bad: "User.objects.create(**request.POST)"
+  good: "form = UserForm(request.POST); if form.is_valid(): form.save()"

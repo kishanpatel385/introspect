@@ -1,0 +1,9 @@
+id: ruby-constantize
+language: [ruby]
+severity: critical
+category: security
+pattern: "\\.constantize|\\.safe_constantize.*params|const_get\\s*\\(.*params"
+message: "Using constantize or const_get with user input allows instantiation of arbitrary Ruby classes. An attacker can load dangerous classes to execute system commands, read files, or manipulate the application. Use an explicit allowlist mapping of permitted class names."
+fix:
+  bad: "params[:type].constantize.new"
+  good: "allowed = { 'pdf' => PdfExporter, 'csv' => CsvExporter }; allowed.fetch(params[:type]).new"

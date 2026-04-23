@@ -1,0 +1,9 @@
+id: js-multer-no-limits
+language: [javascript, typescript]
+severity: medium
+category: security
+pattern: "multer\\s*\\(\\s*\\{(?!.*limits|.*fileSize|.*fileFilter)"
+message: "Multer file upload middleware without size limits or file type filtering allows denial of service through large file uploads and arbitrary file type uploads. An attacker can upload very large files to exhaust disk space or malicious file types. Set fileSize limits and restrict allowed MIME types."
+fix:
+  bad: "multer({ dest: 'uploads/' })"
+  good: "multer({ dest: 'uploads/', limits: { fileSize: 5 * 1024 * 1024 }, fileFilter: (req, file, cb) => { cb(null, allowedTypes.includes(file.mimetype)); } })"

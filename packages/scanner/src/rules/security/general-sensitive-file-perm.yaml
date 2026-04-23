@@ -1,0 +1,9 @@
+id: general-sensitive-file-perm
+language: []
+severity: high
+category: security
+pattern: "chmod\\s+(?:777|666|755|644)\\s+.*(?:key|cert|pem|secret|password|credential|config)"
+message: "Setting overly permissive file permissions on sensitive files (keys, certificates, configs) allows other users and processes to read them. Private keys should be 600, certificates 644, and config files 640 at most. Use the principle of least privilege for file permissions."
+fix:
+  bad: "chmod 777 private.key"
+  good: "chmod 600 private.key"

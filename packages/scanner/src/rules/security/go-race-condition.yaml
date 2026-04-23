@@ -1,0 +1,9 @@
+id: go-race-condition
+language: [go]
+severity: high
+category: security
+pattern: "go\\s+func\\s*\\(\\).*\\{[^}]*(?:map\\[|\\[\\]|append)"
+message: "Goroutines accessing shared maps, slices, or variables without synchronization cause data races. Race conditions lead to corrupted data, panics, and unpredictable behavior. Use sync.Mutex, sync.RWMutex, channels, or sync.Map for concurrent access to shared state."
+fix:
+  bad: "go func() { results[key] = value }()"
+  good: "go func() { mu.Lock(); results[key] = value; mu.Unlock() }()"

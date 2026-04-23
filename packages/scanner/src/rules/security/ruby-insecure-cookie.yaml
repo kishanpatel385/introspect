@@ -1,0 +1,9 @@
+id: ruby-insecure-cookie
+language: [ruby]
+severity: high
+category: security
+pattern: "cookies\\[.*\\]\\s*=.*(?!.*secure|.*httponly)|cookie_store.*(?:secure:\\s*false|httponly:\\s*false)"
+message: "Setting cookies without secure and httponly flags weakens session security. Without secure, cookies are sent over HTTP. Without httponly, JavaScript can access them via document.cookie. Set both flags on all authentication and session cookies."
+fix:
+  bad: "cookies[:session] = { value: token }"
+  good: "cookies[:session] = { value: token, secure: true, httponly: true, same_site: :strict }"

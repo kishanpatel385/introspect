@@ -1,0 +1,9 @@
+id: sync-fs-in-handler
+language: [javascript, typescript]
+severity: high
+category: performance
+pattern: "(readFileSync|writeFileSync|readdirSync|statSync|existsSync|mkdirSync|appendFileSync|accessSync)\\s*\\("
+message: "A synchronous file system operation (readFileSync, writeFileSync, etc.) blocks the Node.js event loop until it completes. This prevents the server from handling any other requests during the I/O wait, causing latency spikes and degraded throughput under load. Replace with async equivalents from fs/promises (e.g., await fs.promises.readFile()) to keep the event loop free."
+fix:
+  bad: "const data = fs.readFileSync('./config.json', 'utf-8')"
+  good: "const data = await fs.promises.readFile('./config.json', 'utf-8')"

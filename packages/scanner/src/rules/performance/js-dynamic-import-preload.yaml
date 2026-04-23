@@ -1,0 +1,9 @@
+id: js-dynamic-import-preload
+language: [javascript, typescript]
+severity: low
+category: performance
+pattern: "React\\.lazy\\s*\\(\\s*\\(\\)\\s*=>\\s*import\\s*\\("
+message: "React.lazy with dynamic import loads components only when rendered, causing a loading delay. For routes and components that are likely to be needed soon, add prefetching or preloading to start the download before the user navigates. Use webpackPrefetch or preload hints."
+fix:
+  bad: "const Page = React.lazy(() => import('./Page'))"
+  good: "const Page = React.lazy(() => import(/* webpackPrefetch: true */ './Page'))"

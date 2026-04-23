@@ -1,0 +1,9 @@
+id: missing-eager-load-eloquent
+language: [php]
+severity: high
+category: performance
+pattern: "foreach\\s*\\(.*::(all|get|where)\\s*\\(|->each\\s*\\(.*->\\w+->|@foreach.*->\\w+->"
+message: "Eloquent relationships are accessed inside a loop without eager loading, triggering a separate SQL query for each iteration. This N+1 problem can generate hundreds of queries on a single page, dramatically increasing response time and database load. Chain with() on the query to eager load all needed relationships in a single batch query."
+fix:
+  bad: "foreach (Post::all() as $post) { echo $post->author->name; }"
+  good: "foreach (Post::with('author')->get() as $post) { echo $post->author->name; }"

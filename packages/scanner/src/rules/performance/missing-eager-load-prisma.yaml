@@ -1,0 +1,9 @@
+id: missing-eager-load-prisma
+language: [javascript, typescript]
+severity: high
+category: performance
+pattern: "for\\s*\\(.*\\)\\s*\\{[^}]*prisma\\.|forEach\\([^)]*\\)\\s*=>\\s*\\{[^}]*prisma\\.|map\\([^)]*=>\\s*\\{[^}]*prisma\\."
+message: "A Prisma query is executed inside a loop, causing N+1 database round trips instead of a single batch query. This multiplies query latency by the number of iterations, severely degrading performance on larger datasets. Use Prisma's include/select for eager loading related data, or batch with findMany using an IN clause on collected IDs."
+fix:
+  bad: "for (const user of users) { await prisma.post.findMany({ where: { authorId: user.id } }) }"
+  good: "await prisma.post.findMany({ where: { authorId: { in: users.map(u => u.id) } } })"

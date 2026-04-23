@@ -1,0 +1,9 @@
+id: apache-directory-listing
+language: []
+severity: medium
+category: security
+pattern: "Options\\s+.*Indexes|Options\\s+\\+Indexes"
+message: "Apache Options +Indexes enables directory listing, exposing file structures and potentially sensitive files. Attackers use this to discover backup files, configuration files, and hidden endpoints. Disable with Options -Indexes."
+fix:
+  bad: "Options +Indexes"
+  good: "Options -Indexes"

@@ -1,0 +1,9 @@
+id: python-jinja-autoescape
+language: [python]
+severity: high
+category: security
+pattern: "Environment\\s*\\(.*autoescape\\s*=\\s*False|\\|\\s*safe\\b|Markup\\s*\\("
+message: "Disabling Jinja2 autoescape or using the |safe filter renders user input as raw HTML, enabling XSS attacks. An attacker can inject malicious scripts that execute in other users' browsers. Keep autoescape=True (default in Flask) and avoid |safe unless the content is explicitly sanitized."
+fix:
+  bad: "Environment(autoescape=False)"
+  good: "Environment(autoescape=True)"

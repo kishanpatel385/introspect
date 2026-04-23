@@ -1,0 +1,9 @@
+id: java-spring-csrf-disable
+language: [java]
+severity: high
+category: security
+pattern: "\\.csrf\\s*\\(\\s*\\)\\s*\\.disable\\s*\\(\\)|csrf\\.disable\\(\\)|CsrfConfigurer::disable"
+message: "Disabling CSRF protection in Spring Security allows cross-site request forgery attacks against browser-based clients. An attacker can trick authenticated users into performing unwanted actions. Only disable CSRF for truly stateless APIs that use token-based authentication (not cookies)."
+fix:
+  bad: "http.csrf().disable()"
+  good: "http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())"

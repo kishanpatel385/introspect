@@ -1,0 +1,9 @@
+id: docker-expose-sensitive-port
+language: [dockerfile]
+severity: medium
+category: security
+pattern: "EXPOSE\\s+(?:22|3306|5432|6379|27017|11211|9200|2379)\\b"
+message: "Exposing database, cache, or SSH ports (22, 3306, 5432, 6379, 27017, 9200, 2379) directly from Docker makes them accessible if the container network is not properly isolated. These services should only be accessible from application containers via internal networks, not exposed to the host."
+fix:
+  bad: "EXPOSE 5432"
+  good: "# Use Docker networks for inter-container communication instead of EXPOSE"

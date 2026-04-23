@@ -1,0 +1,9 @@
+id: env-file-committed
+language: []
+severity: critical
+category: security
+pattern: "^(?:DATABASE_URL|DB_PASSWORD|SECRET_KEY|API_KEY|AWS_SECRET|PRIVATE_KEY)\\s*="
+message: "Environment variable files containing secrets should never be committed to version control. Anyone with repository access can read all credentials, and git history preserves them permanently. Add .env to .gitignore, use .env.example with placeholder values, and store real secrets in a secrets manager."
+fix:
+  bad: "DATABASE_URL=postgres://admin:password@prod-db:5432/mydb"
+  good: "DATABASE_URL=postgres://user:password@localhost:5432/mydb_example # .env.example only"

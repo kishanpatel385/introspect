@@ -1,0 +1,9 @@
+id: java-deserialization
+language: [java]
+severity: critical
+category: security
+pattern: "ObjectInputStream|readObject\\s*\\(|XMLDecoder|XStream\\.fromXML|Yaml\\.load\\s*\\("
+message: "Java native deserialization (ObjectInputStream, XMLDecoder, XStream) with untrusted input enables remote code execution through gadget chains in common libraries. Attackers can exploit this to run arbitrary commands on the server without authentication. Use JSON or Protobuf for data interchange, or apply ObjectInputFilter (Java 9+) with a strict allowlist of permitted classes."
+fix:
+  bad: "ObjectInputStream ois = new ObjectInputStream(input); Object obj = ois.readObject();"
+  good: "// Use JSON/Protobuf deserialization, or ObjectInputFilter (Java 9+) to whitelist classes"

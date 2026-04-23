@@ -1,0 +1,9 @@
+id: js-react-dangerously-set
+language: [javascript, typescript]
+severity: high
+category: security
+pattern: "dangerouslySetInnerHTML\\s*=\\s*\\{\\{\\s*__html\\s*:"
+message: "dangerouslySetInnerHTML bypasses React's XSS protection by injecting raw HTML. If the HTML contains user-controlled content, an attacker can inject malicious scripts. Sanitize the HTML with DOMPurify before rendering, or use React's built-in text rendering which auto-escapes content."
+fix:
+  bad: "<div dangerouslySetInnerHTML={{ __html: userContent }} />"
+  good: "<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(userContent) }} />"

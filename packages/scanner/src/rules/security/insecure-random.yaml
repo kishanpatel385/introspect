@@ -1,0 +1,9 @@
+id: insecure-random
+language: []
+severity: high
+category: security
+pattern: "Math\\.random\\s*\\(|random\\.random\\s*\\(|rand\\s*\\(|Random\\(\\)|mt_rand\\s*\\("
+message: "A non-cryptographic random number generator (Math.random, random.random, etc.) is used where a secure one is needed. These generators produce predictable output that an attacker can guess or reproduce, compromising tokens, session IDs, or encryption keys. Use crypto.randomBytes (Node.js), secrets module (Python), or SecureRandom (Java/Ruby) for security-sensitive values."
+fix:
+  bad: "const token = Math.random().toString(36)"
+  good: "const token = crypto.randomBytes(32).toString('hex')"

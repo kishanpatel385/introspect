@@ -1,0 +1,9 @@
+id: java-auto-boxing-loop
+language: [java]
+severity: low
+category: performance
+pattern: "(?:for|while)\\s*\\([^)]*\\)\\s*\\{[^}]*(?:Integer|Long|Double|Float|Boolean)\\.valueOf"
+message: "Autoboxing primitives to wrapper objects inside loops creates excessive garbage collection pressure. Each autoboxed value creates a new object on the heap. Use primitive types and primitive-specific collections (IntArrayList, LongHashMap) for performance-critical loops."
+fix:
+  bad: "for (int i = 0; i < n; i++) { list.add(Integer.valueOf(i)); }"
+  good: "IntArrayList list = new IntArrayList(); for (int i = 0; i < n; i++) { list.add(i); }"

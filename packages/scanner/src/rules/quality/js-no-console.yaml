@@ -1,0 +1,9 @@
+id: js-no-console
+language: [javascript, typescript]
+severity: low
+category: quality
+pattern: "console\\.(?:log|debug|info|warn|error|trace|table)\\s*\\("
+message: "Console statements in production code clutter browser dev tools, can expose sensitive data, and indicate incomplete debugging. They also add a small performance overhead. Use a structured logging library (winston, pino) for server-side and remove all console statements for client-side production builds."
+fix:
+  bad: "console.log('User data:', userData)"
+  good: "logger.info('User data processed', { userId: userData.id })"

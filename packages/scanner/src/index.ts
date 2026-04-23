@@ -1,0 +1,14 @@
+export { scan, detectLanguages, getRepoName, buildSummary } from './scan';
+export type { ProgressCallback } from './scan';
+export { loadRules } from './rules/loader';
+export { runAnalyzers } from './analyzers';
+export { scoreFromIssues } from './scoring/calculator';
+export { generateReport } from './report/generator';
+export { repoMeta } from './ingestion/github';
+export { fetchGitHistory } from './ingestion/gitHistory';
+export type { GitHistoryData } from './ingestion/gitHistory';
+export { ingest } from './ingestion';
+export { fetchLocalGitHistory } from './ingestion/gitLocal';
+export type { GitDetailedData } from './ingestion/gitLocal';
+export { liveScan } from './probes';
+export type { LiveScanResult, LiveFinding, LiveScanTarget, LiveProgressCallback } from './probes';

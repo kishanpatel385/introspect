@@ -1,0 +1,9 @@
+id: php-debug-functions
+language: [php]
+severity: medium
+category: security
+pattern: "\\b(?:var_dump|print_r|debug_zval_refs|debug_print_backtrace|phpinfo)\\s*\\("
+message: "Debug functions like var_dump(), print_r(), and phpinfo() can expose sensitive internal data including variables, file paths, server configuration, and PHP extensions. If accessible in production, an attacker gains valuable reconnaissance information. Remove all debug functions before deploying to production."
+fix:
+  bad: "var_dump($user); phpinfo();"
+  good: "// Use a logger: $logger->debug('User data', ['id' => $user->id]);"

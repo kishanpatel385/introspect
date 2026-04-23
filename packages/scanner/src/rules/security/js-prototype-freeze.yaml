@@ -1,0 +1,9 @@
+id: js-prototype-freeze
+language: [javascript, typescript]
+severity: low
+category: security
+pattern: "Object\\.freeze\\s*\\(\\s*Object\\.prototype\\s*\\)"
+message: "Freezing Object.prototype is an aggressive defense against prototype pollution that can break third-party libraries. While it prevents pollution attacks, many libraries modify prototypes legitimately. Consider using --frozen-intrinsics Node.js flag or Object.create(null) for sensitive objects instead."
+fix:
+  bad: "Object.freeze(Object.prototype)"
+  good: "const safeObj = Object.create(null) // Prototype-less object"

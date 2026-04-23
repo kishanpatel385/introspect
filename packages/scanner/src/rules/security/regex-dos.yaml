@@ -1,0 +1,9 @@
+id: regex-dos
+language: []
+severity: high
+category: security
+pattern: "new RegExp\\s*\\(\\s*(req\\.|request\\.|params\\.|query\\.|body\\.|user)|RegExp\\(.*\\+.*\\)"
+message: "User input is used to construct a regular expression, making the application vulnerable to ReDoS (Regular Expression Denial of Service). An attacker can craft input with catastrophic backtracking patterns that freeze the event loop for seconds or minutes. Escape all special regex characters with a sanitizer function, or use fixed patterns with user input as literal search strings."
+fix:
+  bad: "new RegExp(req.query.search)"
+  good: "new RegExp(escapeRegex(req.query.search))"

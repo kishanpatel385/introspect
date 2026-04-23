@@ -1,0 +1,9 @@
+id: jwt-misuse
+language: []
+severity: critical
+category: security
+pattern: "algorithm.*['\"]none['\"]|alg.*['\"]none['\"]|verify\\s*:\\s*false|algorithms.*\\[.*none|jwt\\.decode\\s*\\([^)]*verify\\s*=\\s*False"
+message: "JWT is configured with the 'none' algorithm or has verification disabled, allowing attackers to forge valid tokens. This completely bypasses authentication, letting anyone impersonate any user by crafting unsigned tokens. Always enforce a strong signing algorithm (RS256 or ES256) and never disable signature verification."
+fix:
+  bad: "jwt.verify(token, secret, { algorithms: ['none'] })"
+  good: "jwt.verify(token, secret, { algorithms: ['RS256'] })"

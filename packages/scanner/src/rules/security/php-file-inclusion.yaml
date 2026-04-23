@@ -1,0 +1,9 @@
+id: php-file-inclusion
+language: [php]
+severity: critical
+category: security
+pattern: "(include|require|include_once|require_once)\\s*\\(\\s*\\$_(GET|POST|REQUEST|COOKIE)"
+message: "User input from $_GET, $_POST, or $_REQUEST is used directly in include/require, enabling Local or Remote File Inclusion (LFI/RFI). An attacker can include arbitrary files from the server or remote URLs, leading to full remote code execution. Use a strict allowlist of permitted file names and never pass user input directly to include/require statements."
+fix:
+  bad: "include($_GET['page'] . '.php');"
+  good: "$allowed = ['home', 'about']; $page = in_array($_GET['page'], $allowed) ? $_GET['page'] : 'home'; include($page . '.php');"

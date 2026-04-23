@@ -1,0 +1,9 @@
+id: js-no-nested-ternary
+language: [javascript, typescript]
+severity: low
+category: quality
+pattern: "\\?[^:?]*\\?[^:]*:[^:]*:[^;]*"
+message: "Nested ternary expressions are difficult to read and maintain, especially for other developers reviewing the code. They obscure the branching logic and make bugs harder to spot. Use if/else statements, switch, or extract the logic into a named function."
+fix:
+  bad: "const label = a ? b ? 'both' : 'onlyA' : 'neither'"
+  good: "function getLabel(a, b) { if (a && b) return 'both'; if (a) return 'onlyA'; return 'neither'; }"

@@ -1,0 +1,9 @@
+id: rust-unwrap-in-prod
+language: [rust]
+severity: medium
+category: security
+pattern: "\\.unwrap\\s*\\(\\)|\\.expect\\s*\\("
+message: "Using unwrap() or expect() in production code causes a panic if the Result/Option is None/Err, crashing the application. This creates a denial-of-service vector if an attacker can trigger the error condition. Use pattern matching, unwrap_or, unwrap_or_default, or the ? operator for proper error handling."
+fix:
+  bad: "let file = File::open(path).unwrap();"
+  good: "let file = File::open(path)?;"

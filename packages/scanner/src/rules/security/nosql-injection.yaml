@@ -1,0 +1,9 @@
+id: nosql-injection
+language: [javascript, typescript]
+severity: critical
+category: security
+pattern: "\\.(find|findOne|updateOne|deleteOne|aggregate)\\s*\\(\\s*(req\\.|request\\.|body\\.|params\\.|query\\.)"
+message: "User input is passed directly to a MongoDB query operator, enabling NoSQL injection. An attacker can inject query operators like $gt, $ne, or $regex to bypass authentication or extract data they should not access. Sanitize input with mongo-sanitize, explicitly pick allowed fields, and validate the input shape matches your expected schema."
+fix:
+  bad: "db.collection.find(req.body)"
+  good: "db.collection.find({ email: sanitize(req.body.email) })"

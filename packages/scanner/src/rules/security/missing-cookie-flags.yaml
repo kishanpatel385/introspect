@@ -1,0 +1,9 @@
+id: missing-cookie-flags
+language: [javascript, typescript, php, python, ruby]
+severity: medium
+category: security
+pattern: "set-cookie|setCookie|cookie\\s*\\(|res\\.cookie\\s*\\([^)]*(?!httpOnly|httponly|http_only)|setcookie\\s*\\([^)]*(?!httponly)"
+message: "A cookie is being set without essential security flags (httpOnly, secure, sameSite). Without httpOnly, JavaScript can steal the cookie via XSS; without secure, it transmits over plain HTTP; without sameSite, it is vulnerable to CSRF. Always set httpOnly: true, secure: true, and sameSite: 'strict' or 'lax' on sensitive cookies."
+fix:
+  bad: "res.cookie('session', token)"
+  good: "res.cookie('session', token, { httpOnly: true, secure: true, sameSite: 'strict' })"

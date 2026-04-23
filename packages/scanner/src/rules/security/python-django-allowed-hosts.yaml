@@ -1,0 +1,9 @@
+id: python-django-allowed-hosts
+language: [python]
+severity: high
+category: security
+pattern: "ALLOWED_HOSTS\\s*=\\s*\\[\\s*['\"]\\*['\"]\\s*\\]"
+message: "Setting ALLOWED_HOSTS to ['*'] disables Django's host header validation, enabling HTTP Host header attacks. An attacker can manipulate the Host header to poison caches, send password reset links to malicious domains, or bypass virtual hosting security. Specify exact hostnames."
+fix:
+  bad: "ALLOWED_HOSTS = ['*']"
+  good: "ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost').split(',')"

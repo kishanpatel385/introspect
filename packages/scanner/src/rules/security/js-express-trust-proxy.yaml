@@ -1,0 +1,9 @@
+id: js-express-trust-proxy
+language: [javascript, typescript]
+severity: medium
+category: security
+pattern: "app\\.set\\s*\\(\\s*['\"]trust proxy['\"]\\s*,\\s*true\\s*\\)"
+message: "Setting trust proxy to true in Express trusts all proxies, allowing any client to spoof their IP address via X-Forwarded-For headers. This can bypass IP-based rate limiting, access controls, and audit logging. Set trust proxy to a specific number of hops or a subnet CIDR instead."
+fix:
+  bad: "app.set('trust proxy', true)"
+  good: "app.set('trust proxy', 'loopback, 10.0.0.0/8')"

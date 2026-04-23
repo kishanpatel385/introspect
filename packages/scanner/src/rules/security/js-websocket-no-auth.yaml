@@ -1,0 +1,9 @@
+id: js-websocket-no-auth
+language: [javascript, typescript]
+severity: high
+category: security
+pattern: "new\\s+WebSocketServer\\s*\\(\\s*\\{(?!.*verifyClient)"
+message: "Creating a WebSocket server without a verifyClient callback allows unauthenticated connections. An attacker can connect and potentially access real-time data streams, send malicious messages, or consume server resources. Implement authentication in the verifyClient callback or in the connection handler."
+fix:
+  bad: "new WebSocketServer({ port: 8080 })"
+  good: "new WebSocketServer({ port: 8080, verifyClient: (info, cb) => { const token = parseToken(info.req); cb(isValid(token)); } })"

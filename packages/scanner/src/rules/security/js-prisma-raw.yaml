@@ -1,0 +1,9 @@
+id: js-prisma-raw
+language: [javascript, typescript]
+severity: critical
+category: security
+pattern: "\\$queryRawUnsafe\\s*\\(|\\$executeRawUnsafe\\s*\\("
+message: "Prisma's $queryRawUnsafe and $executeRawUnsafe do not parameterize inputs and are vulnerable to SQL injection. Use $queryRaw or $executeRaw with tagged template literals, which automatically parameterize values."
+fix:
+  bad: "prisma.$queryRawUnsafe(`SELECT * FROM users WHERE id = ${id}`)"
+  good: "prisma.$queryRaw`SELECT * FROM users WHERE id = ${id}`"

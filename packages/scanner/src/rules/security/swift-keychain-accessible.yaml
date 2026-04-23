@@ -1,0 +1,9 @@
+id: swift-keychain-accessible
+language: [swift]
+severity: high
+category: security
+pattern: "kSecAttrAccessibleAlways|kSecAttrAccessibleAlwaysThisDeviceOnly"
+message: "Using kSecAttrAccessibleAlways makes Keychain items accessible when the device is locked, reducing security. If the device is compromised while locked, stored credentials are exposed. Use kSecAttrAccessibleWhenUnlockedThisDeviceOnly for sensitive data."
+fix:
+  bad: "kSecAttrAccessible: kSecAttrAccessibleAlways"
+  good: "kSecAttrAccessible: kSecAttrAccessibleWhenUnlockedThisDeviceOnly"

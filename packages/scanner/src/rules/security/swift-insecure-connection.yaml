@@ -1,0 +1,9 @@
+id: swift-insecure-connection
+language: [swift]
+severity: high
+category: security
+pattern: "NSAppTransportSecurity|NSAllowsArbitraryLoads\\s*.*true|allowsInsecureHTTPLoads"
+message: "Disabling App Transport Security (ATS) or allowing insecure HTTP connections exposes iOS app traffic to man-in-the-middle attacks. User credentials, personal data, and API tokens can be intercepted. Keep ATS enabled and use HTTPS for all connections."
+fix:
+  bad: "NSAllowsArbitraryLoads: true"
+  good: "// Remove NSAllowsArbitraryLoads and use HTTPS for all endpoints"

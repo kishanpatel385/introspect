@@ -1,0 +1,9 @@
+id: js-no-eslint-disable
+language: [javascript, typescript]
+severity: low
+category: quality
+pattern: "eslint-disable(?!-next-line)|eslint-disable-next-line\\s*$"
+message: "Blanket eslint-disable comments suppress all ESLint rules for a block, hiding potential issues. If a specific rule needs to be disabled, use eslint-disable-next-line with the specific rule name and a justification comment."
+fix:
+  bad: "/* eslint-disable */"
+  good: "// eslint-disable-next-line no-console -- Debug output for monitoring"

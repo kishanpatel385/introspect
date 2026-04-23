@@ -1,0 +1,9 @@
+id: general-no-error-stacktrace
+language: []
+severity: medium
+category: security
+pattern: "(?:stack|stacktrace|stack_trace|traceback).*(?:response|send|json|render|output)"
+message: "Sending stack traces in API responses or rendered pages leaks internal code structure, file paths, and dependency versions. Attackers use this for targeted exploitation. Log full errors server-side and return generic messages to clients."
+fix:
+  bad: "res.json({ error: err.message, stack: err.stack })"
+  good: "logger.error(err); res.json({ error: 'Something went wrong' })"

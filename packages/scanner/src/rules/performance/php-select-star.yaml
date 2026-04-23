@@ -1,0 +1,9 @@
+id: php-select-star
+language: [php]
+severity: medium
+category: performance
+pattern: "(?:query|execute|prepare)\\s*\\(.*SELECT\\s+\\*\\s+FROM"
+message: "SELECT * fetches all columns including large text/blob fields that may not be needed. This increases memory usage, network transfer, and database I/O. Select only the specific columns needed for the operation to improve query performance."
+fix:
+  bad: "$db->query('SELECT * FROM users WHERE active = 1')"
+  good: "$db->query('SELECT id, name, email FROM users WHERE active = 1')"

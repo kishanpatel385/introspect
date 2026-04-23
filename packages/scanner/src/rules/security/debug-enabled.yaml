@@ -1,0 +1,9 @@
+id: debug-enabled
+language: []
+severity: medium
+category: security
+pattern: "DEBUG\\s*=\\s*True|debug\\s*:\\s*true|NODE_ENV.*development.*production|app\\.debug\\s*=\\s*True"
+message: "Debug mode appears to be enabled, which can leak stack traces, environment variables, and internal application details to end users. This information helps attackers understand your application structure and find additional vulnerabilities. Ensure debug mode is controlled by environment variables and always disabled in production deployments."
+fix:
+  bad: "DEBUG = True"
+  good: "DEBUG = os.environ.get('DEBUG', 'False') == 'True'"

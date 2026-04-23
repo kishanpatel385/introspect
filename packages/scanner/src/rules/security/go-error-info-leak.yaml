@@ -1,0 +1,9 @@
+id: go-error-info-leak
+language: [go]
+severity: medium
+category: security
+pattern: "http\\.Error\\s*\\(.*err\\.Error\\(\\)|fmt\\.Fprintf\\s*\\(\\s*w.*err"
+message: "Returning raw error messages in HTTP responses leaks internal details like file paths, database queries, and stack traces. An attacker uses this information for reconnaissance. Log the full error server-side and return a generic error message to the client."
+fix:
+  bad: "http.Error(w, err.Error(), 500)"
+  good: "log.Error(err); http.Error(w, \"internal server error\", 500)"

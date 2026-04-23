@@ -1,0 +1,9 @@
+id: rust-command-injection
+language: [rust]
+severity: critical
+category: security
+pattern: "Command::new\\s*\\(\\s*\"(?:sh|bash|cmd)\"\\s*\\)\\s*\\.arg\\s*\\(\\s*\"(?:-c|-Command)\""
+message: "Using Command::new with sh -c or bash -c passes arguments through the shell, enabling command injection if user input is included. An attacker can inject shell metacharacters to execute arbitrary commands. Use Command::new with the direct binary path and .arg() for each argument."
+fix:
+  bad: "Command::new(\"sh\").arg(\"-c\").arg(format!(\"ls {}\", user_input))"
+  good: "Command::new(\"ls\").arg(user_input).output()"

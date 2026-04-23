@@ -1,0 +1,9 @@
+id: php-yaml-parse
+language: [php]
+severity: high
+category: security
+pattern: "yaml_parse\\s*\\(\\s*\\$_(GET|POST|REQUEST)"
+message: "PHP's yaml_parse() function can execute arbitrary PHP code through YAML tags like !php/object. Parsing untrusted YAML input can lead to object injection and remote code execution. Use yaml_parse with callbacks parameter set to restrict tags, or use a safer YAML library."
+fix:
+  bad: "yaml_parse($_POST['config'])"
+  good: "$data = json_decode($_POST['config'], true); // Use JSON instead"

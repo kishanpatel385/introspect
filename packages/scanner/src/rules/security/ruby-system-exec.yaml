@@ -1,0 +1,9 @@
+id: ruby-system-exec
+language: [ruby]
+severity: critical
+category: security
+pattern: "(?:system|exec|%x|`)\\s*(?:\\(|\\{)?\\s*(?:\".*#\\{|'.*'\\s*\\+|params)"
+message: "Using system(), exec(), %x{}, or backticks with string interpolation enables command injection. An attacker can inject shell metacharacters to execute arbitrary commands. Use the array form of system() which bypasses the shell, or use Open3 with separate arguments."
+fix:
+  bad: "system(\"ls #{params[:dir]}\")"
+  good: "system('ls', params[:dir])"

@@ -1,0 +1,9 @@
+id: php-symfony-debug
+language: [php]
+severity: high
+category: security
+pattern: "APP_ENV\\s*=\\s*dev|kernel\\.debug.*true|EnableProfiler|web_profiler"
+message: "Symfony debug mode and web profiler in production expose detailed error pages, database queries, request/response data, and environment variables. An attacker gains complete visibility into application internals. Set APP_ENV=prod and disable the web_profiler in production."
+fix:
+  bad: "APP_ENV=dev"
+  good: "APP_ENV=prod"

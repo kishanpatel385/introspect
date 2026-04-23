@@ -1,0 +1,9 @@
+id: js-dangerous-regex
+language: [javascript, typescript]
+severity: medium
+category: security
+pattern: "new\\s+RegExp\\s*\\(\\s*(?!\\s*['\"`/])[a-zA-Z_$]"
+message: "Constructing a RegExp from a variable can lead to ReDoS (Regular Expression Denial of Service) if user input is used. An attacker can craft a malicious string that causes catastrophic backtracking, freezing the application. Validate and escape user input before passing it to RegExp, or use a static regex literal."
+fix:
+  bad: "new RegExp(userInput)"
+  good: "new RegExp(userInput.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&'))"

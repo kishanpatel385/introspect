@@ -1,0 +1,9 @@
+id: python-shell-injection
+language: [python]
+severity: critical
+category: security
+pattern: "subprocess\\.(?:call|run|Popen|check_output|check_call)\\s*\\(.*shell\\s*=\\s*True"
+message: "Using subprocess with shell=True passes the command through the system shell, enabling command injection if any part of the command includes user input. An attacker can chain commands using ;, |, or && to execute arbitrary code. Use shell=False and pass arguments as a list."
+fix:
+  bad: "subprocess.call('ls -la ' + user_input, shell=True)"
+  good: "subprocess.call(['ls', '-la', user_input], shell=False)"

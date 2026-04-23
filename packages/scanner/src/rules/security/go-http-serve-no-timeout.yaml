@@ -1,0 +1,9 @@
+id: go-http-serve-no-timeout
+language: [go]
+severity: medium
+category: security
+pattern: "http\\.ListenAndServe\\s*\\("
+message: "Using http.ListenAndServe without configuring timeouts leaves the server vulnerable to slowloris and connection exhaustion attacks. An attacker can open many connections and hold them indefinitely, denying service to legitimate users. Use http.Server with ReadTimeout, WriteTimeout, and IdleTimeout configured."
+fix:
+  bad: "http.ListenAndServe(\":8080\", handler)"
+  good: "srv := &http.Server{Addr: \":8080\", Handler: handler, ReadTimeout: 10*time.Second, WriteTimeout: 10*time.Second}; srv.ListenAndServe()"

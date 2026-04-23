@@ -1,0 +1,9 @@
+id: php-extract
+language: [php]
+severity: high
+category: security
+pattern: "\\bextract\\s*\\(\\s*\\$_(GET|POST|REQUEST|COOKIE|SERVER)"
+message: "Using extract() on superglobals like $_GET or $_POST creates variables from user input, potentially overwriting existing variables including authentication flags. An attacker can inject variables to bypass security checks. Access superglobal values directly or use explicit variable assignment."
+fix:
+  bad: "extract($_POST);"
+  good: "$name = $_POST['name'] ?? ''; $email = $_POST['email'] ?? '';"

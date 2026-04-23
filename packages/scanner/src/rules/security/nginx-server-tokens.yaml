@@ -1,0 +1,9 @@
+id: nginx-server-tokens
+language: []
+severity: low
+category: security
+pattern: "server_tokens\\s+on"
+message: "Enabling server_tokens in Nginx reveals the server version in HTTP headers and error pages. Attackers use this for version fingerprinting to find known vulnerabilities. Set server_tokens off to hide version information."
+fix:
+  bad: "server_tokens on;"
+  good: "server_tokens off;"

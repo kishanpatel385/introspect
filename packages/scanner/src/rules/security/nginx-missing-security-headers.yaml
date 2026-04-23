@@ -1,0 +1,9 @@
+id: nginx-missing-security-headers
+language: []
+severity: medium
+category: security
+pattern: "server\\s*\\{(?!.*X-Frame-Options|.*Content-Security-Policy|.*X-Content-Type-Options)"
+message: "Missing security headers (X-Frame-Options, Content-Security-Policy, X-Content-Type-Options) leave the application vulnerable to clickjacking, XSS, and MIME-type sniffing attacks. Add these headers to all server blocks to improve the security posture."
+fix:
+  bad: "server { listen 80; }"
+  good: "server { listen 80; add_header X-Frame-Options DENY; add_header X-Content-Type-Options nosniff; add_header Content-Security-Policy \"default-src 'self'\"; }"

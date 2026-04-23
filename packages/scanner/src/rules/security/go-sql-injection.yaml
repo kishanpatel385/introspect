@@ -1,0 +1,9 @@
+id: go-sql-injection
+language: [go]
+severity: critical
+category: security
+pattern: "db\\.(Query|Exec|QueryRow)\\s*\\(\\s*fmt\\.Sprintf|db\\.(Query|Exec|QueryRow)\\s*\\(\\s*\".*\"\\s*\\+"
+message: "SQL query constructed with fmt.Sprintf or string concatenation is vulnerable to SQL injection. An attacker can escape the intended query structure and execute arbitrary database commands, including data exfiltration or table deletion. Use parameterized placeholders ($1, $2) and pass values as separate arguments to Query/Exec."
+fix:
+  bad: "db.Query(fmt.Sprintf(\"SELECT * FROM users WHERE id = %s\", id))"
+  good: "db.Query(\"SELECT * FROM users WHERE id = $1\", id)"

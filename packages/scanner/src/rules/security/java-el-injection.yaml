@@ -1,0 +1,9 @@
+id: java-el-injection
+language: [java]
+severity: critical
+category: security
+pattern: "ELProcessor|evaluateExpression|ExpressionFactory.*createValueExpression.*request"
+message: "Expression Language (EL) injection occurs when user input is evaluated as an EL expression in JSP/JSF. An attacker can execute arbitrary code, access application internals, and read server files. Never pass user input to EL evaluation functions."
+fix:
+  bad: "elProcessor.eval(request.getParameter(\"expr\"))"
+  good: "// Never evaluate user input as EL. Use parameterized output."

@@ -1,0 +1,9 @@
+id: ruby-yaml-load
+language: [ruby]
+severity: critical
+category: security
+pattern: "YAML\\.load\\s*\\((?!.*permitted_classes|.*safe_load)"
+message: "YAML.load in Ruby can deserialize arbitrary Ruby objects, enabling remote code execution through specially crafted YAML payloads. An attacker can instantiate any Ruby class and call methods during deserialization. Use YAML.safe_load or YAML.load with permitted_classes parameter."
+fix:
+  bad: "YAML.load(user_input)"
+  good: "YAML.safe_load(user_input)"

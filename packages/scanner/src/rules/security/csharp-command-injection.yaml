@@ -1,0 +1,9 @@
+id: csharp-command-injection
+language: [csharp]
+severity: critical
+category: security
+pattern: "Process\\.Start\\s*\\(.*(?:\\+|\\$\"|String\\.Format).*(?:Request|query|param)"
+message: "Starting processes with user-controlled arguments enables command injection. An attacker can inject shell metacharacters to execute arbitrary commands. Set UseShellExecute to false and pass arguments separately, never through string interpolation."
+fix:
+  bad: "Process.Start(\"cmd\", $\"/c {userInput}\");"
+  good: "new Process { StartInfo = { FileName = \"tool\", Arguments = sanitizedArg, UseShellExecute = false } }.Start();"

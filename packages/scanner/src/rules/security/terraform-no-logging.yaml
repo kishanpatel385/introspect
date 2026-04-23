@@ -1,0 +1,9 @@
+id: terraform-no-logging
+language: []
+severity: medium
+category: security
+pattern: "(?:logging|access_logs?|audit_log)\\s*\\{[^}]*enabled\\s*=\\s*false"
+message: "Disabling logging on cloud resources eliminates audit trails needed for security incident detection and forensic investigation. Without logs, unauthorized access and data breaches go undetected. Enable access logging for all production resources."
+fix:
+  bad: "logging { enabled = false }"
+  good: "logging { enabled = true, target_bucket = aws_s3_bucket.logs.id }"

@@ -1,0 +1,9 @@
+id: docker-latest-tag
+language: [dockerfile]
+severity: medium
+category: security
+pattern: "FROM\\s+\\w+(?:/\\w+)?\\s*$|FROM\\s+\\w+(?:/\\w+)?:latest"
+message: "Using the 'latest' tag or no tag in Docker FROM instructions makes builds non-reproducible and can pull unexpected versions with vulnerabilities or breaking changes. Pin to a specific version tag and SHA digest for production images."
+fix:
+  bad: "FROM node:latest"
+  good: "FROM node:18.19-alpine@sha256:abc123..."

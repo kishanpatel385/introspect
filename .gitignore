@@ -1,0 +1,38 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# build output
+dist/
+.next/
+out/
+.turbo/
+
+# env
+.env
+.env.*
+*.local
+
+# IDE
+.vscode/
+.idea/
+.claude/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# test coverage
+coverage/
+
+# debug
+*.log
+npm-debug.log*
+
+# misc
+*.tsbuildinfo
+.changeset/*.md
+!.changeset/config.json

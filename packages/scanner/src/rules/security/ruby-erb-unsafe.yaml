@@ -1,0 +1,9 @@
+id: ruby-erb-unsafe
+language: [ruby]
+severity: high
+category: security
+pattern: "raw\\s*\\(|html_safe|\\<%==?"
+message: "Using raw(), html_safe, or <%== in Rails views bypasses automatic HTML escaping, enabling XSS if the content contains user input. An attacker can inject scripts that steal sessions or redirect users. Use the default escaped output (<%= %>) and sanitize HTML with the sanitize helper."
+fix:
+  bad: "<%= raw(user_comment) %>"
+  good: "<%= sanitize(user_comment) %>"

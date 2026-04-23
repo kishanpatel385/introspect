@@ -1,0 +1,9 @@
+id: php-mass-assignment
+language: [php]
+severity: high
+category: security
+pattern: "->(?:fill|update|create)\\s*\\(\\s*\\$request->all\\(\\)|->(?:fill|update|create)\\s*\\(\\s*\\$_POST\\b"
+message: "Using $request->all() or $_POST directly in Eloquent fill/create/update enables mass assignment. An attacker can set fields like is_admin, role, or balance by adding extra form parameters. Use $request->only() or $request->validated() with explicit field lists and define $fillable on the model."
+fix:
+  bad: "User::create($request->all())"
+  good: "User::create($request->only(['name', 'email']))"

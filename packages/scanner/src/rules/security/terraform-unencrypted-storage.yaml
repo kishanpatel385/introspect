@@ -1,0 +1,9 @@
+id: terraform-unencrypted-storage
+language: []
+severity: high
+category: security
+pattern: "(?:encrypted|encryption_at_rest|server_side_encryption)\\s*=\\s*false|storage_encrypted\\s*=\\s*false"
+message: "Cloud storage and databases without encryption at rest leave data vulnerable if the underlying storage media is accessed. Regulatory frameworks (GDPR, HIPAA, SOC2) require encryption at rest. Enable encryption using cloud provider managed keys (KMS) or customer-managed keys."
+fix:
+  bad: "storage_encrypted = false"
+  good: "storage_encrypted = true"

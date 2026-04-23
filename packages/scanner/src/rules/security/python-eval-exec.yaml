@@ -1,0 +1,9 @@
+id: python-eval-exec
+language: [python]
+severity: critical
+category: security
+pattern: "\\b(?:eval|exec|execfile|compile)\\s*\\(.*(?:request\\.|input\\(|sys\\.argv|os\\.environ)"
+message: "Using eval(), exec(), or compile() with user input enables arbitrary code execution. An attacker can execute any Python code on the server, leading to complete system compromise. Use ast.literal_eval() for safe expression evaluation or implement a whitelist-based parser for specific use cases."
+fix:
+  bad: "eval(request.args.get('expression'))"
+  good: "import ast; ast.literal_eval(safe_expression)"

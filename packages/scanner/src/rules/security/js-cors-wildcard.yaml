@@ -1,0 +1,9 @@
+id: js-cors-wildcard
+language: [javascript, typescript]
+severity: high
+category: security
+pattern: "(?:Access-Control-Allow-Origin|allowedOrigins?)\\s*[=:]\\s*['\"]\\*['\"]|origin\\s*:\\s*(?:true|['\"]\\*['\"])"
+message: "Setting Access-Control-Allow-Origin to wildcard (*) allows any website to make cross-origin requests to your API. This can expose sensitive data and enable CSRF-like attacks from malicious sites. Specify allowed origins explicitly or use a dynamic origin validation approach."
+fix:
+  bad: "res.setHeader('Access-Control-Allow-Origin', '*')"
+  good: "const allowedOrigins = ['https://app.example.com']; if (allowedOrigins.includes(origin)) res.setHeader('Access-Control-Allow-Origin', origin)"

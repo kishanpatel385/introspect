@@ -1,0 +1,9 @@
+id: php-header-injection
+language: [php]
+severity: high
+category: security
+pattern: "\\bheader\\s*\\(\\s*['\"].*\\$_(GET|POST|REQUEST|COOKIE|SERVER)"
+message: "Including user input in HTTP headers without sanitization enables header injection. An attacker can inject CRLF characters (\\r\\n) to add arbitrary headers, set cookies, or cause HTTP response splitting. Validate and sanitize all user input before including it in headers, and remove newline characters."
+fix:
+  bad: "header('Location: ' . $_GET['redirect'])"
+  good: "header('Location: ' . filter_var($_GET['redirect'], FILTER_SANITIZE_URL))"

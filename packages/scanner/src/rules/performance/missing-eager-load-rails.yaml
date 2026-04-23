@@ -1,0 +1,9 @@
+id: missing-eager-load-rails
+language: [ruby]
+severity: high
+category: performance
+pattern: "\\.each\\s+do\\s*\\|.*\\|.*\\.\\w+\\.|for\\s+\\w+\\s+in\\s+\\w+\\.(all|where)"
+message: "Iterating over an ActiveRecord collection and accessing associations triggers a separate SQL query per record (N+1 problem). This can multiply response times by orders of magnitude as datasets grow, and puts unnecessary load on the database. Use includes(), preload(), or eager_load() to fetch all associated records in one or two queries upfront."
+fix:
+  bad: "Post.all.each { |post| puts post.author.name }"
+  good: "Post.includes(:author).each { |post| puts post.author.name }"

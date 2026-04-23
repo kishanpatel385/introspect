@@ -1,0 +1,9 @@
+id: ssrf
+language: []
+severity: critical
+category: security
+pattern: "fetch\\s*\\(\\s*(req\\.|request\\.|params\\.|query\\.|body\\.)|requests\\.get\\s*\\(\\s*(request\\.|data\\[)|urllib\\.request\\.urlopen\\s*\\(|HttpClient.*\\(\\s*\\$|file_get_contents\\s*\\(\\s*\\$_"
+message: "User-supplied input is passed directly to an HTTP request, enabling Server-Side Request Forgery (SSRF). An attacker can use this to access internal services, cloud metadata endpoints (169.254.169.254), or scan internal networks from your server. Validate all URLs against a strict allowlist of permitted hosts and block private IP ranges."
+fix:
+  bad: "fetch(req.body.url)"
+  good: "const url = validateUrl(req.body.url, ALLOWED_HOSTS); fetch(url)"

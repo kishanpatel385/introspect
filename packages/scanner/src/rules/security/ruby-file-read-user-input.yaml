@@ -1,0 +1,9 @@
+id: ruby-file-read-user-input
+language: [ruby]
+severity: high
+category: security
+pattern: "File\\.(?:read|open|write|delete|exist)\\??\\s*\\(\\s*(?:params|request)"
+message: "File operations with user-controlled paths enable path traversal attacks. An attacker can use ../ to read, write, or delete files outside the intended directory. Validate the resolved path against an allowed base directory after canonicalization."
+fix:
+  bad: "File.read(params[:path])"
+  good: "path = File.expand_path(params[:path], base_dir); raise 'Invalid' unless path.start_with?(base_dir)"

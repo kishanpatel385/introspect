@@ -1,0 +1,9 @@
+id: js-regex-in-loop
+language: [javascript, typescript]
+severity: low
+category: performance
+pattern: "(?:for|while|forEach|map|filter|reduce).*\\{[^}]*new\\s+RegExp\\s*\\("
+message: "Creating RegExp objects inside loops compiles the regex pattern on every iteration. If the pattern is constant, this wastes CPU time. Declare the regex outside the loop to compile it once and reuse it."
+fix:
+  bad: "items.forEach(item => { if (new RegExp(pattern).test(item)) { ... } })"
+  good: "const re = new RegExp(pattern); items.forEach(item => { if (re.test(item)) { ... } })"

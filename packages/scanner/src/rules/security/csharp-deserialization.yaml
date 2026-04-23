@@ -1,0 +1,9 @@
+id: csharp-deserialization
+language: [csharp]
+severity: critical
+category: security
+pattern: "(?:BinaryFormatter|ObjectStateFormatter|SoapFormatter|NetDataContractSerializer|LosFormatter)\\.Deserialize"
+message: "BinaryFormatter and similar .NET deserializers can execute arbitrary code during deserialization. Microsoft has deprecated BinaryFormatter due to its inherent security risks. Use System.Text.Json or DataContractSerializer with known types for safe deserialization."
+fix:
+  bad: "new BinaryFormatter().Deserialize(stream)"
+  good: "JsonSerializer.Deserialize<MyType>(json)"

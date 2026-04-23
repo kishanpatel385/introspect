@@ -1,0 +1,9 @@
+id: ruby-csrf-skip
+language: [ruby]
+severity: high
+category: security
+pattern: "skip_before_action\\s+:verify_authenticity_token|protect_from_forgery\\s+with:\\s+:null_session"
+message: "Skipping CSRF verification or using null_session removes Rails' protection against cross-site request forgery. An attacker can trick authenticated users into performing unwanted actions. Only skip CSRF for API endpoints that use token-based authentication."
+fix:
+  bad: "skip_before_action :verify_authenticity_token"
+  good: "# Only skip for token-authenticated API: protect_from_forgery with: :exception"

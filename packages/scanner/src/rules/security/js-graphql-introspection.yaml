@@ -1,0 +1,9 @@
+id: js-graphql-introspection
+language: [javascript, typescript]
+severity: medium
+category: security
+pattern: "introspection\\s*:\\s*true"
+message: "Enabling GraphQL introspection in production exposes your entire API schema, including internal types, mutations, and field descriptions. Attackers use this to map the attack surface and craft targeted queries. Disable introspection in production environments."
+fix:
+  bad: "new ApolloServer({ schema, introspection: true })"
+  good: "new ApolloServer({ schema, introspection: process.env.NODE_ENV !== 'production' })"

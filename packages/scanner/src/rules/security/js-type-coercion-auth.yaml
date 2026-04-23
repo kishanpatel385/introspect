@@ -1,0 +1,9 @@
+id: js-type-coercion-auth
+language: [javascript, typescript]
+severity: high
+category: security
+pattern: "(?:password|token|secret|key|hash|session).*==(?!=)\\s*|==(?!=)\\s*.*(?:password|token|secret|key|hash|session)"
+message: "Using loose equality (==) for authentication comparisons enables type coercion attacks. In JavaScript, '0' == false, null == undefined, and [] == '' are all true. This can bypass authentication checks. Always use strict equality (===) for security-sensitive comparisons."
+fix:
+  bad: "if (inputPassword == storedPassword)"
+  good: "if (inputPassword === storedPassword)"

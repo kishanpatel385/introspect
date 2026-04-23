@@ -1,0 +1,9 @@
+id: go-weak-rand
+language: [go]
+severity: high
+category: security
+pattern: "math/rand|rand\\.(?:Int|Intn|Float|Read)\\s*\\("
+message: "math/rand uses a deterministic PRNG that is not suitable for security-sensitive operations. Token generation, passwords, and session IDs created with math/rand are predictable. Use crypto/rand for cryptographically secure random number generation."
+fix:
+  bad: "token := fmt.Sprintf(\"%d\", rand.Int())"
+  good: "b := make([]byte, 32); crypto_rand.Read(b); token := hex.EncodeToString(b)"

@@ -1,0 +1,9 @@
+id: java-path-traversal
+language: [java]
+severity: high
+category: security
+pattern: "new\\s+File\\s*\\(.*(?:getParameter|getHeader|request\\.|getPathInfo|getQueryString)"
+message: "Constructing file paths with user input from HTTP requests enables path traversal. An attacker can use ../ sequences to access files outside the intended directory, including system files and application configuration. Canonicalize the path and verify it is within the expected base directory."
+fix:
+  bad: "new File(uploadDir, request.getParameter(\"filename\"))"
+  good: "File f = new File(uploadDir, request.getParameter(\"filename\")).getCanonicalFile(); if (!f.toPath().startsWith(uploadDir)) throw new SecurityException(\"Invalid path\");"

@@ -1,0 +1,9 @@
+id: ruby-dangerous-methods
+language: [ruby]
+severity: high
+category: security
+pattern: "\\b(system|exec|spawn|Open3|Kernel\\.open|IO\\.popen|%x\\[|`)\\s*[({\"'#]"
+message: "A dangerous Ruby shell execution method (system, exec, spawn, backticks, IO.popen) is used, which can lead to command injection if user input is included. An attacker can inject shell metacharacters to execute arbitrary commands on the server. Use the array form (system('cmd', arg1, arg2)) which bypasses the shell, and never interpolate user input into command strings."
+fix:
+  bad: "system(\"ls #{params[:dir]}\")"
+  good: "system('ls', params[:dir])  # Array form prevents shell injection"

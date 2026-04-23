@@ -1,0 +1,9 @@
+id: js-next-getserverside-leak
+language: [javascript, typescript]
+severity: medium
+category: security
+pattern: "getServerSideProps.*return\\s*\\{\\s*props\\s*:\\s*\\{.*(?:password|secret|token|key|credential|apiKey|privateKey)"
+message: "Returning sensitive data from getServerSideProps exposes it in the page source and __NEXT_DATA__ JSON blob. Even if not rendered visually, the data is available to anyone who views the page source. Only return the minimum data needed for rendering."
+fix:
+  bad: "return { props: { user: { ...fullUser, password: fullUser.password } } }"
+  good: "return { props: { user: { id: fullUser.id, name: fullUser.name } } }"

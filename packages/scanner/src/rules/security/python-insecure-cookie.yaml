@@ -1,0 +1,9 @@
+id: python-insecure-cookie
+language: [python]
+severity: high
+category: security
+pattern: "set_cookie\\s*\\((?!.*secure|.*httponly)|SESSION_COOKIE_SECURE\\s*=\\s*False|SESSION_COOKIE_HTTPONLY\\s*=\\s*False"
+message: "Setting cookies without secure and httponly flags or disabling them in Django session settings weakens authentication security. Cookies without secure are sent over HTTP, and without httponly they are accessible to JavaScript. Always set both flags for session and authentication cookies."
+fix:
+  bad: "response.set_cookie('session', token)"
+  good: "response.set_cookie('session', token, secure=True, httponly=True, samesite='Strict')"

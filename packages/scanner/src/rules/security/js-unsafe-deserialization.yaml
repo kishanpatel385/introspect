@@ -1,0 +1,9 @@
+id: js-unsafe-deserialization
+language: [javascript, typescript]
+severity: critical
+category: security
+pattern: "(?:node-serialize|serialize-javascript)\\.unserialize|funcster\\.deepDeserialize|cryo\\.parse"
+message: "Using unsafe deserialization libraries like node-serialize can lead to remote code execution. An attacker can craft a serialized payload containing executable code that runs when deserialized. Use JSON.parse for data deserialization and never deserialize untrusted input with libraries that support function reconstruction."
+fix:
+  bad: "const obj = serialize.unserialize(userInput)"
+  good: "const obj = JSON.parse(userInput)"

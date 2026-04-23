@@ -1,0 +1,9 @@
+id: csharp-dangerous-patterns
+language: [csharp]
+severity: high
+category: security
+pattern: "Process\\.Start\\s*\\(.*\\+|BinaryFormatter|SoapFormatter|LosFormatter|ObjectStateFormatter|NetDataContractSerializer"
+message: "A dangerous .NET pattern is detected: BinaryFormatter, SoapFormatter, or Process.Start with concatenated input. BinaryFormatter deserialization can execute arbitrary code from untrusted data, and unsanitized Process.Start enables command injection. Use System.Text.Json for deserialization and validate all input before passing to process execution."
+fix:
+  bad: "new BinaryFormatter().Deserialize(stream)"
+  good: "JsonSerializer.Deserialize<MyType>(stream)  // Type-safe, no arbitrary execution"

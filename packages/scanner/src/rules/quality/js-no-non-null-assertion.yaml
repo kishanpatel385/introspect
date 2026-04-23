@@ -1,0 +1,9 @@
+id: js-no-non-null-assertion
+language: [typescript]
+severity: medium
+category: quality
+pattern: "\\w+!\\.|\\w+!\\["
+message: "The non-null assertion operator (!) tells TypeScript to trust that a value is not null/undefined without any runtime check. If the value is actually null, this causes a runtime error. Use optional chaining (?.), nullish coalescing (??), or an explicit null check instead."
+fix:
+  bad: "const name = user!.profile!.name;"
+  good: "const name = user?.profile?.name ?? 'Unknown';"

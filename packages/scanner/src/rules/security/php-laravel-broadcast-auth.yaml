@@ -1,0 +1,9 @@
+id: php-laravel-broadcast-auth
+language: [php]
+severity: high
+category: security
+pattern: "Broadcast::channel\\s*\\(.*function\\s*\\(.*\\)\\s*\\{\\s*return\\s+true"
+message: "Broadcasting channel authorization that always returns true allows any authenticated user to subscribe to any channel, including private channels meant for specific users. This leaks real-time data between users. Implement proper authorization checks matching the channel name to the user."
+fix:
+  bad: "Broadcast::channel('orders.{id}', function() { return true; })"
+  good: "Broadcast::channel('orders.{id}', function ($user, $id) { return $user->id === Order::find($id)->user_id; })"

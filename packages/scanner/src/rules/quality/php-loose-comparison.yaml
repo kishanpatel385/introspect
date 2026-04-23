@@ -1,0 +1,9 @@
+id: php-loose-comparison
+language: [php]
+severity: medium
+category: quality
+pattern: "==\\s*(?:null|false|true|0|''|\"\"|\\[\\])(?!\\s*=)|(?:null|false|true|0|''|\"\"|\\[\\])\\s*==(?!=)"
+message: "PHP loose comparison (==) with null, false, 0, or empty strings produces unexpected results due to type juggling. For example, '0' == false is true, and 'php' == 0 is true. Use strict comparison (===) which checks both value and type for predictable behavior."
+fix:
+  bad: "if ($value == null)"
+  good: "if ($value === null)"

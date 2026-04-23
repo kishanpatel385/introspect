@@ -1,0 +1,9 @@
+id: ruby-regex-dos
+language: [ruby]
+severity: medium
+category: security
+pattern: "Regexp\\.new\\s*\\(\\s*params|Regexp\\.compile\\s*\\(\\s*params"
+message: "Creating regular expressions from user input enables ReDoS (Regular Expression Denial of Service). An attacker can craft a pattern with catastrophic backtracking that freezes the application. Escape user input with Regexp.escape() before using it in a pattern, or use a timeout."
+fix:
+  bad: "Regexp.new(params[:pattern])"
+  good: "Regexp.new(Regexp.escape(params[:pattern]))"

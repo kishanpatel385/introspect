@@ -1,0 +1,9 @@
+id: php-wordpress-esc
+language: [php]
+severity: high
+category: security
+pattern: "echo\\s+\\$_(GET|POST|REQUEST)|echo\\s+get_(?:the_)?(?:title|content|excerpt)\\s*\\("
+message: "Echoing user input or unescaped WordPress data directly creates XSS vulnerabilities. WordPress provides escaping functions for different contexts. Use esc_html() for HTML content, esc_attr() for attributes, esc_url() for URLs, and wp_kses() for allowing specific HTML tags."
+fix:
+  bad: "echo $_GET['search'];"
+  good: "echo esc_html($_GET['search']);"

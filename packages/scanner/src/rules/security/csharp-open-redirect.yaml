@@ -1,0 +1,9 @@
+id: csharp-open-redirect
+language: [csharp]
+severity: high
+category: security
+pattern: "Redirect\\s*\\(.*(?:Request|query|param|returnUrl)|RedirectToAction.*(?:Request|query)"
+message: "Redirecting to user-supplied URLs without validation enables open redirect attacks. An attacker can craft URLs that redirect victims to phishing sites that look identical to the real application. Use Url.IsLocalUrl() to ensure redirects stay within the application."
+fix:
+  bad: "return Redirect(Request.Query[\"returnUrl\"]);"
+  good: "var url = Request.Query[\"returnUrl\"]; return Url.IsLocalUrl(url) ? Redirect(url) : Redirect(\"/\");"

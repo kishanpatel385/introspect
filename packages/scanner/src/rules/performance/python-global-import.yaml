@@ -1,0 +1,9 @@
+id: python-global-import
+language: [python]
+severity: low
+category: performance
+pattern: "def\\s+\\w+\\s*\\([^)]*\\)\\s*(?:->\\s*\\w+)?\\s*:\\s*\\n(?:\\s+(?:#.*|\"\"\".*\"\"\"|'''.*''')\\n)*\\s+(?:import\\s|from\\s)"
+message: "Importing modules inside functions adds overhead on every function call as Python checks if the module is already loaded. Unless dealing with circular imports or optional dependencies, move imports to the module level for better performance."
+fix:
+  bad: "def process():\n    import json\n    return json.dumps(data)"
+  good: "import json\n\ndef process():\n    return json.dumps(data)"

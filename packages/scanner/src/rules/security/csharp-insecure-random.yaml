@@ -1,0 +1,9 @@
+id: csharp-insecure-random
+language: [csharp]
+severity: high
+category: security
+pattern: "new\\s+Random\\s*\\(\\)"
+message: "System.Random is not cryptographically secure and produces predictable sequences. If used for tokens, passwords, or session IDs, an attacker can predict future values after observing a few outputs. Use System.Security.Cryptography.RandomNumberGenerator for security-sensitive randomness."
+fix:
+  bad: "var token = new Random().Next().ToString();"
+  good: "var bytes = RandomNumberGenerator.GetBytes(32); var token = Convert.ToBase64String(bytes);"

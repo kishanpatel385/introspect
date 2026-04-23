@@ -1,0 +1,9 @@
+id: python-fastapi-cors-wildcard
+language: [python]
+severity: high
+category: security
+pattern: "CORSMiddleware.*allow_origins\\s*=\\s*\\[\\s*['\"]\\*['\"]\\s*\\]|allow_origins\\s*=\\s*\\[\\s*['\"]\\*['\"]"
+message: "Setting allow_origins to ['*'] in FastAPI CORSMiddleware allows any website to make cross-origin requests to your API. This can expose sensitive data to malicious sites. Specify exact allowed origins instead of using a wildcard."
+fix:
+  bad: "app.add_middleware(CORSMiddleware, allow_origins=['*'])"
+  good: "app.add_middleware(CORSMiddleware, allow_origins=['https://app.example.com'])"

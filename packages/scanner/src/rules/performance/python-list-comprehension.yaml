@@ -1,0 +1,9 @@
+id: python-list-comprehension
+language: [python]
+severity: low
+category: performance
+pattern: "for\\s+\\w+\\s+in\\s+.*:\\s*\\n\\s+\\w+\\.append\\s*\\("
+message: "Using a for loop with .append() to build a list is slower than a list comprehension. List comprehensions are optimized in CPython and avoid the overhead of method lookups and function calls. Use a list comprehension for simple transformations."
+fix:
+  bad: "result = []; for item in items: result.append(item.name)"
+  good: "result = [item.name for item in items]"

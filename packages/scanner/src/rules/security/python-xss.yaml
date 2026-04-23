@@ -1,0 +1,9 @@
+id: python-xss
+language: [python]
+severity: high
+category: security
+pattern: "render_template_string\\s*\\(|Markup\\s*\\(.*request\\.|\\|\\s*safe\\b|\\.format\\(.*request\\."
+message: "User input is rendered in a template without proper escaping, creating a cross-site scripting (XSS) vulnerability. An attacker can inject malicious scripts that execute in other users' browsers, stealing sessions or sensitive data. Use auto-escaping templates, avoid render_template_string with user input, and never apply the |safe filter to untrusted data."
+fix:
+  bad: "return render_template_string(request.args['html'])"
+  good: "return render_template('page.html', content=escape(request.args['text']))"

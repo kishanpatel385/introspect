@@ -1,0 +1,9 @@
+id: js-unsafe-regex-literal
+language: [javascript, typescript]
+severity: medium
+category: security
+pattern: "/\\(\\[^\\)]*\\+\\)[^/]*\\*|/\\(\\[^\\)]*\\*\\)[^/]*\\+|/(?:[^/]*\\([^)]*\\|[^)]*\\))+[^/]*[*+]/"
+message: "Complex regex patterns with nested quantifiers (e.g., (a+)+, (a|b)* ) are vulnerable to ReDoS (Regular Expression Denial of Service). An attacker can craft input that causes exponential backtracking. Simplify the regex, add atomic groups, or use a regex analysis tool to verify safety."
+fix:
+  bad: "/^(a+)+$/"
+  good: "/^a+$/"

@@ -1,0 +1,9 @@
+id: csharp-path-traversal
+language: [csharp]
+severity: high
+category: security
+pattern: "Path\\.Combine\\s*\\(.*(?:Request|query|param|route)|File\\.(?:ReadAll|WriteAll|Open|Delete)\\s*\\(.*Request"
+message: "Constructing file paths with user input from HTTP requests enables path traversal. An attacker can use ../ or ..\\  to access files outside the intended directory. Canonicalize paths with Path.GetFullPath() and verify the result starts with the expected base directory."
+fix:
+  bad: "File.ReadAllText(Path.Combine(baseDir, Request.Query[\"file\"]))"
+  good: "var full = Path.GetFullPath(Path.Combine(baseDir, Request.Query[\"file\"])); if (!full.StartsWith(baseDir)) throw new SecurityException();"

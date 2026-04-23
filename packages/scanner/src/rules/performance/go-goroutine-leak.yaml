@@ -1,0 +1,9 @@
+id: go-goroutine-leak
+language: [go]
+severity: high
+category: performance
+pattern: "go\\s+func\\s*\\(\\).*\\{[^}]*(?:<-\\s*\\w+|\\w+\\s*<-)(?!.*select|.*ctx\\.Done|.*timer|.*timeout)"
+message: "Goroutines blocking on channel operations without a timeout or cancellation context cause goroutine leaks. Leaked goroutines accumulate memory and file descriptors, eventually crashing the application. Use context.WithTimeout, select with a done channel, or buffered channels."
+fix:
+  bad: "go func() { result := <-ch; process(result) }()"
+  good: "go func() { select { case result := <-ch: process(result); case <-ctx.Done(): return } }()"

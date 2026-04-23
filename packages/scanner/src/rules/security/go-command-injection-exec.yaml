@@ -1,0 +1,9 @@
+id: go-command-injection-exec
+language: [go]
+severity: critical
+category: security
+pattern: "exec\\.Command\\s*\\(\\s*['\"](?:sh|bash|cmd|powershell)['\"]\\s*,\\s*['\"](?:-c|-Command)['\"]"
+message: "Using exec.Command with sh -c or bash -c passes the command through a shell, enabling command injection if user input is included. An attacker can inject shell metacharacters to execute arbitrary commands. Use exec.Command with the binary path directly and pass arguments as separate parameters."
+fix:
+  bad: "exec.Command(\"bash\", \"-c\", \"ls \" + userInput)"
+  good: "exec.Command(\"ls\", userInput)"

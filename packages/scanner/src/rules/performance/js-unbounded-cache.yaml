@@ -1,0 +1,9 @@
+id: js-unbounded-cache
+language: [javascript, typescript]
+severity: medium
+category: performance
+pattern: "(?:const|let|var)\\s+\\w*(?:cache|memo|store)\\w*\\s*=\\s*(?:new\\s+Map|\\{\\}|\\[\\])"
+message: "In-memory caches without size limits grow indefinitely, eventually causing out-of-memory crashes in long-running Node.js processes. Each cached entry consumes heap memory permanently. Use an LRU cache with a max size limit (lru-cache package) or TTL-based expiration."
+fix:
+  bad: "const cache = new Map()"
+  good: "const cache = new LRUCache({ max: 1000, ttl: 1000 * 60 * 5 })"

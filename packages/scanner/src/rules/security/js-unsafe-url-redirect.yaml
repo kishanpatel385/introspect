@@ -1,0 +1,9 @@
+id: js-unsafe-url-redirect
+language: [javascript, typescript]
+severity: high
+category: security
+pattern: "(?:window\\.location|location\\.href|location\\.assign|location\\.replace)\\s*=\\s*(?:req\\.|request\\.|params\\.|query\\.|\\w+\\.(?:query|params|body))"
+message: "Assigning user-controlled values to window.location or response redirect without validation enables open redirect attacks. An attacker can craft a URL that redirects victims to a phishing or malware site. Validate the redirect URL against a whitelist of allowed domains or use relative paths only."
+fix:
+  bad: "window.location.href = req.query.redirect"
+  good: "const url = new URL(req.query.redirect, 'https://mysite.com'); if (url.origin === 'https://mysite.com') window.location.href = url.toString()"

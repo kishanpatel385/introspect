@@ -1,0 +1,9 @@
+id: python-os-path-traversal
+language: [python]
+severity: high
+category: security
+pattern: "(?:open|os\\.path\\.join)\\s*\\(.*(?:request\\.|input\\(|sys\\.argv|os\\.environ)"
+message: "Constructing file paths with user input can lead to path traversal attacks. An attacker can use ../ sequences to read or write files outside the intended directory, potentially accessing /etc/passwd, application secrets, or overwriting critical files. Validate paths with os.path.realpath() and check the prefix."
+fix:
+  bad: "open(os.path.join('/uploads', request.args['file']))"
+  good: "path = os.path.realpath(os.path.join('/uploads', request.args['file'])); assert path.startswith('/uploads/')"

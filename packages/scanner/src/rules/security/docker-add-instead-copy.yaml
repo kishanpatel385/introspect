@@ -1,0 +1,9 @@
+id: docker-add-instead-copy
+language: [dockerfile]
+severity: low
+category: security
+pattern: "^ADD\\s+(?!https?://)"
+message: "Docker ADD instruction can auto-extract archives and fetch remote URLs, which can introduce unexpected files or vulnerabilities. COPY is more explicit and only copies local files. Use COPY unless you specifically need ADD's archive extraction or URL fetching capabilities."
+fix:
+  bad: "ADD ./app /opt/app"
+  good: "COPY ./app /opt/app"

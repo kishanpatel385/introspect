@@ -1,0 +1,9 @@
+id: js-unsafe-json-parse
+language: [javascript, typescript]
+severity: medium
+category: security
+pattern: "JSON\\.parse\\s*\\(\\s*(?!.*\\btry\\b).*(?:req\\.|request\\.|body|params|query)"
+message: "Parsing JSON from user input without try-catch can crash the application with malformed input, causing denial of service. Additionally, parsed objects may contain unexpected properties like __proto__ that enable prototype pollution. Wrap JSON.parse in try-catch and validate the parsed structure against an expected schema."
+fix:
+  bad: "const data = JSON.parse(req.body.payload)"
+  good: "try { const data = JSON.parse(req.body.payload); schema.validate(data); } catch { res.status(400).json({ error: 'Invalid JSON' }); }"

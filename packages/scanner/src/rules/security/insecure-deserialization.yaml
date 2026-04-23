@@ -1,0 +1,9 @@
+id: insecure-deserialization
+language: [python, php, java, ruby]
+severity: critical
+category: security
+pattern: "pickle\\.loads?\\s*\\(|yaml\\.load\\s*\\([^)]*(?!Loader)|unserialize\\s*\\(\\s*\\$|ObjectInputStream|Marshal\\.load\\s*\\(|eval\\s*\\(.*base64"
+message: "Untrusted data is being deserialized using an unsafe method (pickle, unserialize, ObjectInputStream, etc.). Insecure deserialization can allow an attacker to execute arbitrary code on the server by crafting malicious serialized payloads. Use safe data formats like JSON, or apply strict type allowlists and input validation before deserializing."
+fix:
+  bad: "data = pickle.loads(request.data)"
+  good: "data = json.loads(request.data)  # Use safe formats, or validate strictly"

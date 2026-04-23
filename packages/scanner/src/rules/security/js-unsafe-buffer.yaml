@@ -1,0 +1,9 @@
+id: js-unsafe-buffer
+language: [javascript, typescript]
+severity: medium
+category: security
+pattern: "new\\s+Buffer\\s*\\("
+message: "The Buffer() constructor is deprecated and can cause security issues. When called with a number, it returns uninitialized memory that may contain sensitive data from previous allocations. Use Buffer.alloc() for zero-filled buffers, Buffer.allocUnsafe() when you will immediately overwrite, or Buffer.from() for existing data."
+fix:
+  bad: "const buf = new Buffer(256)"
+  good: "const buf = Buffer.alloc(256)"

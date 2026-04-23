@@ -1,0 +1,9 @@
+id: js-fastify-error-handler
+language: [javascript, typescript]
+severity: medium
+category: security
+pattern: "reply\\.send\\s*\\(\\s*(?:err|error)\\s*\\)|res\\.(?:json|send)\\s*\\(\\s*\\{.*(?:stack|trace|message).*err"
+message: "Sending raw error objects to clients in API responses exposes stack traces, file paths, and internal implementation details. Attackers use this for reconnaissance. Return generic error messages to clients and log detailed errors server-side."
+fix:
+  bad: "reply.send(err)"
+  good: "logger.error(err); reply.status(500).send({ error: 'Internal server error' })"

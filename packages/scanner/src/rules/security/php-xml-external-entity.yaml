@@ -1,0 +1,9 @@
+id: php-xml-external-entity
+language: [php]
+severity: critical
+category: security
+pattern: "(?:simplexml_load_string|DOMDocument|XMLReader).*(?:\\$_|file_get_contents)|libxml_disable_entity_loader\\s*\\(\\s*false"
+message: "Loading XML from user input or re-enabling entity loading makes the application vulnerable to XXE (XML External Entity) attacks. An attacker can read local files, perform SSRF, or cause denial of service. Disable external entity loading with libxml_disable_entity_loader(true) and use LIBXML_NOENT."
+fix:
+  bad: "simplexml_load_string($_POST['xml'])"
+  good: "libxml_disable_entity_loader(true); simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOENT | LIBXML_NONET)"

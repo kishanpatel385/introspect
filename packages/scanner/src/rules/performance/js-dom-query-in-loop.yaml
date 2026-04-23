@@ -1,0 +1,9 @@
+id: js-dom-query-in-loop
+language: [javascript, typescript]
+severity: medium
+category: performance
+pattern: "(?:for|while).*\\{[^}]*document\\.(?:getElementById|querySelector|getElementsBy)"
+message: "Querying the DOM inside a loop is expensive as each call triggers a tree traversal. This causes layout thrashing and poor rendering performance, especially on complex pages. Cache DOM references before the loop or use a single querySelectorAll call."
+fix:
+  bad: "for (const id of ids) { document.getElementById(id).style.color = 'red'; }"
+  good: "const elements = ids.map(id => document.getElementById(id)); elements.forEach(el => el.style.color = 'red');"

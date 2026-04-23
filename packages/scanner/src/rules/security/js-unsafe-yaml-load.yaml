@@ -1,0 +1,9 @@
+id: js-unsafe-yaml-load
+language: [javascript, typescript]
+severity: high
+category: security
+pattern: "yaml\\.load\\s*\\((?!.*\\{\\s*schema\\s*:|.*SAFE_SCHEMA|.*JSON_SCHEMA)"
+message: "js-yaml's load() function with the default schema can instantiate arbitrary JavaScript objects, leading to code execution. An attacker can craft a YAML payload that creates objects with dangerous side effects. Use yaml.load with schema: SAFE_SCHEMA, or use the safeLoad function (deprecated but safe)."
+fix:
+  bad: "yaml.load(userInput)"
+  good: "yaml.load(userInput, { schema: yaml.SAFE_SCHEMA })"

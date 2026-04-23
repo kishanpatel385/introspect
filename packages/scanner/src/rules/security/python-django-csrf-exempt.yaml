@@ -1,0 +1,9 @@
+id: python-django-csrf-exempt
+language: [python]
+severity: high
+category: security
+pattern: "@csrf_exempt"
+message: "The @csrf_exempt decorator disables Django's CSRF protection for a view. This allows cross-site request forgery attacks where malicious sites can submit forms on behalf of authenticated users. Only use csrf_exempt for genuinely stateless API endpoints that use token-based authentication (not cookies)."
+fix:
+  bad: "@csrf_exempt\ndef update_profile(request):"
+  good: "# Use DRF with TokenAuthentication for API endpoints, or keep CSRF protection for browser-based views"

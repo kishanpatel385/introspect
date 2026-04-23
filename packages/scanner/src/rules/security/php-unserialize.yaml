@@ -1,0 +1,9 @@
+id: php-unserialize
+language: [php]
+severity: critical
+category: security
+pattern: "\\bunserialize\\s*\\(\\s*\\$_(GET|POST|REQUEST|COOKIE|SERVER)"
+message: "Using unserialize() on user input can lead to PHP Object Injection, allowing arbitrary code execution through magic methods (__wakeup, __destruct). An attacker can craft serialized payloads that execute malicious code when deserialized. Use json_decode() for data interchange or implement allowed_classes parameter."
+fix:
+  bad: "unserialize($_POST['data'])"
+  good: "json_decode($_POST['data'], true)"

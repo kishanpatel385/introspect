@@ -1,0 +1,9 @@
+id: python-mutable-default
+language: [python]
+severity: high
+category: quality
+pattern: "def\\s+\\w+\\s*\\([^)]*(?:=\\s*\\[\\]|=\\s*\\{\\}|=\\s*set\\(\\))"
+message: "Using mutable default arguments (list, dict, set) in Python functions is a notorious bug source. The default object is shared across all calls, so mutations persist between invocations. Use None as the default and create a new mutable object inside the function."
+fix:
+  bad: "def add_item(item, items=[]): items.append(item); return items"
+  good: "def add_item(item, items=None): items = items or []; items.append(item); return items"

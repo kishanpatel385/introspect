@@ -1,0 +1,9 @@
+id: general-todo-security
+language: []
+severity: medium
+category: security
+pattern: "(?:TODO|FIXME|HACK|XXX)\\s*:?\\s*.*(?:security|auth|permission|access|encrypt|password|token|secret|vulnerab|inject|sanitiz)"
+message: "Security-related TODO/FIXME/HACK comments indicate known security issues that have not been addressed. These represent acknowledged vulnerabilities in the codebase. Prioritize resolving security TODOs before shipping to production."
+fix:
+  bad: "// TODO: add authentication check here"
+  good: "if (!isAuthenticated(req)) return res.status(401).json({ error: 'Unauthorized' })"

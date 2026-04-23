@@ -1,0 +1,9 @@
+id: php-object-injection
+language: [php]
+severity: critical
+category: security
+pattern: "\\bunserialize\\s*\\((?!.*allowed_classes\\s*=>\\s*false|.*allowed_classes\\s*=>\\s*\\[\\])"
+message: "unserialize() without the allowed_classes option can instantiate arbitrary PHP objects, triggering magic methods (__wakeup, __destruct) that may lead to code execution. Even without direct user input, deserializing data from databases or caches is risky if the data was tampered with. Use JSON or set allowed_classes to false."
+fix:
+  bad: "unserialize($data)"
+  good: "unserialize($data, ['allowed_classes' => false])"

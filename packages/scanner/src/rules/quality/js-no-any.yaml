@@ -1,0 +1,9 @@
+id: js-no-any
+language: [typescript]
+severity: medium
+category: quality
+pattern: ":\\s*any\\b|as\\s+any\\b|<any>"
+message: "Using 'any' type in TypeScript disables type checking and defeats the purpose of TypeScript. It allows any operation on the value without compile-time checks, hiding bugs that would otherwise be caught. Use 'unknown' for truly unknown types, or define a proper type/interface."
+fix:
+  bad: "function process(data: any) { return data.foo.bar; }"
+  good: "function process(data: unknown) { if (isValidData(data)) return data.foo.bar; }"

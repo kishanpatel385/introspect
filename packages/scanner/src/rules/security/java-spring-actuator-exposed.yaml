@@ -1,0 +1,9 @@
+id: java-spring-actuator-exposed
+language: [java]
+severity: high
+category: security
+pattern: "management\\.endpoints\\.web\\.exposure\\.include\\s*=\\s*\\*|management\\.endpoint\\..*\\.enabled\\s*=\\s*true"
+message: "Exposing all Spring Boot Actuator endpoints publicly reveals sensitive information including environment variables, heap dumps, thread dumps, and configuration. Some endpoints (shutdown, restart) allow remote control. Restrict actuator endpoints to internal networks and expose only health and info."
+fix:
+  bad: "management.endpoints.web.exposure.include=*"
+  good: "management.endpoints.web.exposure.include=health,info"

@@ -1,0 +1,9 @@
+id: ruby-n-plus-one
+language: [ruby]
+severity: high
+category: performance
+pattern: "\\.each\\s+do.*\\.(?:where|find|find_by|count|pluck)|\\.map\\s*\\{.*\\.(?:where|find|find_by)"
+message: "Executing database queries inside Ruby iterators creates N+1 query problems. Each iteration sends a separate query, causing hundreds of database round-trips for large collections. Use includes(), joins(), or eager_load() to batch-load associations in a single query."
+fix:
+  bad: "posts.each { |post| puts post.author.name }"
+  good: "posts.includes(:author).each { |post| puts post.author.name }"

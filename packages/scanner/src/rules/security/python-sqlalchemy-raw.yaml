@@ -1,0 +1,9 @@
+id: python-sqlalchemy-raw
+language: [python]
+severity: critical
+category: security
+pattern: "text\\s*\\(\\s*f['\"]|execute\\s*\\(\\s*f['\"].*(?:SELECT|INSERT|UPDATE|DELETE)|execute\\s*\\(.*%\\s*\\("
+message: "Using SQLAlchemy text() or execute() with f-strings or % formatting creates SQL injection vulnerabilities. The ORM's parameterization is bypassed. Use bound parameters with text(':param') and pass values as the second argument."
+fix:
+  bad: "db.execute(f\"SELECT * FROM users WHERE name = '{name}'\")"
+  good: "db.execute(text('SELECT * FROM users WHERE name = :name'), {'name': name})"

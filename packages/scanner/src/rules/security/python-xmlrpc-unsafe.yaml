@@ -1,0 +1,9 @@
+id: python-xmlrpc-unsafe
+language: [python]
+severity: high
+category: security
+pattern: "xmlrpc\\.server|SimpleXMLRPCServer|register_instance"
+message: "Python's XML-RPC server exposes object methods over the network. Using register_instance() exposes all public methods of the object, potentially including dangerous ones. XML-RPC also lacks built-in authentication. Use register_function() for specific methods and add authentication middleware."
+fix:
+  bad: "server.register_instance(my_service)"
+  good: "server.register_function(my_service.allowed_method, 'allowed_method')"

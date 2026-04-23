@@ -1,0 +1,9 @@
+id: js-unsafe-vm
+language: [javascript, typescript]
+severity: critical
+category: security
+pattern: "(?:require\\s*\\(\\s*['\"]vm['\"]|vm\\.).*(?:runInNewContext|runInThisContext|compileFunction|Script)"
+message: "Node.js vm module is not a security mechanism — it shares the same process and can access the host environment. An attacker who controls the evaluated code can escape the sandbox and execute arbitrary code. Use vm2 or isolated-vm for untrusted code execution, or better yet, use a separate sandboxed process."
+fix:
+  bad: "vm.runInNewContext(userCode)"
+  good: "// Use isolated-vm or a worker process with restricted permissions"

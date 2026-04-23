@@ -1,0 +1,9 @@
+id: php-sql-injection
+language: [php]
+severity: critical
+category: security
+pattern: "\\$\\w+->query\\s*\\(\\s*[\"'].*\\$|mysql_query\\s*\\(.*\\$|mysqli_query\\s*\\(.*\\$"
+message: "PHP variable interpolated directly into an SQL query string enables SQL injection attacks. An attacker can inject malicious SQL through user-controlled variables, potentially dumping the entire database or bypassing authentication. Use PDO prepared statements with bound parameters to safely handle user input."
+fix:
+  bad: "$db->query(\"SELECT * FROM users WHERE id = $id\")"
+  good: "$stmt = $db->prepare('SELECT * FROM users WHERE id = ?'); $stmt->execute([$id]);"

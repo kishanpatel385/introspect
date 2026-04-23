@@ -1,0 +1,9 @@
+id: python-assert-security
+language: [python]
+severity: high
+category: security
+pattern: "assert\\s+(?:request\\.|current_user\\.|user\\.|session\\.|is_admin|is_authenticated|has_permission)"
+message: "Using assert statements for security checks is dangerous because assertions are stripped when Python runs with optimization (-O flag). This silently removes all security checks in production. Use explicit if/raise statements for authorization and authentication logic."
+fix:
+  bad: "assert current_user.is_admin, 'Not authorized'"
+  good: "if not current_user.is_admin: raise PermissionError('Not authorized')"

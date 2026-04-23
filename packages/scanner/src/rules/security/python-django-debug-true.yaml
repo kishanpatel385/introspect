@@ -1,0 +1,9 @@
+id: python-django-debug-true
+language: [python]
+severity: critical
+category: security
+pattern: "DEBUG\\s*=\\s*True"
+message: "Django DEBUG=True in production exposes detailed error pages with source code, local variables, SQL queries, and environment settings. An attacker gains full visibility into the application internals. Set DEBUG to an environment variable and default to False in production."
+fix:
+  bad: "DEBUG = True"
+  good: "DEBUG = os.environ.get('DJANGO_DEBUG', 'false').lower() == 'true'"

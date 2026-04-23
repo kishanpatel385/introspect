@@ -1,0 +1,9 @@
+id: java-xxe-parser
+language: [java]
+severity: critical
+category: security
+pattern: "(?:SAXParserFactory|DocumentBuilderFactory|XMLInputFactory|TransformerFactory)\\.newInstance\\s*\\(\\)(?!.*setFeature|.*disallow)"
+message: "XML parsers in Java are vulnerable to XXE attacks by default. An attacker can use external entity references to read local files, perform SSRF, or cause denial of service via billion laughs attacks. Disable DTDs and external entities by setting appropriate features on the parser factory."
+fix:
+  bad: "DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();"
+  good: "DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance(); dbf.setFeature(\"http://apache.org/xml/features/disallow-doctype-decl\", true);"

@@ -1,0 +1,9 @@
+id: go-shadow-err
+language: [go]
+severity: medium
+category: quality
+pattern: "if\\s+\\w+,\\s*err\\s*:=.*\\{[^}]*if\\s+\\w+,\\s*err\\s*:="
+message: "Shadowing the err variable with := inside a nested scope creates a new local err that hides the outer one. The outer err remains nil, so error handling after the inner scope checks the wrong variable. Use = instead of := for the inner assignment, or use a different variable name."
+fix:
+  bad: "if data, err := fetch(); err == nil { if result, err := parse(data); err != nil { return err } }"
+  good: "data, err := fetch(); if err != nil { return err }; result, err := parse(data)"

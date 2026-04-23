@@ -1,0 +1,9 @@
+id: js-next-api-no-method-check
+language: [javascript, typescript]
+severity: medium
+category: security
+pattern: "export\\s+default\\s+(?:async\\s+)?function\\s+handler\\s*\\(\\s*req.*res.*\\)\\s*\\{(?!.*req\\.method)"
+message: "Next.js API routes without HTTP method validation accept all methods (GET, POST, DELETE, etc.). An attacker can call destructive endpoints with unexpected methods. Check req.method at the start of the handler and return 405 for unsupported methods."
+fix:
+  bad: "export default function handler(req, res) { const data = processRequest(req.body); }"
+  good: "export default function handler(req, res) { if (req.method !== 'POST') return res.status(405).end(); }"

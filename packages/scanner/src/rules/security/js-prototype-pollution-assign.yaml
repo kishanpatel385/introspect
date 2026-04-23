@@ -1,0 +1,9 @@
+id: js-prototype-pollution-assign
+language: [javascript, typescript]
+severity: high
+category: security
+pattern: "\\[\\s*['\"]__proto__['\"]\\s*\\]|\\[\\s*['\"]constructor['\"]\\s*\\]\\s*\\[\\s*['\"]prototype['\"]\\s*\\]"
+message: "Direct access to __proto__ or constructor.prototype enables prototype pollution attacks. An attacker can inject properties into Object.prototype, affecting all objects in the application. This can lead to authentication bypass, RCE, or denial of service. Block __proto__ and constructor keys in user input."
+fix:
+  bad: "obj[key] = value // where key could be '__proto__'"
+  good: "if (key === '__proto__' || key === 'constructor') throw new Error('Invalid key'); obj[key] = value"

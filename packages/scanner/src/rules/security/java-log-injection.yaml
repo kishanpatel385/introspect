@@ -1,0 +1,9 @@
+id: java-log-injection
+language: [java]
+severity: medium
+category: security
+pattern: "(?:logger|log|LOG)\\.(?:info|debug|warn|error)\\s*\\(.*(?:getParameter|request\\.|getHeader).*\\+|String\\.format\\s*\\(.*(?:getParameter|request)"
+message: "Including unsanitized user input in log messages enables log injection. An attacker can inject newlines to create fake log entries, inject JNDI lookups (Log4Shell), or corrupt log analysis. Sanitize user input by removing newlines and special characters before logging."
+fix:
+  bad: "logger.info(\"User login: \" + request.getParameter(\"username\"))"
+  good: "logger.info(\"User login: {}\", sanitize(request.getParameter(\"username\")))"

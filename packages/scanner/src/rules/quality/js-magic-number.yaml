@@ -1,0 +1,9 @@
+id: js-magic-number
+language: [javascript, typescript]
+severity: low
+category: quality
+pattern: "(?:if|return|===|!==|>=|<=|>|<)\\s*\\d{2,}(?!\\.\\d|px|em|rem|vh|vw|%)"
+message: "Magic numbers (unexplained numeric literals) make code harder to understand and maintain. The intent behind the number is unclear, and changing it requires finding every occurrence. Extract magic numbers into named constants that describe their purpose."
+fix:
+  bad: "if (retries > 3) return; setTimeout(fn, 86400000)"
+  good: "const MAX_RETRIES = 3; const ONE_DAY_MS = 86_400_000; if (retries > MAX_RETRIES) return; setTimeout(fn, ONE_DAY_MS)"

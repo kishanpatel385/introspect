@@ -1,0 +1,9 @@
+id: csharp-xss-raw
+language: [csharp]
+severity: high
+category: security
+pattern: "@Html\\.Raw\\s*\\(|HtmlString\\s*\\(|WriteLiteral\\s*\\("
+message: "@Html.Raw() and HtmlString bypass Razor's automatic HTML encoding, creating XSS vulnerabilities if user input is rendered. An attacker can inject scripts that execute in other users' browsers. Use the default encoded output (@Model.Value) or sanitize HTML with a library like HtmlSanitizer."
+fix:
+  bad: "@Html.Raw(Model.UserComment)"
+  good: "@Model.UserComment  // Auto-encoded by Razor"

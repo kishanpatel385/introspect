@@ -1,0 +1,9 @@
+id: php-error-display
+language: [php]
+severity: medium
+category: security
+pattern: "(?:ini_set|error_reporting)\\s*\\(\\s*['\"]?(?:display_errors|E_ALL)['\"]?\\s*,\\s*['\"]?(?:1|true|on|E_ALL)['\"]?"
+message: "Enabling display_errors or verbose error reporting in production exposes internal paths, database queries, and stack traces to users. Attackers use this information for reconnaissance. Disable display_errors in production and log errors to a file instead."
+fix:
+  bad: "ini_set('display_errors', 1); error_reporting(E_ALL);"
+  good: "ini_set('display_errors', 0); ini_set('log_errors', 1); ini_set('error_log', '/var/log/php-errors.log');"

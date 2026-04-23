@@ -1,0 +1,9 @@
+id: go-context-todo
+language: [go]
+severity: low
+category: quality
+pattern: "context\\.TODO\\s*\\(\\)|context\\.Background\\s*\\(\\)(?!.*//)"
+message: "context.TODO() indicates a placeholder context that should be replaced with a proper context. context.Background() used inside handlers may miss cancellation signals. Pass the request context (r.Context()) through the call chain so operations are cancelled when the client disconnects."
+fix:
+  bad: "db.QueryContext(context.TODO(), query)"
+  good: "db.QueryContext(r.Context(), query)"

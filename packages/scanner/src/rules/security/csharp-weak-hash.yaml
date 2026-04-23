@@ -1,0 +1,9 @@
+id: csharp-weak-hash
+language: [csharp]
+severity: high
+category: security
+pattern: "MD5\\.Create\\s*\\(|SHA1\\.Create\\s*\\(|new\\s+MD5CryptoServiceProvider|new\\s+SHA1CryptoServiceProvider"
+message: "MD5 and SHA1 are cryptographically broken. MD5 has practical collision attacks, and SHA1 is deprecated by all major browsers and CAs. Use SHA256 or SHA512 for integrity checks, and BCrypt or Argon2 for password hashing."
+fix:
+  bad: "var hash = MD5.Create().ComputeHash(data);"
+  good: "var hash = SHA256.Create().ComputeHash(data);"

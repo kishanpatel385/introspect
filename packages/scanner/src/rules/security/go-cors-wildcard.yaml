@@ -1,0 +1,9 @@
+id: go-cors-wildcard
+language: [go]
+severity: high
+category: security
+pattern: "(?:Access-Control-Allow-Origin|AllowedOrigins?|AllowOrigins?).*\\*|w\\.Header\\(\\)\\.Set\\s*\\(\\s*\"Access-Control-Allow-Origin\"\\s*,\\s*\"\\*\""
+message: "Setting Access-Control-Allow-Origin to * allows any website to make cross-origin requests to your API. Combined with Access-Control-Allow-Credentials, this exposes authenticated endpoints to any origin. Specify exact allowed origins instead of using a wildcard."
+fix:
+  bad: "w.Header().Set(\"Access-Control-Allow-Origin\", \"*\")"
+  good: "w.Header().Set(\"Access-Control-Allow-Origin\", \"https://trusted-domain.com\")"

@@ -1,0 +1,9 @@
+id: js-mongodb-operator
+language: [javascript, typescript]
+severity: critical
+category: security
+pattern: "\\$(?:gt|gte|lt|lte|ne|in|nin|or|and|not|nor|exists|regex|where|expr)\\s*['\"]?\\s*:"
+message: "MongoDB query operators in user input enable NoSQL injection. If user input is passed directly as a query object, an attacker can use operators like $gt, $ne, or $regex to bypass filters or extract data. Use express-mongo-sanitize middleware and explicitly validate query structure."
+fix:
+  bad: "db.collection.find({ password: req.body.password }) // body could be { $ne: '' }"
+  good: "db.collection.find({ password: String(req.body.password) })"

@@ -1,0 +1,9 @@
+id: python-request-verify-false
+language: [python]
+severity: high
+category: security
+pattern: "requests\\.(?:get|post|put|patch|delete|head|options)\\s*\\(.*verify\\s*=\\s*False"
+message: "Disabling SSL certificate verification in Python requests makes connections vulnerable to man-in-the-middle attacks. An attacker can intercept and modify traffic, steal credentials, or inject malicious responses. Always verify certificates in production. If using self-signed certs, point verify to a CA bundle."
+fix:
+  bad: "requests.get(url, verify=False)"
+  good: "requests.get(url, verify='/path/to/ca-bundle.crt')"

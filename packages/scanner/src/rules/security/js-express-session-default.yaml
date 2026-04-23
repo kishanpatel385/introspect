@@ -1,0 +1,9 @@
+id: js-express-session-default
+language: [javascript, typescript]
+severity: high
+category: security
+pattern: "session\\s*\\(\\s*\\{(?!.*(?:store|resave|saveUninitialized))|MemoryStore"
+message: "Express session with the default MemoryStore leaks memory in production, and sessions are lost on restart. It also lacks security features like encryption at rest. Use a production session store (connect-redis, connect-mongo) and configure secure session options."
+fix:
+  bad: "app.use(session({ secret: 'key' }))"
+  good: "app.use(session({ store: new RedisStore({ client: redisClient }), secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }))"

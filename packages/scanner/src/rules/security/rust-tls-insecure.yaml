@@ -1,0 +1,9 @@
+id: rust-tls-insecure
+language: [rust]
+severity: high
+category: security
+pattern: "danger_accept_invalid_certs\\s*\\(\\s*true|danger_accept_invalid_hostnames\\s*\\(\\s*true"
+message: "Disabling TLS certificate or hostname verification makes connections vulnerable to man-in-the-middle attacks. An attacker can intercept and modify all HTTPS traffic. Configure proper CA certificates instead of bypassing verification."
+fix:
+  bad: "Client::builder().danger_accept_invalid_certs(true)"
+  good: "Client::builder().add_root_certificate(cert)"

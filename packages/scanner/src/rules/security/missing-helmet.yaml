@@ -1,0 +1,9 @@
+id: missing-helmet
+language: [javascript, typescript]
+severity: medium
+category: security
+pattern: "express\\s*\\(\\)|createServer\\s*\\("
+message: "An HTTP server is created without security headers like Content-Security-Policy, X-Frame-Options, and X-Content-Type-Options. Missing headers leave the application vulnerable to clickjacking, MIME sniffing, and cross-site scripting attacks. Add the helmet middleware for Express (or equivalent for your framework) to set secure defaults for all response headers."
+fix:
+  bad: "const app = express()"
+  good: "const app = express(); app.use(helmet())"

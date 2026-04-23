@@ -1,0 +1,9 @@
+id: js-unhandled-promise
+language: [javascript, typescript]
+severity: medium
+category: security
+pattern: "\\.then\\s*\\([^)]+\\)\\s*(?!\\s*\\.catch|\\.finally)"
+message: "Promise chains without .catch() can lead to unhandled rejections, which crash the Node.js process by default (since Node 15). This creates a denial-of-service vector and can leak sensitive error details. Always add .catch() to promise chains or use async/await with try-catch."
+fix:
+  bad: "fetchData().then(data => process(data))"
+  good: "fetchData().then(data => process(data)).catch(err => logger.error(err))"

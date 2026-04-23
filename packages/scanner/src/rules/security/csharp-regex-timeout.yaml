@@ -1,0 +1,9 @@
+id: csharp-regex-timeout
+language: [csharp]
+severity: medium
+category: security
+pattern: "new\\s+Regex\\s*\\(.*(?!.*TimeSpan|.*timeout)"
+message: "Creating Regex objects in C# without a timeout can lead to ReDoS attacks. The .NET regex engine supports backtracking by default, and a crafted input can cause exponential execution time. Always specify a timeout using the RegexOptions.None and TimeSpan parameter."
+fix:
+  bad: "new Regex(pattern)"
+  good: "new Regex(pattern, RegexOptions.None, TimeSpan.FromSeconds(1))"

@@ -1,0 +1,9 @@
+id: terraform-public-access
+language: []
+severity: high
+category: security
+pattern: "(?:publicly_accessible|public_access|public_network_access_enabled)\\s*=\\s*true|cidr_blocks\\s*=\\s*\\[\\s*\"0\\.0\\.0\\.0/0\"\\s*\\]"
+message: "Terraform resources configured with public access or 0.0.0.0/0 CIDR blocks are exposed to the entire internet. Databases, storage, and internal services should be restricted to VPC or specific IP ranges. Use private subnets and security groups to limit access."
+fix:
+  bad: "publicly_accessible = true"
+  good: "publicly_accessible = false"

@@ -1,0 +1,9 @@
+id: ruby-send-user-input
+language: [ruby]
+severity: critical
+category: security
+pattern: "\\.send\\s*\\(\\s*params|public_send\\s*\\(\\s*params"
+message: "Using send() or public_send() with user-controlled method names allows calling arbitrary methods on objects. An attacker can invoke dangerous methods like system(), eval(), or delete_all(). Validate method names against an explicit allowlist before calling send()."
+fix:
+  bad: "user.send(params[:action])"
+  good: "allowed = %w[name email]; user.send(params[:action]) if allowed.include?(params[:action])"

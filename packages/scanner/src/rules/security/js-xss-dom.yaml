@@ -1,0 +1,9 @@
+id: js-xss-dom
+language: [javascript, typescript]
+severity: critical
+category: security
+pattern: "document\\.(write|writeln)\\s*\\("
+message: "document.write() injects raw HTML into the DOM, enabling XSS attacks if any user-controlled data reaches it. An attacker can inject malicious scripts that steal cookies, hijack sessions, or redirect users. Use textContent or createElement with proper sanitization instead."
+fix:
+  bad: "document.write('<div>' + userInput + '</div>')"
+  good: "const el = document.createElement('div'); el.textContent = userInput; document.body.appendChild(el)"

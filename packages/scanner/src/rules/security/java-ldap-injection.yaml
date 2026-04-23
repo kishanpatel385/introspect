@@ -1,0 +1,9 @@
+id: java-ldap-injection
+language: [java]
+severity: critical
+category: security
+pattern: "(?:search|lookup|searchControls)\\s*\\(.*\".*\"\\s*\\+|NamingEnumeration.*\\+.*request"
+message: "Constructing LDAP queries with string concatenation enables LDAP injection. An attacker can modify the query to bypass authentication, enumerate users, or extract directory data. Use parameterized LDAP searches or escape special characters (*, (, ), \\, NUL) in user input."
+fix:
+  bad: "ctx.search(\"ou=users\", \"(uid=\" + username + \")\", sc)"
+  good: "ctx.search(\"ou=users\", \"(uid={0})\", new Object[]{username}, sc)"

@@ -1,0 +1,9 @@
+id: js-unsafe-merge
+language: [javascript, typescript]
+severity: high
+category: security
+pattern: "(?:lodash|_)\\.(?:merge|defaultsDeep|set)\\s*\\(|Object\\.assign\\s*\\(\\s*\\{\\}.*(?:req\\.|body|params|query)"
+message: "Deep merge or Object.assign with user input can lead to prototype pollution. An attacker can inject __proto__ or constructor.prototype properties to modify object prototypes globally, potentially achieving remote code execution. Use a safe merge library or sanitize input to remove dangerous keys."
+fix:
+  bad: "_.merge(config, req.body)"
+  good: "_.merge(config, _.omit(req.body, ['__proto__', 'constructor', 'prototype']))"

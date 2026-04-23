@@ -1,0 +1,9 @@
+id: js-lodash-vulnerable
+language: [javascript, typescript]
+severity: medium
+category: security
+pattern: "require\\s*\\(\\s*['\"]lodash['\"]\\s*\\)|from\\s+['\"]lodash['\"]"
+message: "Importing the full lodash library adds ~70KB to bundle size and older versions have known prototype pollution vulnerabilities. Import specific functions from lodash submodules to reduce bundle size and attack surface, and ensure lodash is kept up to date."
+fix:
+  bad: "import _ from 'lodash'"
+  good: "import debounce from 'lodash/debounce'"

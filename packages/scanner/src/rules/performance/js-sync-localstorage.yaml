@@ -1,0 +1,9 @@
+id: js-sync-localstorage
+language: [javascript, typescript]
+severity: medium
+category: performance
+pattern: "localStorage\\.(?:getItem|setItem|removeItem|clear)\\s*\\("
+message: "localStorage operations are synchronous and block the main thread. Large data or frequent access causes UI jank. For high-frequency reads, cache the value in a variable. For large data, consider IndexedDB or a state management library."
+fix:
+  bad: "const data = localStorage.getItem('bigData') // in render"
+  good: "// Cache in state: const [data] = useState(() => localStorage.getItem('bigData'))"

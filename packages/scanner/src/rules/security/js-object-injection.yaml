@@ -1,0 +1,9 @@
+id: js-object-injection
+language: [javascript, typescript]
+severity: high
+category: security
+pattern: "\\w+\\[\\s*(?:req\\.|request\\.|params\\.|query\\.|body\\.)"
+message: "Using user input as a property accessor (bracket notation) can lead to prototype pollution or unintended property access. An attacker can access __proto__, constructor, or other sensitive properties to modify object behavior. Validate property names against an allowlist or use Map instead of plain objects."
+fix:
+  bad: "const value = config[req.query.key]"
+  good: "const allowedKeys = ['name', 'email']; const key = allowedKeys.includes(req.query.key) ? req.query.key : null"

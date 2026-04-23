@@ -1,0 +1,9 @@
+id: general-ip-binding
+language: []
+severity: medium
+category: security
+pattern: "(?:bind|listen|host)\\s*[=:(]\\s*['\"]?0\\.0\\.0\\.0['\"]?"
+message: "Binding a service to 0.0.0.0 exposes it on all network interfaces, making it accessible from any network including the public internet. In development this is convenient, but in production it creates unnecessary attack surface. Bind to 127.0.0.1 for local-only access or use a firewall."
+fix:
+  bad: "server.listen(8080, '0.0.0.0')"
+  good: "server.listen(8080, '127.0.0.1')"

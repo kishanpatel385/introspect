@@ -1,0 +1,9 @@
+id: js-debounce-throttle-missing
+language: [javascript, typescript]
+severity: medium
+category: performance
+pattern: "addEventListener\\s*\\(\\s*['\"](?:scroll|resize|mousemove|input|keyup|keydown)['\"]\\s*,\\s*(?:async\\s+)?(?:function|\\()"
+message: "Event listeners for high-frequency events (scroll, resize, mousemove, input, keyup) without debounce or throttle fire hundreds of times per second, causing jank and high CPU usage. Use requestAnimationFrame, lodash.debounce, or lodash.throttle to limit execution frequency."
+fix:
+  bad: "window.addEventListener('scroll', () => updatePosition())"
+  good: "window.addEventListener('scroll', throttle(() => updatePosition(), 100))"

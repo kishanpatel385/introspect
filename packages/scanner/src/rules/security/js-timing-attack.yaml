@@ -1,0 +1,9 @@
+id: js-timing-attack
+language: [javascript, typescript]
+severity: medium
+category: security
+pattern: "(?:password|secret|token|key|hash|signature|hmac)\\s*(?:===|!==|==|!=)\\s*"
+message: "Comparing secrets using standard equality operators (===, ==) is vulnerable to timing attacks. The comparison short-circuits on the first different character, leaking information about the secret through response time differences. Use crypto.timingSafeEqual() for constant-time comparison of sensitive values."
+fix:
+  bad: "if (token === expectedToken) { grant(); }"
+  good: "if (crypto.timingSafeEqual(Buffer.from(token), Buffer.from(expectedToken))) { grant(); }"

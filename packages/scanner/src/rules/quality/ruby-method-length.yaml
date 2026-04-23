@@ -1,0 +1,9 @@
+id: ruby-method-length
+language: [ruby]
+severity: low
+category: quality
+pattern: "def\\s+\\w+(?:\\([^)]*\\))?\\s*\\n(?:.*\\n){50,}\\s*end"
+message: "Methods longer than 50 lines are difficult to understand, test, and maintain. Long methods typically handle multiple concerns and have high cyclomatic complexity. Extract logical sections into well-named private methods that each handle a single responsibility."
+fix:
+  bad: "def process_order # 80 lines of mixed logic end"
+  good: "def process_order; validate_order; calculate_total; apply_discounts; charge_payment; end"

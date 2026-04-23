@@ -1,0 +1,9 @@
+id: python-os-system
+language: [python]
+severity: critical
+category: security
+pattern: "os\\.system\\s*\\(|os\\.popen\\s*\\("
+message: "os.system() and os.popen() pass commands through the system shell, enabling command injection. An attacker can inject shell metacharacters (;, |, &&) to chain arbitrary commands. Use subprocess.run() with shell=False and pass arguments as a list."
+fix:
+  bad: "os.system('rm -rf ' + user_path)"
+  good: "subprocess.run(['rm', '-rf', user_path], shell=False, check=True)"

@@ -1,0 +1,9 @@
+id: js-helmet-missing-hsts
+language: [javascript, typescript]
+severity: medium
+category: security
+pattern: "helmet\\s*\\(\\s*\\{[^}]*hsts\\s*:\\s*false"
+message: "Disabling HSTS (HTTP Strict Transport Security) in Helmet allows downgrade attacks from HTTPS to HTTP. An attacker on the network can use sslstrip to intercept the initial HTTP request before the redirect to HTTPS. Enable HSTS with a long max-age and includeSubDomains."
+fix:
+  bad: "app.use(helmet({ hsts: false }))"
+  good: "app.use(helmet({ hsts: { maxAge: 31536000, includeSubDomains: true, preload: true } }))"

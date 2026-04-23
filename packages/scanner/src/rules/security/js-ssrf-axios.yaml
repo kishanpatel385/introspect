@@ -1,0 +1,9 @@
+id: js-ssrf-axios
+language: [javascript, typescript]
+severity: high
+category: security
+pattern: "axios\\.(?:get|post|put|patch|delete|head|request)\\s*\\(\\s*(?:req\\.|request\\.|params\\.|query\\.|body\\.)"
+message: "Making HTTP requests with user-controlled URLs using axios enables SSRF. An attacker can access internal services (169.254.169.254 for cloud metadata), scan internal networks, or interact with internal APIs. Validate URLs against an allowlist and block private IP ranges."
+fix:
+  bad: "axios.get(req.query.url)"
+  good: "const url = validateUrl(req.query.url, { allowedHosts: ['api.example.com'] }); axios.get(url)"

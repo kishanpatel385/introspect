@@ -1,0 +1,9 @@
+id: php-array-merge-loop
+language: [php]
+severity: medium
+category: performance
+pattern: "(?:for|foreach|while).*\\{[^}]*array_merge\\s*\\("
+message: "Using array_merge() inside a loop creates a new array on each iteration, resulting in O(n^2) time and memory complexity. For large datasets, this causes severe performance degradation. Collect items in an array and merge once after the loop, or use the spread operator."
+fix:
+  bad: "foreach ($items as $item) { $result = array_merge($result, $item->tags); }"
+  good: "$result = array_merge(...array_map(fn($item) => $item->tags, $items));"

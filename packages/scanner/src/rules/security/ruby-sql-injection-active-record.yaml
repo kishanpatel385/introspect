@@ -1,0 +1,9 @@
+id: ruby-sql-injection-active-record
+language: [ruby]
+severity: critical
+category: security
+pattern: "\\.where\\s*\\(\\s*\".*#\\{|\\.where\\s*\\(\\s*'.*'\\s*\\+|\\.order\\s*\\(\\s*params|\\.pluck\\s*\\(\\s*params"
+message: "Using string interpolation in ActiveRecord where, order, or pluck clauses enables SQL injection. An attacker can break out of the query and execute arbitrary SQL. Use hash conditions or array conditions with placeholders for safe parameterization."
+fix:
+  bad: "User.where(\"name = '#{params[:name]}'\")"
+  good: "User.where(name: params[:name])"

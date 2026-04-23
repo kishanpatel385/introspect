@@ -1,0 +1,9 @@
+id: js-no-unused-import
+language: [javascript, typescript]
+severity: low
+category: quality
+pattern: "import\\s+\\{[^}]+\\}\\s+from\\s+['\"](?!react|next)"
+message: "Unused imports increase bundle size, slow down builds, and create confusion about dependencies. They may also import side effects unintentionally. Review imports regularly and remove unused ones. Configure your editor to auto-remove unused imports on save."
+fix:
+  bad: "import { useState, useEffect, useCallback, useMemo } from 'react' // only useState used"
+  good: "import { useState } from 'react'"

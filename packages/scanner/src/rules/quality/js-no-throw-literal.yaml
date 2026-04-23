@@ -1,0 +1,9 @@
+id: js-no-throw-literal
+language: [javascript, typescript]
+severity: medium
+category: quality
+pattern: "throw\\s+['\"]|throw\\s+\\d|throw\\s+true|throw\\s+false|throw\\s+null|throw\\s+undefined"
+message: "Throwing string literals, numbers, or other non-Error values loses the stack trace, making debugging extremely difficult. Error objects include the stack trace, name, and message automatically. Always throw Error instances or custom error classes."
+fix:
+  bad: "throw 'Something went wrong'"
+  good: "throw new Error('Something went wrong')"

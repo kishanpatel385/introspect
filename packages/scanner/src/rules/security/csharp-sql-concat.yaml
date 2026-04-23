@@ -1,0 +1,9 @@
+id: csharp-sql-concat
+language: [csharp]
+severity: critical
+category: security
+pattern: "(?:SqlCommand|ExecuteReader|ExecuteNonQuery|ExecuteScalar|FromSqlRaw)\\s*\\(\\s*(?:\".*\"\\s*\\+|\\$\")"
+message: "Building SQL queries with string concatenation or interpolation in C# enables SQL injection. An attacker can escape the query and execute arbitrary SQL commands. Use parameterized queries with SqlParameter or Entity Framework's FromSqlInterpolated which auto-parameterizes."
+fix:
+  bad: "cmd.CommandText = \"SELECT * FROM Users WHERE Id = \" + userId;"
+  good: "cmd.CommandText = \"SELECT * FROM Users WHERE Id = @id\"; cmd.Parameters.AddWithValue(\"@id\", userId);"

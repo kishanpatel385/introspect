@@ -1,0 +1,9 @@
+id: github-workflow-injection
+language: []
+severity: critical
+category: security
+pattern: "\\$\\{\\{\\s*github\\.event\\.(?:issue|pull_request|comment|review)\\.(?:body|title)"
+message: "Using GitHub event data (issue body, PR title, comment body) directly in workflow expressions enables command injection. An attacker can submit an issue or PR with a crafted title/body containing shell commands. Pass event data through an environment variable instead."
+fix:
+  bad: "run: echo \"${{ github.event.issue.title }}\""
+  good: "env: TITLE: ${{ github.event.issue.title }}\nrun: echo \"$TITLE\""

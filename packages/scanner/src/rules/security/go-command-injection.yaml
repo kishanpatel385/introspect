@@ -1,0 +1,9 @@
+id: go-command-injection
+language: [go]
+severity: critical
+category: security
+pattern: "exec\\.Command\\s*\\(.*\\+|exec\\.CommandContext\\s*\\(.*\\+|os\\.StartProcess"
+message: "User input is concatenated into an exec.Command call, enabling command injection. An attacker can inject shell metacharacters to chain arbitrary commands, gaining full system access on the server. Pass each argument as a separate string to exec.Command (never through a shell), and validate all user-provided values against a strict allowlist."
+fix:
+  bad: "exec.Command(\"bash\", \"-c\", \"ls \" + userInput)"
+  good: "exec.Command(\"ls\", sanitizedPath)  // No shell, separate arguments"

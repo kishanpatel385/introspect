@@ -1,0 +1,9 @@
+id: php-insecure-rand
+language: [php]
+severity: high
+category: security
+pattern: "\\b(?:rand|mt_rand|array_rand|shuffle)\\s*\\(.*(?:token|password|secret|key|salt|nonce|session)"
+message: "Using rand(), mt_rand(), or shuffle() for security-sensitive values produces predictable output. These functions use non-cryptographic PRNGs that can be predicted after observing enough outputs. Use random_bytes() or random_int() for cryptographic operations like token generation."
+fix:
+  bad: "$token = md5(mt_rand())"
+  good: "$token = bin2hex(random_bytes(32))"

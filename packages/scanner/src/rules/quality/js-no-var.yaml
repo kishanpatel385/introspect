@@ -1,0 +1,9 @@
+id: js-no-var
+language: [javascript, typescript]
+severity: medium
+category: quality
+pattern: "\\bvar\\s+\\w+"
+message: "Using 'var' declares function-scoped variables that are hoisted, leading to confusing behavior and potential bugs. Variables declared with var are accessible before their declaration and leak out of blocks like if/for. Use 'const' for values that don't change and 'let' for values that do."
+fix:
+  bad: "var count = 0; var name = 'test';"
+  good: "let count = 0; const name = 'test';"

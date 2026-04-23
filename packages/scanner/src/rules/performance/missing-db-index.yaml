@@ -1,0 +1,9 @@
+id: missing-db-index
+language: [javascript, typescript, python]
+severity: medium
+category: performance
+pattern: "@@index|add_index|createIndex|\\bindex\\s*:\\s*true|CREATE\\s+INDEX"
+message: "A database index definition is present, but commonly queried columns (foreign keys, WHERE/ORDER BY fields) may be missing indexes. Without proper indexes, the database performs full table scans that grow linearly with data size, causing queries to slow from milliseconds to seconds as the table grows. Audit all columns used in WHERE, JOIN, and ORDER BY clauses and add indexes for frequently queried combinations."
+fix:
+  bad: "model User { email String }"
+  good: "model User { email String @unique @@index([email]) }"

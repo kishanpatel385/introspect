@@ -1,0 +1,9 @@
+id: js-postmessage-origin
+language: [javascript, typescript]
+severity: high
+category: security
+pattern: "addEventListener\\s*\\(\\s*['\"]message['\"].*(?!.*origin)"
+message: "Listening for postMessage events without verifying event.origin allows any website to send messages to your application. An attacker can exploit this to inject data, trigger actions, or steal sensitive information via cross-origin messaging. Always check event.origin against a whitelist before processing the message."
+fix:
+  bad: "window.addEventListener('message', (e) => { processData(e.data); })"
+  good: "window.addEventListener('message', (e) => { if (e.origin !== 'https://trusted.com') return; processData(e.data); })"

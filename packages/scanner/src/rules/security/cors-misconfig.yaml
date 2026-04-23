@@ -1,0 +1,9 @@
+id: cors-misconfig
+language: []
+severity: high
+category: security
+pattern: "Access-Control-Allow-Origin.*\\*|origin:\\s*['\"]\\*['\"]|allowedOrigins.*\\*|cors\\(\\s*\\)|credentials.*true.*origin.*\\*"
+message: "CORS is configured with a wildcard origin (*), potentially combined with credentials. This allows any website to make authenticated requests to your API, enabling cross-origin data theft and CSRF-like attacks. Specify exact allowed origins and never use wildcard origin with credentials: true."
+fix:
+  bad: "cors({ origin: '*', credentials: true })"
+  good: "cors({ origin: ['https://app.example.com'], credentials: true })"

@@ -1,0 +1,9 @@
+id: js-graphql-depth
+language: [javascript, typescript]
+severity: medium
+category: security
+pattern: "(?:ApolloServer|GraphQLServer|createServer)\\s*\\(\\s*\\{(?!.*(?:depthLimit|maxDepth|validationRules))"
+message: "GraphQL servers without query depth limiting are vulnerable to denial of service via deeply nested queries. An attacker can craft a recursive query that exponentially increases server load and memory usage. Add a depth limit validation rule (graphql-depth-limit package) to restrict query nesting."
+fix:
+  bad: "new ApolloServer({ schema, resolvers })"
+  good: "new ApolloServer({ schema, resolvers, validationRules: [depthLimit(10)] })"

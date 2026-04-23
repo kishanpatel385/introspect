@@ -1,0 +1,9 @@
+id: go-sql-injection-fmt
+language: [go]
+severity: critical
+category: security
+pattern: "(?:Sprintf|Fprintf)\\s*\\(\\s*\"(?:SELECT|INSERT|UPDATE|DELETE|DROP|ALTER|CREATE)"
+message: "Building SQL queries with fmt.Sprintf creates SQL injection vulnerabilities. An attacker can manipulate variables interpolated into the query string to execute arbitrary SQL. Use database/sql parameterized queries with $1, $2 placeholders."
+fix:
+  bad: "query := fmt.Sprintf(\"DELETE FROM users WHERE id = '%s'\", id)"
+  good: "db.Exec(\"DELETE FROM users WHERE id = $1\", id)"

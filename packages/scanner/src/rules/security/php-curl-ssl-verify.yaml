@@ -1,0 +1,9 @@
+id: php-curl-ssl-verify
+language: [php]
+severity: high
+category: security
+pattern: "CURLOPT_SSL_VERIFYPEER\\s*,\\s*(?:false|0)|CURLOPT_SSL_VERIFYHOST\\s*,\\s*(?:false|0)"
+message: "Disabling SSL certificate verification in cURL makes connections vulnerable to man-in-the-middle attacks. An attacker can intercept all HTTPS traffic, stealing credentials and sensitive data. Keep SSL verification enabled and configure proper CA certificates."
+fix:
+  bad: "curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);"
+  good: "curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true); curl_setopt($ch, CURLOPT_CAINFO, '/path/to/ca-bundle.crt');"

@@ -1,0 +1,9 @@
+id: js-dynamic-import
+language: [javascript, typescript]
+severity: high
+category: security
+pattern: "(?:require|import)\\s*\\(\\s*(?!\\s*['\"`])\\w"
+message: "Dynamic require() or import() with a variable path allows an attacker to load arbitrary modules if the path is user-controlled. This can lead to local file inclusion, information disclosure, or code execution. Use a whitelist mapping of allowed modules or a static import."
+fix:
+  bad: "const mod = require(userInput)"
+  good: "const allowed = { 'json': './parsers/json', 'csv': './parsers/csv' }; const mod = require(allowed[userInput])"

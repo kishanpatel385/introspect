@@ -1,0 +1,9 @@
+id: console-in-production
+language: [javascript, typescript]
+severity: low
+category: performance
+pattern: "console\\.(log|debug|info|warn|error|trace|table)\\s*\\("
+message: "Console statements (log, debug, info, etc.) left in production code degrade performance due to serialization overhead and can leak sensitive data to browser dev tools or server logs. They also clutter log output, making real issues harder to find. Replace with a structured logger (pino, winston) that supports log levels, or strip console calls during the production build."
+fix:
+  bad: "console.log('user data:', userData)"
+  good: "logger.info('user data loaded', { userId: userData.id })"

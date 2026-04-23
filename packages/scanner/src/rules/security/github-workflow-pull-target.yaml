@@ -1,0 +1,9 @@
+id: github-workflow-pull-target
+language: []
+severity: high
+category: security
+pattern: "on:\\s*\\n\\s*pull_request_target:\\s*\\n(?!.*types:|.*\\[labeled\\])"
+message: "pull_request_target runs with write permissions in the context of the base branch. If the workflow checks out PR code and runs it, an attacker can execute arbitrary code with write access to the repository. Use pull_request instead, or restrict pull_request_target to specific types like [labeled]."
+fix:
+  bad: "on: pull_request_target"
+  good: "on: pull_request_target: types: [labeled]"

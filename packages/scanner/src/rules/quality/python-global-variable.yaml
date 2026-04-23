@@ -1,0 +1,9 @@
+id: python-global-variable
+language: [python]
+severity: medium
+category: quality
+pattern: "\\bglobal\\s+\\w+"
+message: "Using the global keyword creates hidden dependencies between functions, makes testing difficult, and introduces race conditions in multi-threaded code. Functions using global state are impure and harder to reason about. Pass values as function parameters and return results explicitly."
+fix:
+  bad: "def increment(): global counter; counter += 1"
+  good: "def increment(counter: int) -> int: return counter + 1"

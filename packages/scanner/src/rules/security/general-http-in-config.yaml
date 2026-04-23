@@ -1,0 +1,9 @@
+id: general-http-in-config
+language: []
+severity: medium
+category: security
+pattern: "(?:url|endpoint|api|host|server|webhook)\\s*[=:]\\s*['\"]?http://(?!localhost|127\\.0\\.0\\.1|0\\.0\\.0\\.0)"
+message: "Configuration using HTTP URLs instead of HTTPS sends data in plaintext, vulnerable to eavesdropping and tampering. Even for internal services, HTTPS prevents lateral movement attacks. Update all non-localhost URLs to use HTTPS."
+fix:
+  bad: "API_URL=http://api.production.com"
+  good: "API_URL=https://api.production.com"

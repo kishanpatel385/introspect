@@ -1,0 +1,9 @@
+id: java-sql-injection-string
+language: [java]
+severity: critical
+category: security
+pattern: "(?:createQuery|createNativeQuery|executeQuery|executeUpdate|prepareStatement)\\s*\\(\\s*\".*\"\\s*\\+"
+message: "SQL query built with string concatenation is vulnerable to SQL injection. An attacker can inject SQL code to bypass authentication, extract data, or modify the database. Use PreparedStatement with parameterized queries and bind variables for all user input."
+fix:
+  bad: "stmt.executeQuery(\"SELECT * FROM users WHERE id = \" + userId)"
+  good: "PreparedStatement ps = conn.prepareStatement(\"SELECT * FROM users WHERE id = ?\"); ps.setInt(1, userId);"

@@ -1,0 +1,9 @@
+id: php-preg-replace-eval
+language: [php]
+severity: critical
+category: security
+pattern: "preg_replace\\s*\\(\\s*['\"]/.*/e['\"]"
+message: "preg_replace with the /e modifier evaluates the replacement string as PHP code, enabling arbitrary code execution. This modifier was deprecated in PHP 5.5 and removed in PHP 7.0. An attacker controlling the subject string can execute malicious code. Use preg_replace_callback() instead."
+fix:
+  bad: "preg_replace('/pattern/e', 'strtolower(\"$1\")', $input)"
+  good: "preg_replace_callback('/pattern/', function($m) { return strtolower($m[1]); }, $input)"

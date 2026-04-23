@@ -1,0 +1,9 @@
+id: general-weak-tls
+language: []
+severity: high
+category: security
+pattern: "(?:TLSv1\\.0|TLSv1\\.1|SSLv2|SSLv3|ssl_protocols.*TLSv1[^.]|min_tls_version.*1\\.0|minVersion.*TLSv1['\"])"
+message: "TLS 1.0, TLS 1.1, SSLv2, and SSLv3 have known vulnerabilities (POODLE, BEAST, CRIME). All major browsers and compliance standards (PCI DSS) require TLS 1.2+. Configure servers to support only TLS 1.2 and TLS 1.3."
+fix:
+  bad: "ssl_protocols TLSv1 TLSv1.1 TLSv1.2;"
+  good: "ssl_protocols TLSv1.2 TLSv1.3;"

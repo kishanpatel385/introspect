@@ -1,0 +1,59 @@
+{
+  "name": "@introspect-cli/introspect",
+  "version": "0.1.0",
+  "description": "Your code, deeply analyzed. Multi-language code scanner with 432 detection rules, git intelligence, live server security scanning, and AI-powered insights.",
+  "type": "module",
+  "license": "SEE LICENSE IN LICENSE",
+  "author": "Kishan Patel",
+  "homepage": "https://kishanpatel385.github.io/",
+  "bin": {
+    "introspect": "./bin/introspect.js"
+  },
+  "files": [
+    "bin/",
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts --clean --external chalk --external commander --external ora",
+    "dev": "tsc --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@introspect/core-types": "workspace:*",
+    "@introspect/scanner": "workspace:*",
+    "@introspect/ai": "workspace:*",
+    "chalk": "^5.3.0",
+    "commander": "^12.1.0",
+    "fast-glob": "^3.3.0",
+    "js-yaml": "^4.1.0",
+    "ora": "^8.1.0",
+    "simple-git": "^3.27.0",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsup": "^8.3.0",
+    "typescript": "^5.6.0"
+  },
+  "keywords": [
+    "code-scanner",
+    "static-analysis",
+    "security",
+    "vulnerability-scanner",
+    "code-quality",
+    "git-intelligence",
+    "live-scan",
+    "server-security",
+    "ai",
+    "cli",
+    "introspect"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kishanpatel385/introspect"
+  }
+}

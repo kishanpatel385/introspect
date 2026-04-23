@@ -1,0 +1,9 @@
+id: php-register-globals
+language: [php]
+severity: critical
+category: security
+pattern: "register_globals\\s*=\\s*(?:On|1|true)|ini_set\\s*\\(\\s*['\"]register_globals['\"]"
+message: "register_globals automatically creates PHP variables from GET/POST/Cookie data, allowing attackers to override critical variables like authentication flags. Though removed in PHP 5.4, similar patterns (extract on superglobals) recreate this vulnerability. Never use register_globals or its equivalents."
+fix:
+  bad: "ini_set('register_globals', 'On');"
+  good: "// Access superglobals directly: $name = $_POST['name'];"

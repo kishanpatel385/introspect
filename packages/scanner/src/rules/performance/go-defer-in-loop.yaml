@@ -1,0 +1,9 @@
+id: go-defer-in-loop
+language: [go]
+severity: high
+category: performance
+pattern: "for\\s.*\\{[^}]*defer\\s"
+message: "Defer statements inside loops accumulate and are only executed when the function returns, not at the end of each loop iteration. This causes resource leaks (unclosed files, connections, mutexes) and memory growth. Extract the loop body into a separate function or manage resources explicitly."
+fix:
+  bad: "for _, f := range files { fd, _ := os.Open(f); defer fd.Close() }"
+  good: "for _, f := range files { func() { fd, _ := os.Open(f); defer fd.Close(); process(fd) }() }"

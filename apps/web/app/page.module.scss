@@ -1,0 +1,819 @@
+// Introspect — Terminal-inspired scanner with emerald accent
+
+$bg: #06090d;
+$surface: #0c1018;
+$panel: #131a24;
+$border: rgba(255,255,255,0.08);
+$borderH: rgba(255,255,255,0.16);
+$text: #e2e8f0;
+$muted: #8b95a5;
+$faint: #4a5568;
+$accent: #e8734a;
+$accentDim: #c45a35;
+$blue: #58a6ff;
+$green: #3fb950;
+$yellow: #d29922;
+$red: #f85149;
+$purple: #bc8cff;
+
+@keyframes up { from { opacity:0; transform:translateY(16px) } to { opacity:1; transform:translateY(0) } }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
+@keyframes glow { 0%,100%{opacity:.6} 50%{opacity:1} }
+@keyframes termPulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+@keyframes pulseDot { 0%,100%{opacity:.4; transform:scale(.8)} 50%{opacity:1; transform:scale(1.2)} }
+@keyframes drift {
+  0%   { transform: translate(0, 0) rotate(0deg) }
+  33%  { transform: translate(30px, -40px) rotate(1deg) }
+  66%  { transform: translate(-20px, 30px) rotate(-1deg) }
+  100% { transform: translate(0, 0) rotate(0deg) }
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: $bg;
+  color: $text;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+// Animated aurora background
+.bgLayer {
+  position: fixed; inset: -40px; z-index: 0; pointer-events: none; overflow: hidden;
+  background:
+    radial-gradient(ellipse at 25% 20%, rgba($accent,.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 75% 60%, rgba($accent,.07) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 90%, rgba($purple,.06) 0%, transparent 50%);
+  animation: drift 20s ease-in-out infinite;
+}
+
+.wrap { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 40px; width: 100%; }
+
+// Hero
+.hero { padding: 80px 0 52px; text-align: center; animation: up .5s ease both; }
+.heroLoading { padding: 0; display: flex; flex-direction: column; justify-content: center; min-height: calc(100vh - 80px); }
+.headingIcon { vertical-align: middle; margin-right: 8px; filter: drop-shadow(0 0 12px rgba($accent,.4)); }
+.hero h1 {
+  font-size: clamp(32px,5.5vw,54px); font-weight: 800;
+  line-height: 1.08; letter-spacing: -2px; margin-bottom: 18px;
+}
+.hl {
+  color: $accent;
+  text-shadow: 0 0 40px rgba($accent,.2);
+}
+.sub {
+  font-size: 15px; color: $muted; max-width: 900px;
+  margin: 0 auto 40px; line-height: 1.8; font-weight: 400;
+  white-space: nowrap;
+}
+
+// ── Animated borders — each card type unique ──
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@property --pulse {
+  syntax: '<number>';
+  initial-value: 0;
+  inherits: false;
+}
+@keyframes borderSpin { to { --border-angle: 360deg } }
+@keyframes borderPulse { 0%,100%{ --pulse: 0.3 } 50%{ --pulse: 0.8 } }
+@keyframes borderTravel {
+  0%   { background-position: 0% 0% }
+  50%  { background-position: 100% 100% }
+  100% { background-position: 0% 0% }
+}
+@keyframes borderDash {
+  to { background-position: 200% 0, 0 200%, 0% 0, 100% 0 }
+}
+
+// Base for animated borders
+%animBase {
+  position: relative; border: 0;
+}
+
+// 1) Scan Card — rotating conic sweep (copper → purple)
+.scanCard {
+  @extend %animBase;
+  background: linear-gradient(165deg, lighten($panel,3%) 0%, $panel 100%);
+  border-radius: 16px; overflow: hidden; margin-bottom: 0;
+  animation: up .5s ease .1s both, borderSpin 4s linear infinite;
+  box-shadow: 0 4px 24px rgba(0,0,0,.4);
+  padding: 1.5px;
+  &::after {
+    content: '';
+    position: absolute; inset: 0; border-radius: inherit; z-index: 0;
+    background: conic-gradient(from var(--border-angle), transparent 25%, $accent 50%, $purple 62%, transparent 75%);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude; padding: 1.5px;
+    opacity: .8;
+  }
+}
+// ── Scan Split Layout ──
+.scanSplit {
+  display: flex; gap: 16px;
+  animation: up .5s ease .1s both;
+}
+.scanLeft { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+// Terminal interface
+.termBox {
+  flex: 1; min-width: 0;
+  background: #0a0e14; border: 1px solid rgba(255,255,255,.06);
+  border-radius: 14px; overflow: hidden; display: flex; flex-direction: column;
+  min-height: 200px;
+}
+.termHeader {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,.06);
+  background: rgba(255,255,255,.02);
+}
+.termDots {
+  display: flex; gap: 5px;
+  span { width: 8px; height: 8px; border-radius: 50%; }
+  span:nth-child(1) { background: #f85149; }
+  span:nth-child(2) { background: #d29922; }
+  span:nth-child(3) { background: #3fb950; }
+}
+.termTitle { font-family: var(--font-mono); font-size: 10.5px; color: $faint; flex: 1; }
+.termBody {
+  padding: 12px; flex: 1; overflow-y: auto;
+  font-family: var(--font-mono); font-size: 11.5px; line-height: 1.7;
+  max-height: 200px;
+}
+.termLine + .termLine { margin-top: 1px; }
+.termLine { display: flex; align-items: center; gap: 8px; color: $faint; }
+.termPrompt { color: $accent; font-weight: 700; }
+.termPrefix { width: 14px; text-align: center; flex-shrink: 0; }
+.termDone { color: $accent; }
+.termActive { color: $accent; background: rgba($accent,.04); border-radius: 4px; padding: 2px 6px; margin: 1px -6px; }
+.termPending { color: rgba($faint,.5); }
+.termOut { color: $muted; }
+.termHint { color: $faint; font-size: 10px; margin-left: auto; }
+// Scan mode tabs
+.scanTabs {
+  display: flex; gap: 0; border-bottom: 1px solid $border; position: relative; z-index: 1;
+  background: linear-gradient(165deg, lighten($panel,3%) 0%, $panel 100%);
+  border-radius: 14.5px 14.5px 0 0; overflow: hidden;
+}
+.scanTab {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 12px; background: none; border: none; color: $muted;
+  font-size: 12.5px; font-weight: 500; cursor: pointer; transition: all .18s;
+  &:hover { color: $text; background: rgba(255,255,255,.02); }
+}
+.scanTabOn {
+  color: $accent; background: rgba($accent,.05);
+  box-shadow: inset 0 -2px 0 $accent;
+}
+.inputRow { display: flex; align-items: stretch; gap: 10px; padding: 20px; position: relative; z-index: 1;
+  background: linear-gradient(165deg, lighten($panel,3%) 0%, $panel 100%);
+  border-radius: 0 0 14.5px 14.5px;
+}
+.fileIn { display: none; }
+
+.dropZone {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  padding: 28px 20px; margin: 16px; cursor: pointer;
+  border: 2px dashed rgba($accent,.2); border-radius: 10px;
+  background: rgba($accent,.02); transition: all .2s;
+  position: relative; z-index: 1;
+  &:hover { border-color: rgba($accent,.4); background: rgba($accent,.04); }
+}
+.dropActive { border-color: $accent; background: rgba($accent,.08); }
+.dropIcon { color: $accent; opacity: .5; }
+.dropText { font-size: 12.5px; color: $muted; strong { color: $accent; } }
+
+// Quick stats under scan card
+.scanQuick {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  margin-top: 12px;
+}
+.sqItem {
+  display: flex; align-items: center; gap: 7px;
+  padding: 10px 14px; border-radius: 9px;
+  background: rgba($panel,.8); border: 1px solid $border;
+  font-size: 11.5px; color: $muted;
+  strong { color: $text; font-weight: 600; }
+}
+.urlIn {
+  flex: 1; background: $surface;
+  border: 1px solid $border; border-radius: 10px;
+  padding: 14px 16px; font-family: var(--font-mono);
+  font-size: 12.5px; color: $text; outline: none; transition: all .2s;
+  &::placeholder { color: $faint; }
+  &:focus { border-color: rgba($accent,.35); background: lighten($surface,1%); }
+}
+.runBtn {
+  background: $accent; color: #000; border: none; border-radius: 10px;
+  padding: 14px 32px; font-size: 14px; font-weight: 700;
+  cursor: pointer; white-space: nowrap; display: flex; align-items: center; gap: 7px;
+  transition: all .2s; box-shadow: 0 0 24px rgba($accent,.2);
+  &:hover:not(:disabled) { background: lighten($accent,8%); box-shadow: 0 0 32px rgba($accent,.35); transform: translateY(-1px); }
+  &:disabled { opacity: .4; cursor: not-allowed; transform: none; box-shadow: none; }
+}
+.arr { transition: transform .25s; .runBtn:hover & { transform: translateX(3px); } }
+
+// Error message
+.errorMsg {
+  background: rgba($red,.08); border: 1px solid rgba($red,.2); border-radius: 10px;
+  padding: 12px 16px; margin-bottom: 16px; text-align: center;
+  font-size: 12.5px; color: lighten($red,15%); cursor: pointer;
+  font-family: var(--font-mono); animation: up .3s ease both;
+}
+
+.tryRow {
+  display: flex; align-items: center;
+  gap: 8px; font-size: 11px; color: $faint; flex-wrap: wrap;
+  padding: 0 20px 14px; position: relative; z-index: 1;
+}
+.tryBtn {
+  background: none; border: 1px solid $border; color: $muted;
+  font-family: var(--font-mono); font-size: 11px; padding: 4px 11px;
+  border-radius: 6px; cursor: pointer; transition: all .18s;
+  &:hover { border-color: rgba($accent,.3); color: $accent; background: rgba($accent,.04); }
+}
+
+.elapsed {
+  font-family: var(--font-mono); font-size: 11px; color: $muted;
+  white-space: nowrap; flex-shrink: 0; padding: 4px 10px;
+  background: rgba($accent,.06); border: 1px solid rgba($accent,.12);
+  border-radius: 6px;
+}
+.cursor { animation: termPulse 1s ease-in-out infinite; display: inline-block; color: $accent; }
+.pulseDot {
+  width: 6px; height: 6px; border-radius: 50%; background: $accent;
+  margin-left: auto; flex-shrink: 0;
+  animation: pulseDot 1.4s ease-in-out infinite;
+  box-shadow: 0 0 8px rgba($accent,.5);
+}
+.cancelBtn {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  background: rgba($red,.12); border: 1px solid rgba($red,.25); border-radius: 10px;
+  padding: 14px 28px; font-size: 14px; font-weight: 700; color: lighten($red,15%);
+  cursor: pointer; transition: all .2s; white-space: nowrap;
+  &:hover { background: rgba($red,.2); border-color: rgba($red,.4); }
+}
+
+// Results
+.res { padding: 36px 0 52px; animation: up .45s ease both; }
+.resTop { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 8px; }
+.resTitle { font-size: 22px; font-weight: 800; letter-spacing: -.5px; margin-bottom: 4px; }
+.resMeta { font-family: var(--font-mono); font-size: 12px; color: $muted; margin-bottom: 16px; }
+
+// Report Tabs
+.reportTabs { display: flex; gap: 0; margin-bottom: 20px; border-bottom: 2px solid $border; }
+.reportTab {
+  display: flex; align-items: center; gap: 7px;
+  padding: 10px 20px; background: none; border: none; color: $muted;
+  font-size: 13px; font-weight: 600; cursor: pointer; transition: all .18s;
+  border-bottom: 2px solid transparent; margin-bottom: -2px;
+  &:hover { color: $text; }
+}
+.reportTabOn {
+  color: $accent; border-bottom-color: $accent;
+}
+
+.gitTab { animation: up .3s ease both; }
+
+.backBtn {
+  background: none; border: 1px solid $border; color: $muted;
+  font-size: 12px; font-weight: 500; padding: 6px 14px; border-radius: 7px;
+  cursor: pointer; transition: all .18s; white-space: nowrap;
+  &:hover { border-color: $borderH; color: $text; background: rgba(255,255,255,.02); }
+}
+
+// ── Alert Banner ──
+.alertBanner {
+  background: linear-gradient(135deg, #3d0a0a, $bg);
+  padding: 24px; border-radius: 12px; margin-bottom: 24px;
+  border: 2px solid $red; text-align: center;
+  animation: up .4s ease .1s both;
+}
+.alertNumber { font-size: 2.8rem; font-weight: 700; color: $red; line-height: 1.2; }
+.alertList { color: $text; font-size: 13px; margin-top: 8px; line-height: 1.7; }
+.alertUrgent { color: $red; font-weight: 700; font-size: 13px; margin-top: 8px; letter-spacing: .5px; text-transform: uppercase; }
+
+// ── Severity Stat Grid ──
+.sevGrid {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 24px;
+}
+.sevCard {
+  background: $panel; border: 1px solid $border; border-radius: 10px;
+  padding: 16px 12px; text-align: center; transition: all .2s;
+  &:hover { border-color: $borderH; transform: translateY(-1px); }
+}
+.sevNumber { font-family: var(--font-mono); font-size: 2rem; font-weight: 700; line-height: 1; margin-bottom: 6px; }
+.sevLabel { font-size: 10.5px; color: $muted; text-transform: uppercase; letter-spacing: .5px; font-weight: 600; }
+
+// ── Grouped Findings ──
+.sevSection { margin-bottom: 28px; }
+.sevHeader {
+  font-size: 16px; font-weight: 700; padding-bottom: 10px; margin-bottom: 14px;
+  border-bottom: 2px solid $border; display: flex; align-items: center; gap: 10px;
+}
+.sevHeaderDot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+.finding {
+  background: $panel; border: 1px solid $border; border-radius: 10px;
+  padding: 20px; margin-bottom: 12px; border-left: 4px solid;
+  transition: all .2s; animation: up .35s ease both;
+  &:hover { border-color: $borderH; border-left-color: inherit; }
+}
+.findingCritical { border-left-color: $red; }
+.findingHigh { border-left-color: #f0883e; }
+.findingMedium { border-left-color: $yellow; }
+.findingLow { border-left-color: $blue; }
+.findingInfo { border-left-color: #6b7a8d; }
+
+.findingTop { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+
+// Severity badges
+.badge {
+  display: inline-block; padding: 3px 10px; border-radius: 4px;
+  font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .3px; color: #fff;
+}
+.badgeCritical { background: $red; }
+.badgeHigh { background: #f0883e; }
+.badgeMedium { background: $yellow; color: #000; }
+.badgeLow { background: $blue; }
+.badgeInfo { background: #6b7a8d; }
+
+.findingId { font-family: var(--font-mono); font-size: 11px; color: $muted; font-weight: 600; }
+.findingTitle { font-size: 15px; font-weight: 650; margin-bottom: 6px; }
+.findingFile { font-family: var(--font-mono); font-size: 11.5px; color: $accent; margin-bottom: 6px; opacity: .8; }
+.findingDesc { font-size: 13px; color: $muted; line-height: 1.8; }
+
+.evidence {
+  background: darken($bg, 2%); padding: 14px; border-radius: 8px;
+  font-family: var(--font-mono); font-size: 11.5px; line-height: 1.7;
+  margin: 10px 0; overflow-x: auto; border: 1px solid $border;
+  white-space: pre-wrap; color: lighten($red, 18%);
+}
+
+.recommendation {
+  background: rgba($green, .04); padding: 14px; border-radius: 8px;
+  margin: 10px 0; border-left: 3px solid $green;
+  font-size: 13px; color: $text; line-height: 1.7;
+}
+.recommendationLabel { font-weight: 700; color: $green; margin-bottom: 4px; }
+
+// ── Priority Action Items Table ──
+.actionTable { margin-bottom: 28px; }
+.actionTableTitle {
+  font-size: 16px; font-weight: 700; padding-bottom: 10px; margin-bottom: 14px;
+  border-bottom: 2px solid $border;
+}
+.prTable {
+  width: 100%; border-collapse: collapse;
+  background: $panel; border-radius: 10px; overflow: hidden;
+  border: 1px solid $border;
+}
+.prTable th {
+  padding: 12px 16px; text-align: left; font-size: 10.5px;
+  color: $muted; text-transform: uppercase; letter-spacing: .5px; font-weight: 600;
+  border-bottom: 1px solid $border; background: rgba(255,255,255,.02);
+}
+.prTable td {
+  padding: 10px 16px; font-size: 12.5px; border-bottom: 1px solid $border;
+  vertical-align: middle;
+}
+.prTable tr:last-child td { border-bottom: none; }
+.prTable .prFile { font-family: var(--font-mono); font-size: 11px; color: $muted; }
+
+// ── Print Button ──
+.printBtn {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba($muted,.08); border: 1px solid rgba($muted,.2); color: $muted;
+  font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 7px;
+  cursor: pointer; transition: all .18s;
+  &:hover { background: rgba($muted,.15); border-color: rgba($muted,.35); color: $text; }
+}
+
+.scores { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
+  > * { flex: 1 1 0; min-width: 0; }
+}
+.scoreCard {
+  background: $panel; border: 1px solid $border; border-radius: 12px;
+  padding: 16px; text-align: center; transition: all .2s;
+  &:hover { border-color: $borderH; transform: translateY(-1px); }
+}
+.scoreN { font-family: var(--font-mono); font-size: 30px; font-weight: 600; line-height: 1; margin-bottom: 6px; }
+.scoreL { font-size: 12px; color: $muted; font-weight: 500; letter-spacing: .2px; text-transform: capitalize; }
+
+.aiBox {
+  background: $panel; border: 1px solid $border; border-radius: 12px; padding: 20px; margin-bottom: 20px;
+  border-left: 3px solid rgba($accent,.4);
+}
+.aiLbl { font-size: 10.5px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; color: $muted; margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
+.aiDot { width: 5px; height: 5px; border-radius: 50%; background: $accent; display: inline-block; animation: glow 2s ease infinite; }
+.aiTxt { font-size: 14px; color: $muted; line-height: 1.8; }
+
+// ── Radar Chart ──
+.scoreRow { display: flex; gap: 20px; align-items: center; margin-bottom: 20px; }
+.radarWrap { flex-shrink: 0; width: 240px; height: 240px; }
+.radar { width: 100%; height: 100%; }
+.scores { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+
+// ── Result Actions ──
+.resActions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; flex-wrap: nowrap; }
+.exportBtn {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba($accent,.08); border: 1px solid rgba($accent,.2); color: $accent;
+  font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 7px;
+  cursor: pointer; transition: all .18s;
+  &:hover { background: rgba($accent,.15); border-color: rgba($accent,.35); }
+}
+
+// ── Custom Dropdown ──
+.customSelect {
+  position: relative; cursor: pointer;
+  background: $panel; border: 1px solid $border; border-radius: 8px;
+  padding: 8px 32px 8px 12px; font-size: 12px; color: $muted;
+  font-family: var(--font-mono); user-select: none; min-width: 100px;
+  transition: border-color .18s;
+  &:hover { border-color: $borderH; }
+}
+.csValue { white-space: nowrap; }
+.csArrow {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%) rotate(90deg);
+  transition: transform .2s; color: $faint;
+}
+.csArrowOpen { transform: translateY(-50%) rotate(270deg); }
+.csDropdown {
+  position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 50;
+  background: lighten($panel,3%); border: 1px solid $borderH; border-radius: 8px;
+  overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,.4);
+  animation: up .15s ease both;
+}
+.csOption {
+  padding: 9px 14px; font-size: 12px; color: $muted;
+  font-family: var(--font-mono); cursor: pointer; transition: all .12s;
+  &:hover { background: rgba($accent,.06); color: $text; }
+  & + & { border-top: 1px solid $border; }
+}
+.csOptionActive {
+  color: $accent; background: rgba($accent,.08);
+  &:hover { background: rgba($accent,.12); }
+}
+.issueCount {
+  font-family: var(--font-mono); font-size: 11px; color: $faint; white-space: nowrap;
+}
+
+.filters { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+.filterTabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.filterRight { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.ft {
+  padding: 6px 13px; border-radius: 7px; border: 1px solid $border; background: none;
+  color: $muted; font-size: 11.5px; font-weight: 500; cursor: pointer; transition: all .18s;
+  display: flex; align-items: center; gap: 5px;
+  &:hover { border-color: $borderH; color: $text; }
+}
+.ftOn { background: rgba($accent,.08); border-color: rgba($accent,.22); color: $accent; .ftCt { background: rgba($accent,.15); } }
+.ftCt { font-family: var(--font-mono); font-size: 9.5px; background: rgba(255,255,255,.06); border-radius: 4px; padding: 1px 5px; }
+
+.iTag {
+  font-family: var(--font-mono); font-size: 9.5px; padding: 3px 9px; border-radius: 5px;
+  white-space: nowrap; flex-shrink: 0; background: rgba(255,255,255,.04); color: $muted; border: 1px solid $border;
+}
+.tSec { background: rgba($red,.08); color: lighten($red,15%); border-color: rgba($red,.15); }
+.tPerf { background: rgba($yellow,.08); color: lighten($yellow,10%); border-color: rgba($yellow,.15); }
+.tQual { background: rgba($blue,.06); color: $blue; border-color: rgba($blue,.15); }
+.tDead { background: rgba($muted,.08); color: $muted; border-color: rgba($muted,.15); }
+.tDep { background: rgba($purple,.08); color: $purple; border-color: rgba($purple,.15); }
+.tDocs { background: rgba($accent,.06); color: $accent; border-color: rgba($accent,.15); }
+.tGit { background: rgba($blue,.06); color: $blue; border-color: rgba($blue,.15); }
+
+// ── Shared Section Styles ──
+.secTitle {
+  font-size: 24px; font-weight: 800; letter-spacing: -.6px;
+  text-align: center; margin-bottom: 10px;
+}
+.secSub {
+  font-size: 13.5px; color: $muted; text-align: center;
+  margin-bottom: 24px; max-width: 460px; margin-left: auto; margin-right: auto;
+  line-height: 1.7;
+}
+
+// ── Stats Bar ──
+// 2) Stats — pulsing glow border (breathe effect)
+.statsBar {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+  margin: 32px 0; animation: up .5s ease .15s both;
+}
+.statItem {
+  @extend %animBase;
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  padding: 28px 16px; background: linear-gradient(180deg, lighten($panel,2%) 0%, $panel 100%);
+  text-align: center; transition: all .22s;
+  border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.2);
+  animation: borderPulse 3s ease-in-out infinite;
+  &::after {
+    content: '';
+    position: absolute; inset: 0; border-radius: inherit; z-index: 0;
+    border: 1.5px solid rgba($accent, var(--pulse));
+    transition: border-color .3s;
+  }
+  &:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba($accent,.1);
+    &::after { border-color: rgba($accent,.7); }
+  }
+  &:nth-child(2) { animation-delay: -.75s; }
+  &:nth-child(3) { animation-delay: -1.5s; }
+  &:nth-child(4) { animation-delay: -2.25s; }
+}
+.statIcon { color: $accent; margin-bottom: 3px; }
+.statVal { font-size: 26px; font-weight: 800; font-family: var(--font-mono); color: $text; letter-spacing: -1px; }
+.statLabel { font-size: 10px; color: $muted; text-transform: uppercase; letter-spacing: .6px; }
+
+// ── Features ──
+.featSection {
+  padding: 32px 0;
+  animation: up .5s ease .1s both;
+}
+.featGrid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
+}
+// 3) Feature cards — traveling gradient shimmer (uses card's --fc color)
+.featCard {
+  @extend %animBase;
+  display: flex; gap: 16px; padding: 24px;
+  background: linear-gradient(165deg, lighten($panel,2%) 0%, $panel 100%);
+  border-radius: 14px;
+  transition: all .22s; overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+  &::after {
+    content: '';
+    position: absolute; inset: 0; border-radius: inherit; z-index: 0;
+    background: linear-gradient(90deg, transparent 0%, var(--fc) 50%, transparent 100%);
+    background-size: 200% 100%;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude; padding: 1.5px;
+    animation: borderTravel 5s ease-in-out infinite;
+    opacity: .3;
+    transition: opacity .3s;
+  }
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(0,0,0,.4);
+    &::after { opacity: .7; }
+  }
+  &:nth-child(2)::after { animation-delay: -.8s; }
+  &:nth-child(3)::after { animation-delay: -1.6s; }
+  &:nth-child(4)::after { animation-delay: -2.4s; }
+  &:nth-child(5)::after { animation-delay: -3.2s; }
+  &:nth-child(6)::after { animation-delay: -4s; }
+}
+.featIcon {
+  width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: color-mix(in srgb, var(--fc) 10%, transparent);
+  color: var(--fc);
+}
+.featHead {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 7px;
+  h3 { font-size: 14px; font-weight: 650; }
+}
+.featCount {
+  font-family: var(--font-mono); font-size: 10px; padding: 2px 8px;
+  border-radius: 20px; background: rgba(255,255,255,.04); color: $muted;
+}
+.featDesc { font-size: 12.5px; color: $muted; line-height: 1.65; }
+
+// ── How It Works ──
+.howSection {
+  padding: 32px 0;
+  animation: up .5s ease .15s both;
+}
+.howGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+// 4) How cards — running dashes around border
+.howCard {
+  @extend %animBase;
+  padding: 32px 24px;
+  background: linear-gradient(165deg, lighten($panel,2%) 0%, $panel 100%);
+  border-radius: 14px; text-align: center;
+  transition: all .22s; box-shadow: 0 2px 8px rgba(0,0,0,.2);
+  &::after {
+    content: '';
+    position: absolute; inset: 0; border-radius: inherit; z-index: 0;
+    background:
+      linear-gradient(90deg, rgba($accent,.5) 50%, transparent 50%) top / 12px 1.5px repeat-x,
+      linear-gradient(90deg, rgba($accent,.5) 50%, transparent 50%) bottom / 12px 1.5px repeat-x,
+      linear-gradient(0deg, rgba($accent,.5) 50%, transparent 50%) left / 1.5px 12px repeat-y,
+      linear-gradient(0deg, rgba($accent,.5) 50%, transparent 50%) right / 1.5px 12px repeat-y;
+    animation: borderDash 8s linear infinite;
+    opacity: .4;
+    transition: opacity .3s;
+  }
+  &:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.4);
+    &::after { opacity: .9; }
+  }
+  h3 { font-size: 14px; font-weight: 650; margin-bottom: 8px; }
+  p { font-size: 12.5px; color: $muted; line-height: 1.65; }
+}
+.howNum {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  color: $accent; display: block; margin-bottom: 16px;
+  opacity: .7;
+}
+.howIcon {
+  width: 42px; height: 42px; border-radius: 11px; margin: 0 auto 16px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba($accent, .07); color: $accent;
+  border: 1px solid rgba($accent,.1);
+}
+
+// ── Languages ──
+.langSection {
+  padding: 32px 0;
+  animation: up .5s ease .2s both;
+}
+.langGrid {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+}
+.langChip {
+  padding: 8px 18px; font-size: 12.5px; font-family: var(--font-mono);
+  color: $muted; border: 1px solid $border; border-radius: 20px;
+  background: rgba($surface,.6); transition: all .2s; cursor: default;
+  &:hover { border-color: rgba($accent,.3); color: $accent; background: rgba($accent,.04); }
+}
+
+// ── CTA ──
+.ctaSection {
+  padding: 32px 0; text-align: center;
+  position: relative;
+  animation: up .5s ease .25s both;
+  &::before {
+    content: ''; position: absolute; inset: 0; z-index: -1;
+    background: radial-gradient(ellipse at center, rgba($accent,.04) 0%, transparent 70%);
+  }
+  h2 { font-size: 24px; font-weight: 800; margin-bottom: 10px; letter-spacing: -.5px; }
+  p { font-size: 14px; color: $muted; margin-bottom: 28px; }
+}
+.ctaBtn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 30px; background: $accent; color: #000;
+  border: none; border-radius: 10px; font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all .2s;
+  box-shadow: 0 0 28px rgba($accent,.2);
+  &:hover { background: lighten($accent,8%); box-shadow: 0 0 36px rgba($accent,.35); transform: translateY(-2px); }
+}
+
+.aiSetupBtn {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba($purple,.08); border: 1px solid rgba($purple,.2); color: $purple;
+  font-size: 11.5px; font-weight: 600; padding: 5px 12px; border-radius: 6px;
+  cursor: pointer; transition: all .18s; white-space: nowrap;
+  &:hover { background: rgba($purple,.15); border-color: rgba($purple,.35); }
+}
+.aiSetupBox {
+  display: flex; flex-direction: column; gap: 12px;
+  margin-bottom: 16px; padding: 18px;
+  background: $surface; border: 1px solid $border; border-radius: 10px;
+}
+.aiSetupRow {
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+}
+.aiKeyInput {
+  flex: 1; min-width: 200px; background: $panel; border: 1px solid $border; border-radius: 7px;
+  padding: 8px 12px; font-size: 12px; color: $text; outline: none;
+  font-family: var(--font-mono); transition: border-color .18s;
+  &::placeholder { color: $faint; }
+  &:focus { border-color: rgba($purple,.35); }
+}
+.aiKeyHint {
+  width: 100%; font-size: 10px; color: $faint; margin-bottom: 12px;
+}
+.aiFeatures {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.aiFeatBtn {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba($purple,.06); border: 1px solid rgba($purple,.12); color: $muted;
+  font-size: 12px; font-weight: 500; padding: 8px 14px; border-radius: 8px;
+  cursor: pointer; transition: all .18s;
+  &:hover { background: rgba($purple,.12); border-color: rgba($purple,.25); color: $text; }
+  &:disabled { opacity: .5; cursor: not-allowed; }
+}
+.aiFeatActive {
+  background: rgba($purple,.12); border-color: rgba($purple,.3); color: $purple;
+}
+.aiFeatLocked {
+  opacity: .5; cursor: pointer;
+  &:hover { opacity: .7; }
+}
+.aiResultBox {
+  margin-top: 16px; padding: 16px;
+  background: $surface; border: 1px solid $border; border-radius: 10px;
+  max-height: 500px; overflow-y: auto;
+}
+.aiLoadingDot {
+  font-family: var(--font-mono); font-size: 12px; color: $purple;
+  animation: blink 1.5s ease-in-out infinite;
+}
+.aiResultText {
+  font-family: var(--font-mono); font-size: 12px; color: $text;
+  line-height: 1.8; white-space: pre-wrap; word-break: break-word;
+  margin: 0;
+}
+
+// ── Footer ──
+.foot {
+  border-top: 1px solid $border; padding: 24px; text-align: center;
+  color: $faint; font-size: 11px; position: relative; z-index: 1; margin-top: auto;
+  strong { color: $muted; font-weight: 600; }
+}
+
+// ── Responsive ──
+@media(max-width:768px) {
+  .wrap { padding: 0 20px; }
+  .hero { padding: 60px 0 40px; }
+  .hero h1 { font-size: 32px; letter-spacing: -1.2px; }
+  .statsBar { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .featGrid { grid-template-columns: 1fr; }
+  .howGrid { grid-template-columns: 1fr; }
+  .howCard { text-align: left; display: flex; gap: 16px; align-items: flex-start;
+    .howIcon { margin: 0; flex-shrink: 0; }
+  }
+  .secTitle { font-size: 20px; }
+  .scanSplit { flex-direction: column; height: auto; }
+  .termBox { min-height: 220px; max-height: 280px; }
+  .scoreRow { flex-direction: column; }
+  .radarWrap { width: 200px; height: 200px; margin: 0 auto; }
+  .scores { grid-template-columns: repeat(4, 1fr); }
+  .sevGrid { grid-template-columns: repeat(3, 1fr); }
+  .prTable { font-size: 11px; }
+}
+
+// ── Print Styles (PDF Export) ──
+@media print {
+  .page {
+    background: #fff; color: #000; font-size: 12px;
+  }
+  .bgLayer, .foot, .resActions, .filters,
+  .scanSplit, .hero, .statsBar, .featSection,
+  .howSection, .langSection, .ctaSection, .aiSetupBox { display: none !important; }
+
+  .wrap { max-width: 100%; padding: 0; }
+
+  .res { padding: 0; animation: none; }
+  .resTop { display: block; margin-bottom: 16px; }
+  .resTitle { font-size: 20px; color: #000; }
+  .resMeta { color: #555; }
+
+  .scoreRow { flex-direction: column; gap: 12px; }
+  .radarWrap { display: none; }
+  .scores {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+  }
+  .scoreCard {
+    background: #f5f5f5; border: 1px solid #ddd; border-radius: 6px;
+    padding: 10px; text-align: center; break-inside: avoid;
+  }
+  .scoreN { color: #000 !important; font-size: 20px; }
+  .scoreL { color: #555; }
+
+  .aiBox {
+    background: #f9f9f9; border: 1px solid #ddd; border-left: 3px solid #e8734a;
+    border-radius: 6px; padding: 12px; margin-bottom: 16px;
+  }
+  .aiLbl { color: #555; }
+  .aiDot { display: none; }
+  .aiTxt { color: #333; }
+
+  .alertBanner { background: #fff0f0; border: 2px solid #c00; }
+  .alertNumber { color: #c00; }
+  .alertUrgent { color: #c00; }
+  .sevGrid { grid-template-columns: repeat(6, 1fr); }
+  .sevCard { background: #f5f5f5; border: 1px solid #ddd; }
+  .sevNumber { color: #000 !important; }
+  .finding { background: #fff; border: 1px solid #ddd; border-radius: 6px; break-inside: avoid; page-break-inside: avoid; }
+  .evidence { background: #f5f5f5; border: 1px solid #ddd; color: #c00; }
+  .recommendation { background: #f0fff0; border-left: 3px solid #060; }
+  .prTable { background: #fff; border: 1px solid #ddd; }
+  .prTable th { background: #f5f5f5; color: #333; }
+  .prTable td { color: #000; }
+  .badge { color: #fff; }
+  .badgeMedium { color: #fff; }
+
+  .page, .page * { animation: none !important; transition: none !important; box-shadow: none !important; }
+}
+
+@media(max-width:480px) {
+  .wrap { padding: 0 16px; }
+  .hero { padding: 48px 0 32px; }
+  .hero h1 { font-size: 26px; letter-spacing: -1px; }
+  .sub { font-size: 13.5px; }
+  .inputRow { flex-direction: column; }
+  .statsBar { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .statVal { font-size: 20px; }
+  .statItem { padding: 18px 12px; }
+  .scores { grid-template-columns: repeat(2,1fr); }
+  .sevGrid { grid-template-columns: repeat(2, 1fr); }
+  .langChip { padding: 6px 12px; font-size: 11px; }
+}

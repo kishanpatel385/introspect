@@ -1,0 +1,9 @@
+id: js-unsafe-template
+language: [javascript, typescript]
+severity: high
+category: security
+pattern: "(?:ejs|pug|handlebars|mustache|nunjucks)\\.(?:render|compile)\\s*\\(.*(?:req\\.|body|params|query)"
+message: "Passing user input directly to template engine render functions can lead to Server-Side Template Injection (SSTI). An attacker can execute arbitrary code on the server by injecting template expressions. Always sanitize user input and never use it as part of the template string itself."
+fix:
+  bad: "ejs.render(req.body.template, data)"
+  good: "ejs.render(staticTemplate, { ...data, userInput: sanitize(req.body.input) })"

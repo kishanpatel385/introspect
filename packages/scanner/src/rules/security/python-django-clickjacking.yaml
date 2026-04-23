@@ -1,0 +1,9 @@
+id: python-django-clickjacking
+language: [python]
+severity: medium
+category: security
+pattern: "@xframe_options_exempt|X_FRAME_OPTIONS\\s*=\\s*['\"]ALLOWALL['\"]"
+message: "Disabling Django's clickjacking protection with @xframe_options_exempt or X_FRAME_OPTIONS=ALLOWALL allows the page to be embedded in iframes on any domain. An attacker can overlay invisible buttons to trick users into performing unintended actions. Keep X-Frame-Options set to DENY or SAMEORIGIN."
+fix:
+  bad: "X_FRAME_OPTIONS = 'ALLOWALL'"
+  good: "X_FRAME_OPTIONS = 'DENY'"

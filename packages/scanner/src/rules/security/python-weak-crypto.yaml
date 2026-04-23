@@ -1,0 +1,9 @@
+id: python-weak-crypto
+language: [python]
+severity: high
+category: security
+pattern: "\\b(?:DES|Blowfish|RC4|RC2|ARC4|IDEA)\\.new\\s*\\(|hashlib\\.(?:md5|sha1)\\s*\\("
+message: "Using deprecated cryptographic algorithms (DES, Blowfish, RC4, MD5, SHA1) provides inadequate security. These algorithms have known vulnerabilities and can be broken with modern computing power. Use AES-256-GCM for encryption and SHA-256 or SHA-3 for hashing."
+fix:
+  bad: "hashlib.md5(data).hexdigest()"
+  good: "hashlib.sha256(data).hexdigest()"

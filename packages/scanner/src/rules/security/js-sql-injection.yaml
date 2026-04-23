@@ -1,0 +1,9 @@
+id: js-sql-injection
+language: [javascript, typescript]
+severity: critical
+category: security
+pattern: "query\\s*\\(\\s*[`'\"].*\\$\\{|query\\s*\\(.*\\+\\s*\\w"
+message: "SQL query built with string concatenation or template literals is vulnerable to SQL injection attacks. An attacker can manipulate input to execute arbitrary SQL, leading to data theft, modification, or complete database compromise. Use parameterized queries with placeholder values instead of interpolating user input directly."
+fix:
+  bad: "db.query(`SELECT * FROM users WHERE id = ${userId}`)"
+  good: "db.query('SELECT * FROM users WHERE id = ?', [userId])"

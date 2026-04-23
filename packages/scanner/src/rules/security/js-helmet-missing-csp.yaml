@@ -1,0 +1,9 @@
+id: js-helmet-missing-csp
+language: [javascript, typescript]
+severity: medium
+category: security
+pattern: "helmet\\s*\\(\\s*\\{[^}]*contentSecurityPolicy\\s*:\\s*false"
+message: "Disabling Content Security Policy in Helmet removes a critical defense against XSS attacks. CSP prevents the browser from executing inline scripts and loading resources from unauthorized domains. Configure a strict CSP policy instead of disabling it entirely."
+fix:
+  bad: "app.use(helmet({ contentSecurityPolicy: false }))"
+  good: "app.use(helmet({ contentSecurityPolicy: { directives: { defaultSrc: [\"'self'\"], scriptSrc: [\"'self'\"] } } }))"

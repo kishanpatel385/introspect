@@ -1,0 +1,9 @@
+id: python-pickle-deserialization
+language: [python]
+severity: critical
+category: security
+pattern: "pickle\\.(loads?|Unpickler)\\s*\\(|shelve\\.open|marshal\\.loads?\\s*\\("
+message: "Data is deserialized using pickle, shelve, or marshal, which can execute arbitrary Python code during deserialization. An attacker can craft a malicious payload that runs system commands, installs backdoors, or exfiltrates data when unpickled. Use JSON or MessagePack for untrusted data, or if pickle is required, only deserialize from fully trusted and authenticated sources."
+fix:
+  bad: "data = pickle.loads(request.data)"
+  good: "data = json.loads(request.data)  # Safe for untrusted input"

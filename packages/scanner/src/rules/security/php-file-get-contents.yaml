@@ -1,0 +1,9 @@
+id: php-file-get-contents
+language: [php]
+severity: high
+category: security
+pattern: "file_get_contents\\s*\\(\\s*\\$_(GET|POST|REQUEST)"
+message: "Using file_get_contents() with user input enables SSRF and local file inclusion attacks. An attacker can read local files (file:///etc/passwd), access internal services, or use PHP stream wrappers (php://filter) to read source code. Validate URLs and restrict allowed protocols."
+fix:
+  bad: "file_get_contents($_GET['url'])"
+  good: "$url = filter_var($_GET['url'], FILTER_VALIDATE_URL); if (parse_url($url, PHP_URL_SCHEME) === 'https') file_get_contents($url);"

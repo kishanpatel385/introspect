@@ -1,0 +1,9 @@
+id: ruby-redirect-open
+language: [ruby]
+severity: high
+category: security
+pattern: "redirect_to\\s*(?:params|request|url_for.*params)"
+message: "Redirecting to user-controlled URLs enables open redirect attacks. An attacker can craft a URL that redirects victims to phishing or malware sites. Validate redirect URLs against an allowlist of paths or domains, or use only relative paths for redirects."
+fix:
+  bad: "redirect_to params[:return_url]"
+  good: "redirect_to URI.parse(params[:return_url]).path # relative path only"

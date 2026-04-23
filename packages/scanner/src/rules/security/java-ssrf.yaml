@@ -1,0 +1,9 @@
+id: java-ssrf
+language: [java]
+severity: high
+category: security
+pattern: "new\\s+URL\\s*\\(.*(?:getParameter|getHeader|request)|HttpURLConnection.*(?:getParameter|getHeader)"
+message: "Creating URLs from user input enables SSRF attacks. An attacker can access internal services, cloud metadata APIs, or scan internal networks. Validate URLs against an allowlist of domains and block private IP ranges before making requests."
+fix:
+  bad: "URL url = new URL(request.getParameter(\"url\")); url.openConnection();"
+  good: "URL url = new URL(request.getParameter(\"url\")); if (!isAllowedHost(url.getHost())) throw new SecurityException();"

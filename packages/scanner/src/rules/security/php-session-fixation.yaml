@@ -1,0 +1,9 @@
+id: php-session-fixation
+language: [php]
+severity: high
+category: security
+pattern: "session_id\\s*\\(\\s*\\$_(GET|POST|REQUEST|COOKIE)"
+message: "Setting session ID from user input enables session fixation attacks. An attacker can force a victim to use a known session ID, then hijack the session after the victim authenticates. Always regenerate the session ID after authentication using session_regenerate_id(true)."
+fix:
+  bad: "session_id($_GET['sid']); session_start();"
+  good: "session_start(); session_regenerate_id(true);"

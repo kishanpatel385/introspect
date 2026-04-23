@@ -1,0 +1,9 @@
+id: php-unsafe-upload
+language: [php]
+severity: high
+category: security
+pattern: "move_uploaded_file\\s*\\(\\s*\\$_FILES.*\\$_(GET|POST|REQUEST|FILES\\[.*\\]\\[.name.\\])"
+message: "Using the original filename from file uploads without sanitization allows path traversal and arbitrary file write. An attacker can upload PHP shells by manipulating the filename to include directory traversal sequences. Generate a random filename, validate the MIME type, and store uploads outside the web root."
+fix:
+  bad: "move_uploaded_file($_FILES['file']['tmp_name'], 'uploads/' . $_FILES['file']['name'])"
+  good: "$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION); $name = bin2hex(random_bytes(16)) . '.' . $ext; move_uploaded_file($_FILES['file']['tmp_name'], 'uploads/' . $name)"

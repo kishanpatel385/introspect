@@ -1,0 +1,9 @@
+id: python-format-string
+language: [python]
+severity: high
+category: security
+pattern: "(?:format|%)\\s*\\(.*(?:request\\.|input\\(|sys\\.argv)"
+message: "Python format strings with user input can leak internal data. The format method accesses object attributes and items, allowing an attacker to read sensitive data like secret keys, configuration, and internal state through {0.__class__.__init__.__globals__}. Use f-strings or % formatting with explicit values only."
+fix:
+  bad: "template.format(user_input)"
+  good: "f'Hello {sanitize(user_input)}'"

@@ -1,0 +1,9 @@
+id: ruby-open-uri
+language: [ruby]
+severity: high
+category: security
+pattern: "(?:open|URI\\.open|Kernel\\.open)\\s*\\(\\s*(?:params|request|\".*#\\{)"
+message: "Ruby's open() and URI.open() with user input can lead to SSRF or even command injection (Kernel.open with pipe character). An attacker can access internal services, read local files, or execute commands. Use URI.parse with scheme validation and Net::HTTP for HTTP requests."
+fix:
+  bad: "open(params[:url]).read"
+  good: "uri = URI.parse(params[:url]); raise 'Invalid' unless uri.is_a?(URI::HTTPS); Net::HTTP.get(uri)"

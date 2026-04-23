@@ -1,0 +1,9 @@
+id: python-marshal-load
+language: [python]
+severity: critical
+category: security
+pattern: "marshal\\.loads?\\s*\\("
+message: "Python's marshal module is not safe for untrusted data. Unlike pickle, marshal can cause crashes and undefined behavior when deserializing malformed data. The marshal format is not stable across Python versions and can execute arbitrary code through code objects. Use JSON or a safe serialization format."
+fix:
+  bad: "data = marshal.loads(user_input)"
+  good: "data = json.loads(user_input)"

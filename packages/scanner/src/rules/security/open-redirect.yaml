@@ -1,0 +1,9 @@
+id: open-redirect
+language: []
+severity: high
+category: security
+pattern: "(redirect|location\\.href|window\\.location|res\\.redirect)\\s*[=(]\\s*(req\\.|request\\.|params\\.|query\\.|\\$_GET|\\$_REQUEST)"
+message: "User input controls a redirect destination, creating an open redirect vulnerability. Attackers exploit this to redirect users to phishing sites that mimic your application, stealing credentials or distributing malware. Validate redirect URLs against an allowlist of trusted domains and reject any absolute URLs pointing to external hosts."
+fix:
+  bad: "res.redirect(req.query.returnUrl)"
+  good: "const safe = validateRedirectUrl(req.query.returnUrl, ALLOWED_DOMAINS); res.redirect(safe)"

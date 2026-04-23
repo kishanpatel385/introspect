@@ -1,0 +1,9 @@
+id: unvalidated-file-upload
+language: []
+severity: high
+category: security
+pattern: "multer\\s*\\(\\s*\\{[^}]*(?!fileFilter)|upload\\.single|upload\\.array|move_uploaded_file|req\\.files?\\."
+message: "Files are accepted for upload without proper validation of type, size, or filename. An attacker can upload malicious executables, web shells, or oversized files to compromise the server or exhaust storage. Validate file extensions against an allowlist, check magic bytes (not just MIME type), enforce size limits, and sanitize filenames to prevent path traversal."
+fix:
+  bad: "upload.single('file')"
+  good: "upload.single('file') with fileFilter checking mimetype, limits: { fileSize: 5MB }"

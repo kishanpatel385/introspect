@@ -1,0 +1,9 @@
+id: go-tls-insecure
+language: [go]
+severity: high
+category: security
+pattern: "InsecureSkipVerify\\s*:\\s*true"
+message: "Setting InsecureSkipVerify to true disables TLS certificate verification, making connections vulnerable to man-in-the-middle attacks. An attacker on the network can intercept and modify all traffic. Configure proper CA certificates or use a custom VerifyPeerCertificate function instead."
+fix:
+  bad: "&tls.Config{InsecureSkipVerify: true}"
+  good: "&tls.Config{RootCAs: certPool}"

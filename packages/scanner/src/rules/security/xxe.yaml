@@ -1,0 +1,9 @@
+id: xxe
+language: [java, python, php]
+severity: critical
+category: security
+pattern: "DocumentBuilderFactory|XMLReader|SAXParser|etree\\.parse\\s*\\(|simplexml_load|DOMDocument.*loadXML|XMLParser\\s*\\("
+message: "XML is parsed without disabling external entity resolution, making it vulnerable to XXE (XML External Entity) attacks. An attacker can read local files, perform SSRF, or cause denial of service by sending crafted XML with malicious entity definitions. Disable external entities and DTD processing in the parser configuration before parsing any XML input."
+fix:
+  bad: "DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(input)"
+  good: "factory.setFeature(\"http://apache.org/xml/features/disallow-doctype-decl\", true)"

@@ -1,0 +1,9 @@
+id: ruby-sql-injection
+language: [ruby]
+severity: critical
+category: security
+pattern: "\\.where\\s*\\(\\s*\".*#\\{|find_by_sql\\s*\\(\\s*\".*#\\{|execute\\s*\\(\\s*\".*#\\{"
+message: "String interpolation inside an ActiveRecord query allows SQL injection through user-controlled values. An attacker can break out of the query and execute arbitrary SQL, potentially accessing or destroying data. Use hash conditions (where(name: value)) or array syntax (where('name = ?', value)) instead of string interpolation."
+fix:
+  bad: "User.where(\"name = '#{params[:name]}'\")"
+  good: "User.where(name: params[:name])"

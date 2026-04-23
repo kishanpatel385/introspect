@@ -1,0 +1,9 @@
+id: hardcoded-ip
+language: []
+severity: medium
+category: security
+pattern: "['\"]\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}['\"]"
+message: "An IP address is hardcoded directly in source code. Hardcoded IPs break when infrastructure changes, make environment-specific deployments impossible, and can expose internal network topology to attackers. Move IP addresses to environment variables or configuration files that vary per deployment environment."
+fix:
+  bad: "const host = '192.168.1.100'"
+  good: "const host = process.env.DB_HOST"

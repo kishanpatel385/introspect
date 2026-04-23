@@ -1,0 +1,9 @@
+id: php-xpath-injection
+language: [php]
+severity: high
+category: security
+pattern: "(?:xpath|query)\\s*\\(\\s*['\"].*\\$_(GET|POST|REQUEST)"
+message: "Including user input in XPath queries enables XPath injection. An attacker can modify the query to bypass authentication or extract XML data. Similar to SQL injection but targets XML document stores. Use parameterized XPath queries or sanitize input by escaping special XPath characters."
+fix:
+  bad: "$xml->xpath(\"//user[@name='$_GET[name]']\")"
+  good: "$name = htmlspecialchars($_GET['name'], ENT_XML1); $xml->xpath(\"//user[@name='$name']\")"

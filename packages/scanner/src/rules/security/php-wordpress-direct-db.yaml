@@ -1,0 +1,9 @@
+id: php-wordpress-direct-db
+language: [php]
+severity: critical
+category: security
+pattern: "\\$wpdb->query\\s*\\(\\s*[\"'].*\\$|\\$wpdb->get_(?:results|row|var|col)\\s*\\(\\s*[\"'].*\\$"
+message: "Using WordPress $wpdb methods with variable interpolation creates SQL injection vulnerabilities. Even though $wpdb provides a database abstraction, string interpolation bypasses its protections. Use $wpdb->prepare() with placeholders for all variable data."
+fix:
+  bad: "$wpdb->query(\"DELETE FROM wp_posts WHERE ID = $id\")"
+  good: "$wpdb->query($wpdb->prepare('DELETE FROM wp_posts WHERE ID = %d', $id))"

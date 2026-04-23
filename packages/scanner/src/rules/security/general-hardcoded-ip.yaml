@@ -1,0 +1,9 @@
+id: general-hardcoded-ip-internal
+language: []
+severity: medium
+category: security
+pattern: "(?:10\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}|172\\.(?:1[6-9]|2\\d|3[01])\\.\\d{1,3}\\.\\d{1,3}|192\\.168\\.\\d{1,3}\\.\\d{1,3})(?!.*(?:example|test|mock|spec|fixture))"
+message: "Hardcoded internal IP addresses expose network topology and make infrastructure changes difficult. These IPs may also become stale as infrastructure evolves. Use DNS names, service discovery, or environment variables for service addresses."
+fix:
+  bad: "const dbHost = '10.0.1.42'"
+  good: "const dbHost = process.env.DB_HOST"

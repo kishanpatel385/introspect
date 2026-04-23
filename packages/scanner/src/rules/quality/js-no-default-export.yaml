@@ -1,0 +1,9 @@
+id: js-no-default-export
+language: [javascript, typescript]
+severity: low
+category: quality
+pattern: "export\\s+default\\s+(?:function|class|const)"
+message: "Default exports make refactoring harder because the import name is arbitrary and not connected to the exported symbol. This leads to inconsistent naming across the codebase and makes find-and-replace unreliable. Prefer named exports for better IDE support and refactoring."
+fix:
+  bad: "export default function processData() { }"
+  good: "export function processData() { }"

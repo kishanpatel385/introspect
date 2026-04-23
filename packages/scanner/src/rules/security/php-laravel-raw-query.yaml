@@ -1,0 +1,9 @@
+id: php-laravel-raw-query
+language: [php]
+severity: critical
+category: security
+pattern: "DB::raw\\s*\\(.*\\$|->whereRaw\\s*\\(.*\\$|->selectRaw\\s*\\(.*\\$|->orderByRaw\\s*\\(.*\\$"
+message: "Using Laravel DB::raw(), whereRaw(), selectRaw(), or orderByRaw() with variable interpolation bypasses Eloquent's SQL injection protection. An attacker can inject SQL through the raw expression. Use bindings as the second parameter to raw methods."
+fix:
+  bad: "DB::raw(\"SELECT * FROM users WHERE name = '$name'\")"
+  good: "DB::select('SELECT * FROM users WHERE name = ?', [$name])"

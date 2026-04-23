@@ -1,0 +1,9 @@
+id: js-http-no-tls
+language: [javascript, typescript]
+severity: medium
+category: security
+pattern: "require\\s*\\(\\s*['\"]http['\"]\\s*\\)\\.createServer|http\\.createServer\\s*\\("
+message: "Creating an HTTP server without TLS exposes all traffic to eavesdropping and man-in-the-middle attacks. Credentials, tokens, and sensitive data are transmitted in plaintext. Use https.createServer with TLS certificates, or deploy behind a TLS-terminating reverse proxy."
+fix:
+  bad: "http.createServer(app).listen(3000)"
+  good: "https.createServer({ key: fs.readFileSync('key.pem'), cert: fs.readFileSync('cert.pem') }, app).listen(3000)"

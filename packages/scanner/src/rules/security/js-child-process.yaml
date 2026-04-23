@@ -1,0 +1,9 @@
+id: js-child-process
+language: [javascript, typescript]
+severity: critical
+category: security
+pattern: "(?:child_process|require\\s*\\(\\s*['\"]child_process['\"]\\)).*(?:exec|execSync|spawn|spawnSync)\\s*\\(|(?:exec|execSync)\\s*\\(\\s*(?:[`'\"].*\\$\\{|[^)]+\\+)"
+message: "Executing shell commands with child_process using string interpolation or concatenation is vulnerable to command injection. An attacker can inject shell metacharacters to execute arbitrary commands on the server. Use execFile or spawn with an arguments array, and never pass user input to exec or execSync."
+fix:
+  bad: "exec(`rm -rf ${userPath}`)"
+  good: "execFile('rm', ['-rf', userPath])"

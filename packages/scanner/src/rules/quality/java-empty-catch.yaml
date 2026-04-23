@@ -1,0 +1,9 @@
+id: java-empty-catch
+language: [java]
+severity: high
+category: quality
+pattern: "catch\\s*\\([^)]+\\)\\s*\\{\\s*\\}"
+message: "Empty catch blocks silently swallow exceptions, hiding errors that may lead to data corruption or incorrect behavior. Exceptions in Java should always be logged, rethrown, or explicitly documented. At minimum, log the exception at the appropriate level."
+fix:
+  bad: "catch (IOException e) { }"
+  good: "catch (IOException e) { logger.error(\"IO operation failed\", e); throw new ServiceException(\"Operation failed\", e); }"

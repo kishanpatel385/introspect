@@ -1,0 +1,9 @@
+id: go-defer-unlock
+language: [go]
+severity: medium
+category: security
+pattern: "\\.Lock\\s*\\(\\)(?!\\s*\\n\\s*defer\\s)"
+message: "Calling Lock() without an immediately following defer Unlock() creates a risk of deadlock if the function returns early or panics. A deadlock causes the entire application to hang, resulting in denial of service. Always pair Lock() with defer Unlock() on the next line."
+fix:
+  bad: "mu.Lock(); if err != nil { return err }; mu.Unlock()"
+  good: "mu.Lock(); defer mu.Unlock(); if err != nil { return err }"

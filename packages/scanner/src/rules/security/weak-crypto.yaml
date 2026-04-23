@@ -1,0 +1,9 @@
+id: weak-crypto
+language: []
+severity: high
+category: security
+pattern: "\\b(md5|sha1|DES|RC4)\\b|createHash\\(['\"]md5['\"]\\)|createHash\\(['\"]sha1['\"]\\)|hashlib\\.(md5|sha1)\\("
+message: "A weak or deprecated cryptographic algorithm (MD5, SHA-1, DES, RC4) is being used. These algorithms have known collision and preimage vulnerabilities, making them unsuitable for security-sensitive operations. Use SHA-256 or SHA-3 for hashing, AES-256 for encryption, and bcrypt/argon2 for password hashing."
+fix:
+  bad: "crypto.createHash('md5').update(data).digest('hex')"
+  good: "crypto.createHash('sha256').update(data).digest('hex')"

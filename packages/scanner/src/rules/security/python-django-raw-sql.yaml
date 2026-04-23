@@ -1,0 +1,9 @@
+id: python-django-raw-sql
+language: [python]
+severity: critical
+category: security
+pattern: "(?:raw|extra)\\s*\\(\\s*['\"].*%s.*['\"].*%|cursor\\.execute\\s*\\(\\s*[f'\"].*\\{|cursor\\.execute\\s*\\(.*%\\s*\\("
+message: "Using Django raw SQL with string formatting (% or f-strings) creates SQL injection vulnerabilities. An attacker can escape the query and execute arbitrary SQL commands. Use parameterized queries with Django's raw() or cursor.execute() passing parameters as the second argument."
+fix:
+  bad: "cursor.execute(f\"SELECT * FROM users WHERE id = {user_id}\")"
+  good: "cursor.execute('SELECT * FROM users WHERE id = %s', [user_id])"

@@ -1,0 +1,9 @@
+id: ruby-mass-assignment
+language: [ruby]
+severity: high
+category: security
+pattern: "\\.(?:create|update|new|assign_attributes)\\s*\\(\\s*params(?!\\s*\\.(?:require|permit))"
+message: "Passing raw params to ActiveRecord create/update without strong parameters enables mass assignment. An attacker can set fields like admin, role, or balance by adding extra form parameters. Always use strong parameters with require().permit() to whitelist allowed attributes."
+fix:
+  bad: "User.create(params[:user])"
+  good: "User.create(params.require(:user).permit(:name, :email))"

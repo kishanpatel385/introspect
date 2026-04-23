@@ -1,0 +1,9 @@
+id: python-ssrf
+language: [python]
+severity: high
+category: security
+pattern: "requests\\.(?:get|post|put|delete|head|patch)\\s*\\(\\s*(?:request\\.|f['\"]|.*format\\(|.*\\+)"
+message: "Making HTTP requests with user-controlled URLs enables Server-Side Request Forgery (SSRF). An attacker can access internal services, cloud metadata endpoints (169.254.169.254), or local resources. Validate URLs against an allowlist of domains and block internal IP ranges."
+fix:
+  bad: "requests.get(request.args['url'])"
+  good: "url = validate_url(request.args['url'], allowed_domains=['api.example.com']); requests.get(url)"

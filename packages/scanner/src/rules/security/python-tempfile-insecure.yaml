@@ -1,0 +1,9 @@
+id: python-tempfile-insecure
+language: [python]
+severity: medium
+category: security
+pattern: "tempfile\\.mk(?:temp|stemp)\\s*\\("
+message: "tempfile.mktemp() creates a race condition between file name generation and file creation. An attacker can create a symlink at the predicted path to hijack the file operation. Use tempfile.mkstemp() (which returns an open file descriptor) or tempfile.NamedTemporaryFile() for safe temporary file creation."
+fix:
+  bad: "filename = tempfile.mktemp(); open(filename, 'w')"
+  good: "fd, filename = tempfile.mkstemp(); os.write(fd, data); os.close(fd)"

@@ -1,0 +1,9 @@
+id: php-ldap-injection
+language: [php]
+severity: critical
+category: security
+pattern: "ldap_search\\s*\\(.*\\$_(GET|POST|REQUEST)|ldap_bind\\s*\\(.*\\$_(GET|POST|REQUEST)"
+message: "User input in LDAP queries enables LDAP injection. An attacker can modify the LDAP query to bypass authentication, extract directory information, or modify LDAP entries. Escape special LDAP characters using ldap_escape() and validate input against expected formats."
+fix:
+  bad: "ldap_search($conn, $baseDn, \"(uid=$_POST[user])\")"
+  good: "ldap_search($conn, $baseDn, '(uid=' . ldap_escape($_POST['user'], '', LDAP_ESCAPE_FILTER) . ')')"

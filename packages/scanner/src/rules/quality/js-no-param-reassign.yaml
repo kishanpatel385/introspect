@@ -1,0 +1,9 @@
+id: js-no-param-reassign
+language: [javascript, typescript]
+severity: medium
+category: quality
+pattern: "function\\s+\\w+\\s*\\([^)]*\\b(\\w+)\\b[^)]*\\)\\s*\\{[^}]*\\1\\s*="
+message: "Reassigning function parameters makes the code harder to reason about and can mask the original value. It creates confusion about whether the function modifies its inputs. Use a new variable for modified values to maintain clarity about parameter vs. computed values."
+fix:
+  bad: "function process(items) { items = items.filter(Boolean); return items; }"
+  good: "function process(items) { const filtered = items.filter(Boolean); return filtered; }"

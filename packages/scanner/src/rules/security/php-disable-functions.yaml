@@ -1,0 +1,9 @@
+id: php-disable-functions
+language: [php]
+severity: high
+category: security
+pattern: "ini_set\\s*\\(\\s*['\"]disable_functions['\"]\\s*,\\s*['\"]['\"]\\)"
+message: "Clearing disable_functions re-enables dangerous PHP functions that were disabled for security. Functions like exec, system, passthru, and shell_exec should remain disabled in production to limit the impact of code injection vulnerabilities."
+fix:
+  bad: "ini_set('disable_functions', '');"
+  good: "// Keep disable_functions configured in php.ini with: exec,passthru,shell_exec,system,proc_open,popen"

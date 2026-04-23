@@ -1,0 +1,9 @@
+id: csharp-viewstate-mac
+language: [csharp]
+severity: critical
+category: security
+pattern: "EnableViewStateMac\\s*=\\s*['\"]?false|ViewStateEncryptionMode\\s*=\\s*['\"]?Never"
+message: "Disabling ViewState MAC validation or encryption in ASP.NET allows ViewState tampering. An attacker can modify serialized ViewState to inject malicious objects, potentially achieving remote code execution. Always keep EnableViewStateMac=true and encrypt ViewState."
+fix:
+  bad: "EnableViewStateMac=\"false\""
+  good: "EnableViewStateMac=\"true\" ViewStateEncryptionMode=\"Always\""

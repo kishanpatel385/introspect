@@ -1,0 +1,9 @@
+id: js-no-ts-ignore
+language: [typescript]
+severity: medium
+category: quality
+pattern: "@ts-ignore|@ts-nocheck"
+message: "Using @ts-ignore or @ts-nocheck suppresses TypeScript errors, hiding potential bugs and type safety issues. These comments often mask real problems that should be fixed. Use @ts-expect-error instead (which errors if there is no actual error), or fix the underlying type issue."
+fix:
+  bad: "// @ts-ignore\nconst value = unsafeFunction();"
+  good: "// @ts-expect-error - Documented reason for suppression\nconst value = unsafeFunction();"

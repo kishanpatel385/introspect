@@ -1,0 +1,9 @@
+id: js-unsafe-target-blank
+language: [javascript, typescript]
+severity: low
+category: security
+pattern: "target\\s*=\\s*['\"]_blank['\"](?!.*rel\\s*=\\s*['\"].*noopener)"
+message: "Links with target=_blank without rel='noopener noreferrer' allow the opened page to access window.opener, potentially redirecting the original page to a phishing site (reverse tabnabbing). Modern browsers mitigate this for anchor tags, but programmatic window.open still requires explicit noopener."
+fix:
+  bad: "<a href={url} target='_blank'>Link</a>"
+  good: "<a href={url} target='_blank' rel='noopener noreferrer'>Link</a>"

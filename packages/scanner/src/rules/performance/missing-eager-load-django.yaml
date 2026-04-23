@@ -1,0 +1,9 @@
+id: missing-eager-load-django
+language: [python]
+severity: high
+category: performance
+pattern: "for\\s+\\w+\\s+in\\s+\\w+\\.(objects|all|filter)\\s*\\(|for\\s+\\w+\\s+in\\s+queryset"
+message: "Iterating over a Django queryset without select_related or prefetch_related triggers a separate database query for each related object accessed in the loop. This N+1 pattern can turn a single page load into hundreds of database queries, causing severe performance degradation. Add select_related() for foreign key relationships or prefetch_related() for many-to-many and reverse relations."
+fix:
+  bad: "for post in Post.objects.all(): print(post.author.name)"
+  good: "for post in Post.objects.select_related('author').all(): print(post.author.name)"

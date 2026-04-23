@@ -1,0 +1,9 @@
+id: xss-innerhtml
+language: [javascript, typescript]
+severity: high
+category: security
+pattern: "(innerHTML|outerHTML)\\s*=|dangerouslySetInnerHTML"
+message: "Setting innerHTML or dangerouslySetInnerHTML injects raw HTML into the DOM, creating a cross-site scripting (XSS) vulnerability. An attacker can inject malicious scripts that steal cookies, session tokens, or redirect users to phishing sites. Sanitize content with DOMPurify before rendering, or use textContent for plain text output."
+fix:
+  bad: "element.innerHTML = userInput"
+  good: "element.textContent = userInput // or DOMPurify.sanitize(userInput)"

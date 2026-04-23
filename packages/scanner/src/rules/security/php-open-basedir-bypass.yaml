@@ -1,0 +1,9 @@
+id: php-open-basedir-bypass
+language: [php]
+severity: high
+category: security
+pattern: "\\b(?:symlink|link|realpath|glob)\\s*\\(.*\\$_(GET|POST|REQUEST)"
+message: "Functions like symlink(), glob(), and realpath() with user input can bypass open_basedir restrictions and access files outside the allowed directory. An attacker can create symbolic links or enumerate file paths to read sensitive files. Validate file paths against an allowlist and canonicalize paths before use."
+fix:
+  bad: "symlink($_GET['target'], '/tmp/link')"
+  good: "$safePath = realpath($basePath . '/' . basename($_GET['file'])); if (strpos($safePath, $basePath) === 0) { /* safe */ }"

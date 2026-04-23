@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#161b22"/>
+      <stop offset="100%" style="stop-color:#0a0e14"/>
+    </linearGradient>
+    <linearGradient id="acc" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0885a"/>
+      <stop offset="100%" style="stop-color:#e8734a"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="108" fill="url(#bg)"/>
+  <!-- Magnifying glass handle -->
+  <line x1="330" y1="330" x2="420" y2="420" stroke="#e8734a" stroke-width="36" stroke-linecap="round"/>
+  <!-- Glass circle -->
+  <circle cx="220" cy="220" r="135" fill="none" stroke="#e8734a" stroke-width="28"/>
+  <!-- Glass inner glow -->
+  <circle cx="220" cy="220" r="110" fill="rgba(232,115,74,0.06)"/>
+  <!-- Code bracket left -->
+  <path d="M185 170 L155 220 L185 270" fill="none" stroke="#f0885a" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Code bracket right -->
+  <path d="M255 170 L285 220 L255 270" fill="none" stroke="#f0885a" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Slash -->
+  <line x1="235" y1="165" x2="205" y2="275" stroke="#e8734a" stroke-width="12" stroke-linecap="round" opacity="0.7"/>
+</svg>

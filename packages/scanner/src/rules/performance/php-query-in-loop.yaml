@@ -1,0 +1,9 @@
+id: php-query-in-loop
+language: [php]
+severity: high
+category: performance
+pattern: "(?:for|foreach|while)\\s*\\(.*\\)\\s*\\{[^}]*(?:query|execute|find|where|select)"
+message: "Executing database queries inside loops creates an N+1 query problem. Each iteration sends a separate query, causing excessive database round-trips and connection overhead. Use eager loading, JOINs, or batch queries with WHERE IN clauses to fetch related data in a single query."
+fix:
+  bad: "foreach ($userIds as $id) { $user = User::find($id); }"
+  good: "$users = User::whereIn('id', $userIds)->get();"

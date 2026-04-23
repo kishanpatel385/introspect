@@ -1,0 +1,9 @@
+id: js-no-return-await
+language: [javascript, typescript]
+severity: low
+category: quality
+pattern: "return\\s+await\\s+"
+message: "Using 'return await' in an async function adds an unnecessary microtask. Since async functions already wrap the return value in a Promise, the await is redundant unless inside a try-catch block. Remove await when directly returning a promise."
+fix:
+  bad: "async function getData() { return await fetchData(); }"
+  good: "async function getData() { return fetchData(); }"

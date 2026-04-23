@@ -1,0 +1,9 @@
+id: kotlin-webview-js
+language: [kotlin, java]
+severity: high
+category: security
+pattern: "setJavaScriptEnabled\\s*\\(\\s*true|addJavascriptInterface"
+message: "JavaScript is enabled in a WebView or a JavaScript interface is exposed to web content, creating XSS and code injection risks on Android. An attacker can execute arbitrary JavaScript that accesses exposed Java/Kotlin methods, potentially reading device data or performing privileged operations. Only enable JavaScript for trusted URLs, validate all loaded content with shouldOverrideUrlLoading, and minimize the exposed interface surface."
+fix:
+  bad: "webView.settings.javaScriptEnabled = true"
+  good: "// Only enable for trusted URLs. Use WebViewClient.shouldOverrideUrlLoading to validate."

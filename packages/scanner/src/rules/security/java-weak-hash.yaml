@@ -1,0 +1,9 @@
+id: java-weak-hash
+language: [java]
+severity: high
+category: security
+pattern: "MessageDigest\\.getInstance\\s*\\(\\s*\"(?:MD5|SHA-1|SHA1)\"\\s*\\)"
+message: "MD5 and SHA-1 are cryptographically broken hash algorithms with known collision attacks. MD5 collisions can be generated in seconds. Use SHA-256 or SHA-3 for integrity checks, and bcrypt/scrypt/Argon2 for password hashing."
+fix:
+  bad: "MessageDigest.getInstance(\"MD5\")"
+  good: "MessageDigest.getInstance(\"SHA-256\")"

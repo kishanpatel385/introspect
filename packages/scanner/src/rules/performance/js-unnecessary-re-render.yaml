@@ -1,0 +1,9 @@
+id: js-unnecessary-re-render
+language: [javascript, typescript]
+severity: medium
+category: performance
+pattern: "(?:useState|setState)\\s*\\(\\s*\\{|(?:useState|setState)\\s*\\(\\s*\\[(?!\\])"
+message: "Creating new objects or arrays in useState initializer or setState causes unnecessary re-renders since React compares by reference. Every render creates a new reference even if the data has not changed. Use useMemo, useCallback, or extract the value to prevent reference changes."
+fix:
+  bad: "const [config, setConfig] = useState({ theme: 'dark' })"
+  good: "const defaultConfig = useMemo(() => ({ theme: 'dark' }), []); const [config, setConfig] = useState(defaultConfig)"

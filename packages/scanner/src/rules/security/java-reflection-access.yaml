@@ -1,0 +1,9 @@
+id: java-reflection-access
+language: [java]
+severity: high
+category: security
+pattern: "Class\\.forName\\s*\\(.*(?:getParameter|request\\.|getHeader)|setAccessible\\s*\\(\\s*true\\s*\\)"
+message: "Using reflection with user-controlled class names allows arbitrary class loading and method invocation. Setting setAccessible(true) bypasses Java's access controls, exposing private fields and methods. Validate class names against a strict allowlist and avoid setAccessible in production code."
+fix:
+  bad: "Class.forName(request.getParameter(\"class\")).newInstance()"
+  good: "Map<String, Class<?>> allowed = Map.of(\"json\", JsonParser.class); Class<?> cls = allowed.get(input);"

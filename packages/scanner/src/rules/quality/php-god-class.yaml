@@ -1,0 +1,9 @@
+id: php-god-class
+language: [php]
+severity: medium
+category: quality
+pattern: "class\\s+\\w+[^{]*\\{(?:[^}]*(?:public|private|protected)\\s+function){15,}"
+message: "Classes with many methods violate the Single Responsibility Principle and are difficult to test, understand, and maintain. This 'god class' antipattern indicates the class handles too many concerns. Extract related methods into focused service classes or traits."
+fix:
+  bad: "class UserService { /* 20+ methods for auth, profile, billing, notifications */ }"
+  good: "class AuthService { } class ProfileService { } class BillingService { }"

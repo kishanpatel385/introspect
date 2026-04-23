@@ -1,0 +1,9 @@
+id: php-type-juggling
+language: [php]
+severity: high
+category: security
+pattern: "\\$_(GET|POST|REQUEST|COOKIE)\\s*\\[.*\\]\\s*==\\s*['\"]|['\"]\\s*==\\s*\\$_(GET|POST|REQUEST|COOKIE)"
+message: "Using loose comparison (==) with user input in PHP causes type juggling vulnerabilities. Strings like '0e123' compare equal to 0, and 'true' can match any non-empty string. This can bypass authentication and authorization checks. Always use strict comparison (===) with user input."
+fix:
+  bad: "if ($_POST['password'] == $storedHash)"
+  good: "if (hash_equals($storedHash, $_POST['password']))"

@@ -1,0 +1,9 @@
+id: js-insecure-cookie
+language: [javascript, typescript]
+severity: high
+category: security
+pattern: "(?:cookie|setCookie|set-cookie).*(?:secure\\s*:\\s*false|httpOnly\\s*:\\s*false|sameSite\\s*:\\s*['\"]none['\"])"
+message: "Setting cookies with secure:false, httpOnly:false, or sameSite:none weakens session security. Without secure, cookies are sent over HTTP. Without httpOnly, JavaScript can steal them via XSS. SameSite:none allows cross-site request forgery. Set secure:true, httpOnly:true, and sameSite:strict or lax."
+fix:
+  bad: "res.cookie('session', token, { httpOnly: false, secure: false })"
+  good: "res.cookie('session', token, { httpOnly: true, secure: true, sameSite: 'strict' })"

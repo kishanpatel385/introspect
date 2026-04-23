@@ -1,0 +1,9 @@
+id: java-raw-type
+language: [java]
+severity: medium
+category: quality
+pattern: "(?:List|Map|Set|Collection|Queue|Deque|Iterator)\\s+\\w+\\s*=\\s*new\\s+(?:Array|Hash|Tree|Linked)"
+message: "Using raw types (List, Map, Set without type parameters) disables compile-time type checking. The compiler cannot verify element types, leading to ClassCastException at runtime. Always parameterize collection types for type safety."
+fix:
+  bad: "List users = new ArrayList();"
+  good: "List<User> users = new ArrayList<>();"

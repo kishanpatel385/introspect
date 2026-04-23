@@ -1,0 +1,9 @@
+id: js-drizzle-raw
+language: [javascript, typescript]
+severity: critical
+category: security
+pattern: "sql\\.raw\\s*\\(\\s*[`'\"].*\\$\\{|sql\\.raw\\s*\\(.*\\+"
+message: "Using sql.raw() in Drizzle ORM with string interpolation bypasses parameterization and enables SQL injection. An attacker can inject malicious SQL through user input. Use the sql template tag or Drizzle's query builder which automatically parameterize values."
+fix:
+  bad: "db.execute(sql.raw(`SELECT * FROM users WHERE id = ${id}`))"
+  good: "db.execute(sql`SELECT * FROM users WHERE id = ${id}`)"

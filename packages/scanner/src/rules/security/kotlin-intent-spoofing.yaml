@@ -1,0 +1,9 @@
+id: kotlin-intent-spoofing
+language: [kotlin]
+severity: high
+category: security
+pattern: "intent\\.getStringExtra\\s*\\(|intent\\.getData\\s*\\(|intent\\.extras"
+message: "Reading data from Android intents without validating the sender allows intent spoofing. A malicious app can send crafted intents to your exported activities with fake data. Validate intent data and restrict component exports with android:exported=false when possible."
+fix:
+  bad: "val data = intent.getStringExtra(\"url\"); webView.loadUrl(data)"
+  good: "val data = intent.getStringExtra(\"url\"); if (isValidUrl(data)) webView.loadUrl(data)"

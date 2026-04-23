@@ -1,0 +1,9 @@
+id: js-mongoose-injection
+language: [javascript, typescript]
+severity: critical
+category: security
+pattern: "\\.find\\s*\\(\\s*(?:req\\.body|req\\.query|req\\.params)|\\$where\\s*:|\\$regex\\s*:"
+message: "Passing user input directly to Mongoose query methods enables NoSQL injection. An attacker can use operators like $gt, $regex, or $where to bypass authentication, extract data, or execute arbitrary JavaScript. Always validate and sanitize query parameters using a schema validator like Joi or express-mongo-sanitize."
+fix:
+  bad: "User.find(req.query)"
+  good: "User.find({ email: String(req.query.email) })"

@@ -1,0 +1,9 @@
+id: js-cookie-no-samesite
+language: [javascript, typescript]
+severity: medium
+category: security
+pattern: "(?:setCookie|cookie|Set-Cookie)(?!.*[Ss]ame[Ss]ite)"
+message: "Cookies without SameSite attribute are sent with cross-site requests by default in older browsers, enabling CSRF attacks. Modern browsers default to SameSite=Lax, but explicitly setting it ensures consistent behavior. Set SameSite=Strict for authentication cookies."
+fix:
+  bad: "res.cookie('token', value, { httpOnly: true, secure: true })"
+  good: "res.cookie('token', value, { httpOnly: true, secure: true, sameSite: 'strict' })"

@@ -1,0 +1,9 @@
+id: go-gin-bind-all
+language: [go]
+severity: high
+category: security
+pattern: "ShouldBind\\s*\\(|Bind\\s*\\(|ShouldBindJSON\\s*\\(.*\\)(?!.*validate)"
+message: "Binding all request fields to a struct without validation allows mass assignment in Go web frameworks. An attacker can set fields like IsAdmin or Balance by adding extra JSON keys. Use binding tags to control which fields are bindable and validate all input."
+fix:
+  bad: "c.ShouldBindJSON(&user)"
+  good: "var input CreateUserInput; c.ShouldBindJSON(&input); // Use a separate input struct with only allowed fields"

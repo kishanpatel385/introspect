@@ -1,0 +1,9 @@
+id: kotlin-sql-injection
+language: [kotlin]
+severity: critical
+category: security
+pattern: "rawQuery\\s*\\(\\s*\".*\\$|execSQL\\s*\\(\\s*\".*\\$|createQuery\\s*\\(\\s*\".*\\$"
+message: "SQL query built with Kotlin string templates is vulnerable to SQL injection. An attacker can manipulate input to execute arbitrary SQL, leading to data theft or database compromise. Use parameterized queries with placeholder values for all user-supplied data."
+fix:
+  bad: "db.rawQuery(\"SELECT * FROM users WHERE id = $userId\", null)"
+  good: "db.rawQuery(\"SELECT * FROM users WHERE id = ?\", arrayOf(userId))"

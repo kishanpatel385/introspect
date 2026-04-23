@@ -1,0 +1,9 @@
+id: js-jwt-none-algo
+language: [javascript, typescript]
+severity: critical
+category: security
+pattern: "algorithms\\s*:\\s*\\[.*['\"]none['\"]|jwt\\.verify\\s*\\([^,]+,\\s*['\"]['\"]"
+message: "Allowing the 'none' algorithm in JWT verification or using an empty secret lets attackers forge tokens without any signature. This completely bypasses authentication. Always specify allowed algorithms explicitly and never include 'none'. Use RS256 or HS256 with a strong secret."
+fix:
+  bad: "jwt.verify(token, secret, { algorithms: ['none', 'HS256'] })"
+  good: "jwt.verify(token, secret, { algorithms: ['HS256'] })"

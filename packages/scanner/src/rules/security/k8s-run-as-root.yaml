@@ -1,0 +1,9 @@
+id: k8s-run-as-root
+language: []
+severity: high
+category: security
+pattern: "runAsUser\\s*:\\s*0|runAsNonRoot\\s*:\\s*false"
+message: "Running Kubernetes pods as root (UID 0) increases the blast radius of container escapes. If an attacker breaks out of the container, they have root access on the host. Set runAsNonRoot:true and specify a non-root runAsUser in the pod security context."
+fix:
+  bad: "securityContext: { runAsUser: 0 }"
+  good: "securityContext: { runAsNonRoot: true, runAsUser: 1000 }"

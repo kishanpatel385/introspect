@@ -1,0 +1,9 @@
+id: python-bare-except
+language: [python]
+severity: medium
+category: quality
+pattern: "except\\s*:"
+message: "Bare except clauses catch all exceptions including SystemExit, KeyboardInterrupt, and GeneratorExit, hiding bugs and preventing graceful shutdowns. This makes debugging extremely difficult. Catch specific exception types or at minimum use 'except Exception:' to exclude system-level interrupts."
+fix:
+  bad: "try: risky() except: pass"
+  good: "try: risky() except ValueError as e: logger.error(e)"

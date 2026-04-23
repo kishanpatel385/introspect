@@ -1,0 +1,9 @@
+id: js-no-index-key
+language: [javascript, typescript]
+severity: medium
+category: performance
+pattern: "\\.map\\s*\\(\\s*\\(\\s*\\w+\\s*,\\s*(i|idx|index|key)\\s*\\).*key\\s*[=:]\\s*\\1\\b"
+message: "Using array index as React key causes incorrect DOM reconciliation when items are reordered, added, or removed. React reuses components by key, so index-based keys cause state to be applied to the wrong elements. Use a unique stable identifier from the data instead."
+fix:
+  bad: "items.map((item, index) => <Item key={index} data={item} />)"
+  good: "items.map(item => <Item key={item.id} data={item} />)"

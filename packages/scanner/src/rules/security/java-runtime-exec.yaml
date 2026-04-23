@@ -1,0 +1,9 @@
+id: java-runtime-exec
+language: [java]
+severity: critical
+category: security
+pattern: "Runtime\\.getRuntime\\(\\)\\.exec\\s*\\(|ProcessBuilder\\s*\\(.*\\+|ProcessBuilder\\s*\\(\\s*\"(?:sh|bash|cmd)\""
+message: "Using Runtime.exec() or ProcessBuilder with user input enables command injection. An attacker can execute arbitrary system commands, potentially gaining full server access. Use ProcessBuilder with an explicit argument list (not a single string), and validate all inputs against an allowlist."
+fix:
+  bad: "Runtime.getRuntime().exec(\"ping \" + userInput)"
+  good: "new ProcessBuilder(\"ping\", \"-c\", \"1\", validatedHost).start()"

@@ -1,0 +1,9 @@
+id: go-template-unescaped
+language: [go]
+severity: high
+category: security
+pattern: "template\\.HTML\\s*\\(|template\\.JS\\s*\\(|template\\.URL\\s*\\("
+message: "Using template.HTML(), template.JS(), or template.URL() marks content as safe and bypasses Go's automatic HTML escaping. If user input is wrapped in these types, it enables XSS attacks. Only use these types for content you have explicitly sanitized or that is completely trusted."
+fix:
+  bad: "template.HTML(userInput)"
+  good: "// Pass userInput directly to template — Go auto-escapes it"

@@ -1,0 +1,9 @@
+id: eval-usage
+language: []
+severity: critical
+category: security
+pattern: "\\beval\\s*\\(|new\\s+Function\\s*\\(|setTimeout\\s*\\(\\s*['\"]|setInterval\\s*\\(\\s*['\"]|exec\\s*\\(\\s*['\"]"
+message: "eval() or an equivalent dynamic code execution function (new Function, setTimeout with string) is used, allowing arbitrary code execution. If any user input reaches eval, an attacker gains full control of the runtime environment, including access to the file system and environment variables. Replace eval with JSON.parse for data, safe expression parsers for calculations, or sandboxed execution environments."
+fix:
+  bad: "eval(userInput)"
+  good: "JSON.parse(userInput)  // or use a safe parser"

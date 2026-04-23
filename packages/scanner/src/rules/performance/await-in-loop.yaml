@@ -1,0 +1,9 @@
+id: await-in-loop
+language: [javascript, typescript]
+severity: medium
+category: performance
+pattern: "for\\s*\\(.*\\)\\s*\\{[^}]*await\\s|for\\s+await.*of|forEach\\s*\\(\\s*async"
+message: "Awaiting async operations sequentially inside a loop runs them one-by-one instead of in parallel, wasting time on I/O-bound tasks. For 10 operations each taking 100ms, this means 1 second instead of 100ms. Collect promises and resolve them with Promise.all() for independent operations, or use Promise.allSettled() if individual failures should not abort the batch."
+fix:
+  bad: "for (const id of ids) { await fetchUser(id) }"
+  good: "await Promise.all(ids.map(id => fetchUser(id)))"

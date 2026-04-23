@@ -1,0 +1,9 @@
+id: java-jndi-injection
+language: [java]
+severity: critical
+category: security
+pattern: "InitialContext\\s*\\(\\).*lookup\\s*\\(.*(?:getParameter|request|getHeader)|ctx\\.lookup\\s*\\(.*\\+"
+message: "JNDI injection with user-controlled lookup names allows remote code execution (as seen in Log4Shell). An attacker can provide a malicious JNDI URL (ldap://, rmi://) that loads and executes arbitrary code. Never use user input in JNDI lookups."
+fix:
+  bad: "ctx.lookup(request.getParameter(\"resource\"))"
+  good: "String[] allowed = {\"java:comp/env/jdbc/mydb\"}; if (Arrays.asList(allowed).contains(name)) ctx.lookup(name);"

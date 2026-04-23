@@ -1,0 +1,9 @@
+id: python-string-concat-loop
+language: [python]
+severity: medium
+category: performance
+pattern: "for\\s+.*:\\s*\\n\\s+\\w+\\s*\\+?=\\s*.*\\+\\s*(?:str\\(|['\"])"
+message: "String concatenation in a loop creates a new string object on each iteration, resulting in O(n^2) time complexity. For large datasets, this causes severe performance degradation. Use str.join() with a list comprehension or io.StringIO for efficient string building."
+fix:
+  bad: "result = ''; for item in items: result += str(item) + ','"
+  good: "result = ','.join(str(item) for item in items)"

@@ -1,0 +1,9 @@
+id: js-rate-limit-bypass
+language: [javascript, typescript]
+severity: medium
+category: security
+pattern: "rateLimit\\s*\\(\\s*\\{[^}]*keyGenerator\\s*:.*(?:x-forwarded-for|ip)"
+message: "Rate limiting based solely on IP address (especially from X-Forwarded-For) can be bypassed by attackers using rotating proxies, VPNs, or IP spoofing. Combine IP with user ID, API key, or other identifiers for more robust rate limiting."
+fix:
+  bad: "rateLimit({ keyGenerator: (req) => req.ip })"
+  good: "rateLimit({ keyGenerator: (req) => req.user?.id || req.ip, max: 100, windowMs: 15 * 60 * 1000 })"

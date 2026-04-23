@@ -1,0 +1,9 @@
+id: missing-rate-limit
+language: [javascript, typescript]
+severity: medium
+category: security
+pattern: "app\\.(post|put|patch|delete)\\s*\\([^)]+(?!rateLimit|rateLimiter|throttle|limiter)"
+message: "This state-changing endpoint lacks rate limiting, making it vulnerable to brute-force attacks, credential stuffing, and API abuse. Without rate limits, an attacker can send thousands of requests per second to overwhelm your server or guess passwords. Add rate-limit middleware with appropriate thresholds (e.g., 5-10 requests per 15 minutes for login endpoints)."
+fix:
+  bad: "app.post('/api/login', handleLogin)"
+  good: "app.post('/api/login', rateLimiter({ max: 5, windowMs: 15 * 60 * 1000 }), handleLogin)"

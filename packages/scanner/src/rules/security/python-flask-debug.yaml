@@ -1,0 +1,9 @@
+id: python-flask-debug
+language: [python]
+severity: critical
+category: security
+pattern: "app\\.run\\s*\\(.*debug\\s*=\\s*True|FLASK_DEBUG\\s*=\\s*['\"]?1|FLASK_ENV\\s*=\\s*['\"]development"
+message: "Running Flask in debug mode exposes the Werkzeug debugger, which provides an interactive Python console. An attacker can execute arbitrary code on the server through the debugger. Never enable debug mode in production; use environment variables to control this."
+fix:
+  bad: "app.run(debug=True, host='0.0.0.0')"
+  good: "app.run(debug=os.getenv('FLASK_DEBUG', 'false').lower() == 'true')"

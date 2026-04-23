@@ -1,0 +1,9 @@
+id: ci-unpinned-action
+language: []
+severity: medium
+category: security
+pattern: "uses:\\s+[a-zA-Z0-9_-]+/[a-zA-Z0-9_-]+@(?:main|master|latest|v\\d+)\\s*$"
+message: "Using GitHub Actions pinned to branch names (main, master) or major versions (v1) allows supply chain attacks. If the action is compromised, your CI pipeline will use the malicious version automatically. Pin actions to a full commit SHA for supply chain security."
+fix:
+  bad: "uses: actions/checkout@v4"
+  good: "uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1"

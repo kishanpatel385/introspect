@@ -1,0 +1,9 @@
+id: go-ssrf
+language: [go]
+severity: high
+category: security
+pattern: "http\\.(?:Get|Post|Head|NewRequest)\\s*\\(.*(?:r\\.(?:FormValue|URL)|fmt\\.Sprintf)"
+message: "Making HTTP requests with user-controlled URLs enables Server-Side Request Forgery. An attacker can access internal services, cloud metadata endpoints, or scan internal networks. Validate URLs against an allowlist and block private IP ranges (10.x, 172.16-31.x, 192.168.x, 169.254.x)."
+fix:
+  bad: "http.Get(r.FormValue(\"url\"))"
+  good: "if isAllowedURL(r.FormValue(\"url\")) { http.Get(r.FormValue(\"url\")) }"

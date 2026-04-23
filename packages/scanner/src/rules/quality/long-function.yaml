@@ -1,0 +1,9 @@
+id: long-function
+language: []
+severity: medium
+category: quality
+pattern: ""
+message: "This function is too long and hard to maintain. Long functions increase cognitive load, make testing difficult, and hide bugs in deeply nested logic. Extract logical blocks into smaller helper functions — each should do one thing well and be independently testable."
+fix:
+  bad: "function doEverything() { /* 80+ lines of mixed logic */ }"
+  good: "function validateInput() {} function processData() {} function formatOutput() {}"

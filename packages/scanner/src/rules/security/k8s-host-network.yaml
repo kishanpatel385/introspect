@@ -1,0 +1,9 @@
+id: k8s-host-network
+language: []
+severity: high
+category: security
+pattern: "hostNetwork\\s*:\\s*true|hostPID\\s*:\\s*true|hostIPC\\s*:\\s*true"
+message: "Using hostNetwork, hostPID, or hostIPC in Kubernetes shares the host's network namespace, process space, or IPC with the container. This breaks container isolation and allows access to all host network traffic, processes, or shared memory. Remove these settings unless absolutely required."
+fix:
+  bad: "hostNetwork: true"
+  good: "hostNetwork: false"

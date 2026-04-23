@@ -1,0 +1,9 @@
+id: js-no-async-void
+language: [javascript, typescript]
+severity: medium
+category: quality
+pattern: "async\\s+(?:function\\s+\\w+|\\([^)]*\\))\\s*(?::\\s*void|=>)(?!.*Promise)"
+message: "Async functions that return void swallow errors silently. If the async function throws, the rejection is unhandled and may crash the process or go unnoticed. Always return Promise<void> from async functions and ensure callers handle the returned promise."
+fix:
+  bad: "async function save(): void { await db.save(data); }"
+  good: "async function save(): Promise<void> { await db.save(data); }"

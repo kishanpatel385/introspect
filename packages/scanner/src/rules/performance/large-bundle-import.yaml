@@ -1,0 +1,9 @@
+id: large-bundle-import
+language: [javascript, typescript]
+severity: medium
+category: performance
+pattern: "import\\s+\\*\\s+as\\s+\\w+\\s+from\\s+['\"](?!\\.|@/|~/|#)(lodash|moment|rxjs|@mui/material|antd|aws-sdk)['\"]"
+message: "The entire library is imported with a wildcard import, pulling all modules into the bundle even if only a few are used. This bloats the JavaScript bundle size, increasing download time and slowing initial page load for users. Use named imports or subpath imports (e.g., lodash/debounce instead of lodash) to enable tree-shaking and reduce bundle size."
+fix:
+  bad: "import * as _ from 'lodash'"
+  good: "import debounce from 'lodash/debounce'"

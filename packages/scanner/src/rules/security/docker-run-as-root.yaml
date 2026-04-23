@@ -1,0 +1,9 @@
+id: docker-run-as-root
+language: [dockerfile]
+severity: high
+category: security
+pattern: "FROM\\s+.*(?!.*USER\\s+[^r])|USER\\s+root"
+message: "Docker containers running as root give attackers full control if the container is compromised. A container escape vulnerability combined with root access gives full host access. Add a USER directive with a non-root user after installing packages."
+fix:
+  bad: "FROM node:18\nRUN npm install\nCMD [\"node\", \"app.js\"]"
+  good: "FROM node:18\nRUN npm install\nUSER node\nCMD [\"node\", \"app.js\"]"

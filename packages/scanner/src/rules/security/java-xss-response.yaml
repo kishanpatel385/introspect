@@ -1,0 +1,9 @@
+id: java-xss-response
+language: [java]
+severity: high
+category: security
+pattern: "(?:getWriter|getOutputStream)\\s*\\(\\s*\\)\\s*\\.\\s*(?:print|write|println)\\s*\\(.*(?:getParameter|getHeader|request)"
+message: "Writing user input directly to the HTTP response without encoding enables reflected XSS attacks. An attacker can inject JavaScript through URL parameters or headers that executes in the victim's browser. HTML-encode all user input before including it in response output."
+fix:
+  bad: "response.getWriter().print(request.getParameter(\"name\"))"
+  good: "response.getWriter().print(HtmlUtils.htmlEscape(request.getParameter(\"name\")))"

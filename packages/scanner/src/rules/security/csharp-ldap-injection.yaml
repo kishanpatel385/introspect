@@ -1,0 +1,9 @@
+id: csharp-ldap-injection
+language: [csharp]
+severity: critical
+category: security
+pattern: "DirectorySearcher.*Filter\\s*=.*\\+|new\\s+DirectoryEntry\\s*\\(.*\\+"
+message: "Constructing LDAP queries with string concatenation enables LDAP injection in C#. An attacker can modify the query to bypass authentication, enumerate users, or extract directory information. Escape special LDAP characters in user input before including in filters."
+fix:
+  bad: "searcher.Filter = \"(uid=\" + username + \")\";"
+  good: "searcher.Filter = $\"(uid={LdapEscape(username)})\";"

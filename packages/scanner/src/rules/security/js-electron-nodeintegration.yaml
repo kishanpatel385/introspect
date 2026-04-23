@@ -1,0 +1,9 @@
+id: js-electron-nodeintegration
+language: [javascript, typescript]
+severity: critical
+category: security
+pattern: "nodeIntegration\\s*:\\s*true|contextIsolation\\s*:\\s*false"
+message: "Enabling nodeIntegration or disabling contextIsolation in Electron gives renderer processes (which may load remote content) full access to Node.js APIs. An XSS vulnerability becomes a remote code execution vulnerability. Keep nodeIntegration:false and contextIsolation:true, and use a preload script with contextBridge."
+fix:
+  bad: "new BrowserWindow({ webPreferences: { nodeIntegration: true } })"
+  good: "new BrowserWindow({ webPreferences: { nodeIntegration: false, contextIsolation: true, preload: path.join(__dirname, 'preload.js') } })"

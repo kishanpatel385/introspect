@@ -1,0 +1,9 @@
+id: general-exposed-admin
+language: []
+severity: medium
+category: security
+pattern: "(?:location|path|route)\\s*[=:]?\\s*['\"]?/(?:admin|wp-admin|phpmyadmin|adminer|phpMyAdmin|_admin|dashboard/admin)"
+message: "Exposing admin panels on predictable paths makes them easy targets for brute-force attacks and exploitation. Automated scanners constantly probe for /admin, /wp-admin, and similar paths. Use a non-obvious path for admin interfaces and protect with IP whitelisting and multi-factor authentication."
+fix:
+  bad: "location /admin { proxy_pass http://backend; }"
+  good: "location /management-x7k3q { proxy_pass http://backend; allow 10.0.0.0/8; deny all; }"

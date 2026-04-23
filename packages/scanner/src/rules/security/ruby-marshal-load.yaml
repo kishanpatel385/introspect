@@ -1,0 +1,9 @@
+id: ruby-marshal-load
+language: [ruby]
+severity: critical
+category: security
+pattern: "Marshal\\.load\\s*\\("
+message: "Marshal.load can deserialize arbitrary Ruby objects, enabling remote code execution through crafted payloads. An attacker can create objects that execute code during deserialization via methods like initialize or to_s. Use JSON or MessagePack for data serialization instead of Marshal."
+fix:
+  bad: "data = Marshal.load(params[:data])"
+  good: "data = JSON.parse(params[:data])"

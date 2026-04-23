@@ -1,0 +1,9 @@
+id: js-empty-catch
+language: [javascript, typescript]
+severity: high
+category: quality
+pattern: "catch\\s*\\([^)]*\\)\\s*\\{\\s*\\}"
+message: "Empty catch blocks silently swallow errors, hiding bugs that may cause data corruption or unexpected behavior. Even if the error is intentionally ignored, this should be documented. At minimum, log the error or add a comment explaining why it is safe to ignore."
+fix:
+  bad: "try { parse(data); } catch (e) { }"
+  good: "try { parse(data); } catch (e) { logger.warn('Parse failed', e); }"

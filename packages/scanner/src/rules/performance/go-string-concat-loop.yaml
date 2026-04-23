@@ -1,0 +1,9 @@
+id: go-string-concat-loop
+language: [go]
+severity: medium
+category: performance
+pattern: "for\\s.*\\{[^}]*\\+?=\\s*.*\\+\\s*(?:string|fmt\\.Sprint)"
+message: "String concatenation with + in a loop creates a new string allocation per iteration, resulting in O(n^2) time and memory complexity. For building strings from many parts, use strings.Builder which pre-allocates and writes efficiently."
+fix:
+  bad: "for _, s := range items { result += s + \",\" }"
+  good: "var b strings.Builder; for _, s := range items { b.WriteString(s); b.WriteByte(',') }; result := b.String()"

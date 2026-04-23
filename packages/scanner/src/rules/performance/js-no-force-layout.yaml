@@ -1,0 +1,9 @@
+id: js-no-force-layout
+language: [javascript, typescript]
+severity: medium
+category: performance
+pattern: "(?:style\\.\\w+\\s*=)[^;]*;[^;]*(?:offsetHeight|offsetWidth|clientHeight|clientWidth|getBoundingClientRect|scrollTop|scrollHeight)"
+message: "Reading layout properties (offsetHeight, clientWidth, scrollTop) immediately after writing to style forces the browser to synchronously recalculate layout. This is called 'forced reflow' and causes visual jank. Batch all reads before writes, or use requestAnimationFrame to separate them."
+fix:
+  bad: "el.style.height = '100px'; const h = el.offsetHeight;"
+  good: "const h = el.offsetHeight; el.style.height = '100px';"

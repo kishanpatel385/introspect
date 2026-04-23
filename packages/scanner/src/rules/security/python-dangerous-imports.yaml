@@ -1,0 +1,9 @@
+id: python-dangerous-imports
+language: [python]
+severity: high
+category: security
+pattern: "import\\s+subprocess|from\\s+subprocess\\s+import|import\\s+os\\.system|os\\.popen|os\\.exec|__import__\\("
+message: "Importing subprocess or os execution functions introduces command injection risk if any user input reaches these calls. An attacker can execute arbitrary system commands, potentially gaining full server access or exfiltrating sensitive data. Always use subprocess with shell=False and pass arguments as a list, never as a formatted string with user input."
+fix:
+  bad: "import subprocess; subprocess.call(user_input, shell=True)"
+  good: "import subprocess; subprocess.call(['ls', '-la'], shell=False)  # No user input, no shell=True"

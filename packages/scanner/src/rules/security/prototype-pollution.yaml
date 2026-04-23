@@ -1,0 +1,9 @@
+id: prototype-pollution
+language: [javascript, typescript]
+severity: high
+category: security
+pattern: "Object\\.assign\\s*\\(\\s*\\{\\}.*req\\.|\\.\\.\\.(req\\.|request\\.|body|params|query)|merge\\s*\\(.*req\\.|deepMerge\\s*\\(.*req\\."
+message: "User input is spread or merged directly into an object, enabling prototype pollution attacks. An attacker can inject __proto__ or constructor properties to modify the behavior of all objects in the application, leading to denial of service or remote code execution. Use an explicit allowlist of permitted keys when copying user input into objects."
+fix:
+  bad: "const config = { ...defaults, ...req.body }"
+  good: "const config = { ...defaults, name: req.body.name, email: req.body.email }"

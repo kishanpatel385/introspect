@@ -1,0 +1,9 @@
+id: js-unsafe-assignment
+language: [javascript, typescript]
+severity: high
+category: security
+pattern: "\\.outerHTML\\s*=|\\.insertAdjacentHTML\\s*\\("
+message: "outerHTML assignment and insertAdjacentHTML inject raw HTML strings into the DOM, creating XSS vulnerabilities when user-controlled data is included. An attacker can inject script tags or event handlers to execute arbitrary code. Use DOM APIs like createElement and textContent, or sanitize with DOMPurify."
+fix:
+  bad: "element.insertAdjacentHTML('beforeend', userHtml)"
+  good: "element.insertAdjacentHTML('beforeend', DOMPurify.sanitize(userHtml))"

@@ -1,0 +1,9 @@
+id: python-sql-injection
+language: [python]
+severity: critical
+category: security
+pattern: "execute\\s*\\(\\s*f['\"]|execute\\s*\\(.*%\\s*\\(|execute\\s*\\(.*\\.format\\("
+message: "SQL query constructed with f-strings or .format() is vulnerable to SQL injection attacks. An attacker can craft input that breaks out of the query and executes arbitrary SQL commands, leading to data exfiltration or destruction. Use parameterized queries with %s placeholders and pass values as a tuple to execute()."
+fix:
+  bad: "cursor.execute(f\"SELECT * FROM users WHERE id = {user_id}\")"
+  good: "cursor.execute(\"SELECT * FROM users WHERE id = %s\", (user_id,))"

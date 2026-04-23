@@ -1,0 +1,9 @@
+id: python-hardcoded-bind-all
+language: [python]
+severity: medium
+category: security
+pattern: "\\.run\\s*\\(.*host\\s*=\\s*['\"]0\\.0\\.0\\.0['\"]|\\.bind\\s*\\(\\s*['\"]0\\.0\\.0\\.0['\"]"
+message: "Binding a server to 0.0.0.0 exposes it on all network interfaces, including public-facing ones. In production, this means the service is accessible from any network. Bind to 127.0.0.1 for local-only access or use a reverse proxy to control external access."
+fix:
+  bad: "app.run(host='0.0.0.0', port=5000)"
+  good: "app.run(host='127.0.0.1', port=5000)"

@@ -1,0 +1,10 @@
+src/
+*.ts
+!*.d.ts
+*.map
+*.tsbuildinfo
+tsconfig.json
+tsup.config.ts
+node_modules/
+.turbo/
+coverage/

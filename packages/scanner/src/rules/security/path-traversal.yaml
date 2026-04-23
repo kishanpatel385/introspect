@@ -1,0 +1,9 @@
+id: path-traversal
+language: []
+severity: critical
+category: security
+pattern: "(readFile|readFileSync|createReadStream|open|readdir)\\s*\\(\\s*(req\\.|request\\.|params\\.|query\\.|body\\.|\\$_GET|\\$_POST|\\$_REQUEST)"
+message: "User input is used directly in a file system path, enabling directory traversal attacks. An attacker can use sequences like ../../ to escape the intended directory and read sensitive files such as /etc/passwd or application config files. Resolve the path with path.resolve(), verify it stays within the allowed base directory, and use path.basename() to strip directory components."
+fix:
+  bad: "fs.readFile(req.query.path)"
+  good: "const safe = path.resolve(BASE_DIR, path.basename(req.query.path)); fs.readFile(safe)"

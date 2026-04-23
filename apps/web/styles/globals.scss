@@ -1,0 +1,190 @@
+// ─── Design Tokens ────────────────────────────────────────────
+// Introspect Design System — Linear/Vercel/Raycast inspired
+
+:root {
+  // Colors — Base
+  --color-bg-primary: #0a0a0f;
+  --color-bg-secondary: #111118;
+  --color-bg-tertiary: #1a1a24;
+  --color-bg-elevated: #1e1e2e;
+  --color-bg-hover: #252535;
+
+  // Colors — Border
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-hover: rgba(255, 255, 255, 0.15);
+  --color-border-focus: var(--color-accent);
+
+  // Colors — Text
+  --color-text-primary: #e4e4e7;
+  --color-text-secondary: #7d8590;
+  --color-text-muted: #484856;
+
+  // Colors — Accent
+  --color-accent: #58a6ff;
+  --color-accent-hover: #79b8ff;
+  --color-accent-subtle: rgba(88, 166, 255, 0.12);
+
+  // Colors — Severity
+  --color-critical: #f85149;
+  --color-high: #f0883e;
+  --color-medium: #d29922;
+  --color-low: #58a6ff;
+  --color-info: #7d8590;
+
+  // Colors — Score
+  --color-score-excellent: #3fb950;
+  --color-score-good: #58a6ff;
+  --color-score-fair: #d29922;
+  --color-score-poor: #f85149;
+
+  // Typography — overridden by next/font CSS variables
+  --font-sans: var(--font-sans-override, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+  --font-mono: var(--font-mono-override, 'JetBrains Mono', 'Fira Code', 'Consolas', monospace);
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.875rem;
+  --text-lg: 1rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+  --text-4xl: 2.5rem;
+
+  // Spacing
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  // Radius
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  // Shadows
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 20px rgba(88, 166, 255, 0.15);
+
+  // Transitions
+  --transition-fast: 150ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 300ms ease;
+
+  // Z-index
+  --z-dropdown: 50;
+  --z-modal: 100;
+  --z-toast: 200;
+
+  // Layout
+  --max-width: 1200px;
+  --sidebar-width: 280px;
+  --header-height: 56px;
+}
+
+// Light theme override
+[data-theme='light'] {
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f6f8fa;
+  --color-bg-tertiary: #eef1f5;
+  --color-bg-elevated: #ffffff;
+  --color-bg-hover: #f0f2f5;
+
+  --color-border: rgba(0, 0, 0, 0.1);
+  --color-border-hover: rgba(0, 0, 0, 0.2);
+
+  --color-text-primary: #1f2328;
+  --color-text-secondary: #656d76;
+  --color-text-muted: #a0a8b4;
+
+  --color-accent: #0969da;
+  --color-accent-hover: #0550ae;
+  --color-accent-subtle: rgba(9, 105, 218, 0.08);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0 0 20px rgba(9, 105, 218, 0.1);
+}
+
+// ─── Global Reset & Styles ────────────────────────────────────
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  background: var(--color-bg-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+
+  &:hover {
+    color: var(--color-accent-hover);
+  }
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+::selection {
+  background: rgba(232, 115, 74, 0.3);
+  color: #e8734a;
+}
+
+// Scrollbar
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+}
+
+// Focus visible
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+// Utility
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}

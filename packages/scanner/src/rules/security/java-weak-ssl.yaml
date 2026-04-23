@@ -1,0 +1,9 @@
+id: java-weak-ssl
+language: [java]
+severity: high
+category: security
+pattern: "SSLContext\\.getInstance\\s*\\(\\s*['\"](?:SSL|TLS|TLSv1|TLSv1\\.1)['\"]\\)|setEnabledProtocols.*(?:SSL|TLSv1['\"])"
+message: "Using SSL, TLS, TLSv1, or TLSv1.1 protocols is insecure. These protocols have known vulnerabilities (POODLE, BEAST) and are deprecated. Use TLSv1.2 or TLSv1.3 to ensure secure communication."
+fix:
+  bad: "SSLContext.getInstance(\"TLSv1\")"
+  good: "SSLContext.getInstance(\"TLSv1.3\")"

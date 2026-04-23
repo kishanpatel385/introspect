@@ -1,0 +1,9 @@
+id: rust-unsafe-block
+language: [rust]
+severity: medium
+category: security
+pattern: "\\bunsafe\\s*\\{"
+message: "An unsafe block bypasses Rust's borrow checker and memory safety guarantees, allowing raw pointer dereferencing, mutable aliasing, and FFI calls. Bugs in unsafe code can cause undefined behavior, memory corruption, and data races that are extremely difficult to debug. Minimize the scope of unsafe blocks, document the safety invariants being upheld, and wrap unsafe code in safe abstractions with thorough testing."
+fix:
+  bad: "unsafe { *raw_ptr = value; }"
+  good: "// Minimize unsafe scope. Document why unsafe is needed. Wrap in safe abstraction."

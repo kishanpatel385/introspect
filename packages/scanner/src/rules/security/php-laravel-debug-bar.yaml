@@ -1,0 +1,9 @@
+id: php-laravel-debug-bar
+language: [php]
+severity: medium
+category: security
+pattern: "APP_DEBUG\\s*=\\s*true|'debug'\\s*=>\\s*true"
+message: "Laravel debug mode in production exposes detailed error pages with source code, environment variables, database credentials, and stack traces. An attacker gains complete visibility into the application internals. Set APP_DEBUG=false in production and use proper logging instead."
+fix:
+  bad: "APP_DEBUG=true"
+  good: "APP_DEBUG=false"

@@ -1,0 +1,9 @@
+id: command-injection
+language: []
+severity: critical
+category: security
+pattern: "exec\\s*\\(.*\\$|exec\\s*\\(.*req\\.|child_process\\.exec\\s*\\(.*\\+|child_process\\.exec\\s*\\(.*\\$\\{|os\\.system\\s*\\(.*\\+|os\\.popen\\s*\\(|subprocess\\.call\\s*\\(.*shell\\s*=\\s*True|Runtime\\.getRuntime\\(\\)\\.exec\\s*\\(.*\\+"
+message: "User input is passed directly to a shell command, enabling command injection. An attacker can chain arbitrary system commands using shell metacharacters (;, |, &&), potentially gaining full server access. Use execFile or spawn with an argument array instead of shell strings, and never pass unsanitized input to shell execution."
+fix:
+  bad: "exec(`rm -rf ${userInput}`)"
+  good: "execFile('rm', ['-rf', sanitizedPath])"

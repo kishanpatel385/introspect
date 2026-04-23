@@ -1,0 +1,9 @@
+id: csrf-missing
+language: [javascript, typescript]
+severity: high
+category: security
+pattern: "app\\.(post|put|patch|delete)\\s*\\([^)]*(?!csrf|csurf|csrfProtection)"
+message: "This state-changing endpoint (POST/PUT/PATCH/DELETE) lacks CSRF protection. Without CSRF tokens, an attacker can trick authenticated users into performing unwanted actions by embedding malicious requests on external sites. Add CSRF middleware (csurf, csrf-csrf, or your framework's built-in CSRF protection) to all state-changing routes."
+fix:
+  bad: "app.post('/transfer', handleTransfer)"
+  good: "app.post('/transfer', csrfProtection, handleTransfer)"

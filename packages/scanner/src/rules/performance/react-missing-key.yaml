@@ -1,0 +1,9 @@
+id: react-missing-key
+language: [javascript, typescript]
+severity: medium
+category: performance
+pattern: "\\.map\\s*\\([^)]*=>\\s*(<|React\\.createElement)[^}]*(?!key\\s*=|key:|\"key\")"
+message: "A React list is rendered via .map() without providing a unique key prop on each element. Without stable keys, React cannot efficiently track which items changed, causing unnecessary re-renders, lost component state, and subtle UI bugs. Add a unique, stable key prop (preferably a database ID) to each list item -- never use array index as key for dynamic lists."
+fix:
+  bad: "items.map(item => <Item name={item.name} />)"
+  good: "items.map(item => <Item key={item.id} name={item.name} />)"

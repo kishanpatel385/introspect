@@ -1,0 +1,9 @@
+id: python-django-raw-include
+language: [python]
+severity: high
+category: security
+pattern: "\\{%\\s*include\\s+\\w+|render_to_string\\s*\\(\\s*request\\."
+message: "Using dynamic template names from user input in Django's include tag or render_to_string enables server-side template injection. An attacker can include arbitrary templates or files. Use a whitelist of allowed template names instead of accepting user input directly."
+fix:
+  bad: "{% include user_template %}"
+  good: "{% include 'components/safe_template.html' %}"

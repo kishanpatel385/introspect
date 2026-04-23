@@ -1,0 +1,9 @@
+id: js-no-async-in-loop
+language: [javascript, typescript]
+severity: high
+category: performance
+pattern: "for\\s*\\(.*\\)\\s*\\{[^}]*await\\s|while\\s*\\(.*\\)\\s*\\{[^}]*await\\s"
+message: "Using await inside a loop executes async operations sequentially, dramatically increasing total execution time. Each iteration waits for the previous to complete. Use Promise.all() or Promise.allSettled() to run independent operations in parallel."
+fix:
+  bad: "for (const id of ids) { await fetchUser(id); }"
+  good: "const users = await Promise.all(ids.map(id => fetchUser(id)));"

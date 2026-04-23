@@ -1,0 +1,9 @@
+id: rust-sql-raw
+language: [rust]
+severity: critical
+category: security
+pattern: "sql_query\\s*\\(\\s*&?format!|sql_query\\s*\\(\\s*&?\\(.*\\+|raw_sql\\s*\\(\\s*&?format!"
+message: "Building SQL queries with format! or string concatenation enables SQL injection. An attacker can inject malicious SQL to read, modify, or delete data. Use parameterized queries with bind() or the query builder's parameter binding features."
+fix:
+  bad: "diesel::sql_query(format!(\"SELECT * FROM users WHERE id = {}\", id))"
+  good: "diesel::sql_query(\"SELECT * FROM users WHERE id = $1\").bind::<Integer, _>(id)"

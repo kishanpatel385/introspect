@@ -1,0 +1,9 @@
+id: js-memo-missing
+language: [javascript, typescript]
+severity: low
+category: performance
+pattern: "(?:export\\s+)?(?:default\\s+)?function\\s+\\w+\\s*\\(\\s*\\{.*\\}\\s*:\\s*\\w+Props\\s*\\)"
+message: "React components receiving complex props (objects, arrays) re-render whenever the parent renders, even if props have not changed. For expensive components, wrap with React.memo() to skip re-renders when props are shallowly equal."
+fix:
+  bad: "function ExpensiveList({ items }: ListProps) { ... }"
+  good: "const ExpensiveList = React.memo(function ExpensiveList({ items }: ListProps) { ... })"

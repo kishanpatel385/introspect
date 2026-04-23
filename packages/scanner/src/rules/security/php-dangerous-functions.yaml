@@ -1,0 +1,9 @@
+id: php-dangerous-functions
+language: [php]
+severity: high
+category: security
+pattern: "\\b(eval|assert|preg_replace\\s*\\(\\s*['\"]/.*/e|system|passthru|shell_exec|popen|proc_open|pcntl_exec|exec)\\s*\\("
+message: "A dangerous PHP function (eval, system, exec, passthru, shell_exec, etc.) is used, which can execute arbitrary code on the server. If any user input reaches these functions, an attacker gains full control of the server, including file access and command execution. Replace with safer alternatives, or if shell execution is unavoidable, use escapeshellarg() and strict input validation."
+fix:
+  bad: "eval($_POST['code']);"
+  good: "// Never use eval with user input. Use a whitelist-based approach."

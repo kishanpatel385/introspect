@@ -1,0 +1,9 @@
+id: csharp-sql-injection
+language: [csharp]
+severity: critical
+category: security
+pattern: "SqlCommand\\s*\\(\\s*\".*\"\\s*\\+|ExecuteSqlRaw\\s*\\(\\s*\\$\"|FromSqlRaw\\s*\\(\\s*\\$\""
+message: "SQL command built with string concatenation or interpolation is vulnerable to SQL injection attacks. An attacker can inject malicious SQL through user input, leading to unauthorized data access or database corruption. Use SqlParameter objects with parameterized queries, or use an ORM like Entity Framework with LINQ queries."
+fix:
+  bad: "new SqlCommand(\"SELECT * FROM Users WHERE Id = \" + userId)"
+  good: "new SqlCommand(\"SELECT * FROM Users WHERE Id = @id\", new SqlParameter(\"@id\", userId))"

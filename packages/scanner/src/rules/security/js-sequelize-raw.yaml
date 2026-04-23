@@ -1,0 +1,9 @@
+id: js-sequelize-raw
+language: [javascript, typescript]
+severity: critical
+category: security
+pattern: "sequelize\\.query\\s*\\(\\s*[`'\"].*\\$\\{|sequelize\\.query\\s*\\(.*\\+\\s"
+message: "Using Sequelize raw queries with string interpolation or concatenation enables SQL injection. An attacker can inject malicious SQL through user input. Use Sequelize's parameterized replacements or the query builder methods which automatically escape values."
+fix:
+  bad: "sequelize.query(`SELECT * FROM users WHERE id = ${userId}`)"
+  good: "sequelize.query('SELECT * FROM users WHERE id = :id', { replacements: { id: userId } })"

@@ -1,0 +1,9 @@
+id: php-mail-injection
+language: [php]
+severity: high
+category: security
+pattern: "\\bmail\\s*\\(\\s*\\$_(GET|POST|REQUEST)"
+message: "Passing user input directly to PHP's mail() function enables email header injection. An attacker can inject additional headers (BCC, CC) to send spam or phishing emails through your server. Use a library like PHPMailer or SwiftMailer with proper input validation instead of the raw mail() function."
+fix:
+  bad: "mail($_POST['to'], $subject, $message)"
+  good: "$mailer = new PHPMailer(); $mailer->addAddress(filter_var($to, FILTER_VALIDATE_EMAIL));"

@@ -1,0 +1,9 @@
+id: js-prototype-pollution-deep
+language: [javascript, typescript]
+severity: critical
+category: security
+pattern: "(\\[\\s*['\"]__proto__['\"]\\s*\\]|\\[\\s*['\"]constructor['\"]\\s*\\]|\\[\\s*['\"]prototype['\"]\\s*\\])"
+message: "Direct access to __proto__, constructor, or prototype properties creates a prototype pollution attack vector. An attacker can modify the Object prototype to inject properties into all JavaScript objects, leading to denial of service, property injection, or remote code execution. Block these reserved property names in all user input by validating keys against a denylist before using them as object properties."
+fix:
+  bad: "obj[key] = value; // key could be '__proto__'"
+  good: "if (['__proto__', 'constructor', 'prototype'].includes(key)) throw new Error('Invalid key');"

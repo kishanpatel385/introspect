@@ -1,0 +1,9 @@
+id: k8s-privileged-container
+language: []
+severity: critical
+category: security
+pattern: "privileged\\s*:\\s*true|allowPrivilegeEscalation\\s*:\\s*true"
+message: "Running Kubernetes containers in privileged mode gives them full access to the host's devices and kernel capabilities. A container escape becomes trivial, compromising the entire node. Set privileged:false, drop all capabilities, and add only the specific ones needed."
+fix:
+  bad: "securityContext: { privileged: true }"
+  good: "securityContext: { privileged: false, allowPrivilegeEscalation: false, capabilities: { drop: ['ALL'] } }"

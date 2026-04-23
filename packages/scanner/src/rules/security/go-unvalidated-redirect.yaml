@@ -1,0 +1,9 @@
+id: go-unvalidated-redirect
+language: [go]
+severity: high
+category: security
+pattern: "http\\.Redirect\\s*\\(.*r\\.(?:URL|FormValue|Header)"
+message: "Redirecting to user-controlled URLs enables open redirect attacks. An attacker can craft a URL that redirects victims to phishing sites. Validate the redirect URL against a whitelist of allowed paths or domains before redirecting."
+fix:
+  bad: "http.Redirect(w, r, r.FormValue(\"next\"), 302)"
+  good: "next := r.FormValue(\"next\"); if !isAllowedRedirect(next) { next = \"/\" }; http.Redirect(w, r, next, 302)"

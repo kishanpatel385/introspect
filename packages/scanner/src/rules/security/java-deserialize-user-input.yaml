@@ -1,0 +1,9 @@
+id: java-deserialize-user-input
+language: [java]
+severity: critical
+category: security
+pattern: "ObjectInputStream\\s*\\(|readObject\\s*\\(\\)|readUnshared\\s*\\("
+message: "Java ObjectInputStream deserialization is inherently unsafe with untrusted data. Gadget chains in common libraries (Commons Collections, Spring, Groovy) enable remote code execution. Use JSON, Protocol Buffers, or implement a ValidatingObjectInputStream with explicit class allowlists."
+fix:
+  bad: "ObjectInputStream ois = new ObjectInputStream(inputStream); Object obj = ois.readObject();"
+  good: "ObjectMapper mapper = new ObjectMapper(); MyType obj = mapper.readValue(inputStream, MyType.class);"

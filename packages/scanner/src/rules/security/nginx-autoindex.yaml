@@ -1,0 +1,9 @@
+id: nginx-autoindex
+language: []
+severity: medium
+category: security
+pattern: "autoindex\\s+on"
+message: "Nginx autoindex exposes directory listings, revealing file structures, backup files, configuration files, and other sensitive content. Attackers use directory listings for reconnaissance. Disable autoindex and serve a proper 403 or 404 instead."
+fix:
+  bad: "autoindex on;"
+  good: "autoindex off;"

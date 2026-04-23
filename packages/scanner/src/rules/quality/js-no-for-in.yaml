@@ -1,0 +1,9 @@
+id: js-no-for-in
+language: [javascript, typescript]
+severity: low
+category: quality
+pattern: "for\\s*\\(\\s*(?:const|let|var)\\s+\\w+\\s+in\\s+"
+message: "for...in iterates over all enumerable properties including inherited ones from the prototype chain, which is rarely the intended behavior. Use Object.keys(), Object.entries(), or for...of for arrays instead. for...in with objects requires a hasOwnProperty check."
+fix:
+  bad: "for (const key in obj) { doSomething(obj[key]); }"
+  good: "for (const [key, value] of Object.entries(obj)) { doSomething(value); }"

@@ -1,0 +1,9 @@
+id: js-spread-in-reduce
+language: [javascript, typescript]
+severity: medium
+category: performance
+pattern: "\\.reduce\\s*\\(.*\\{\\s*\\.\\.\\.(?:acc|prev|result)"
+message: "Using spread operator inside reduce() creates a new object on every iteration, resulting in O(n^2) time and memory complexity. For large arrays, this causes significant performance degradation. Use Object.assign on the accumulator or a mutable approach within reduce."
+fix:
+  bad: "items.reduce((acc, item) => ({ ...acc, [item.id]: item }), {})"
+  good: "Object.fromEntries(items.map(item => [item.id, item]))"

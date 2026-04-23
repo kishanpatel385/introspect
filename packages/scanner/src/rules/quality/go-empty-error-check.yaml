@@ -1,0 +1,9 @@
+id: go-empty-error-check
+language: [go]
+severity: high
+category: quality
+pattern: "if\\s+err\\s*!=\\s*nil\\s*\\{\\s*\\}"
+message: "Empty error handling blocks silently discard errors, making bugs invisible and debugging nearly impossible. Errors in Go should always be logged, returned, or handled in some meaningful way. At minimum, log the error to maintain observability."
+fix:
+  bad: "if err != nil { }"
+  good: "if err != nil { return fmt.Errorf(\"operation failed: %w\", err) }"

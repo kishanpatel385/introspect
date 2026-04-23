@@ -1,0 +1,9 @@
+id: java-insecure-random
+language: [java]
+severity: high
+category: security
+pattern: "new\\s+Random\\s*\\(|Math\\.random\\s*\\("
+message: "java.util.Random and Math.random() use a linear congruential generator that is predictable. An attacker who observes a few outputs can predict all future values. Use java.security.SecureRandom for cryptographic operations like token generation, session IDs, and passwords."
+fix:
+  bad: "String token = String.valueOf(new Random().nextLong());"
+  good: "byte[] bytes = new byte[32]; new SecureRandom().nextBytes(bytes); String token = Base64.getEncoder().encodeToString(bytes);"

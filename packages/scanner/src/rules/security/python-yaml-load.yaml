@@ -1,0 +1,9 @@
+id: python-yaml-load
+language: [python]
+severity: critical
+category: security
+pattern: "yaml\\.load\\s*\\((?!.*Loader\\s*=\\s*(?:Safe|Base)Loader)"
+message: "PyYAML's yaml.load() without SafeLoader can execute arbitrary Python code through YAML tags like !!python/object. This enables remote code execution if untrusted YAML is loaded. Always use yaml.safe_load() or yaml.load(data, Loader=SafeLoader) to prevent code execution."
+fix:
+  bad: "yaml.load(user_input)"
+  good: "yaml.safe_load(user_input)"

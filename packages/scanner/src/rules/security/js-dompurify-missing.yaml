@@ -1,0 +1,9 @@
+id: js-dompurify-missing
+language: [javascript, typescript]
+severity: high
+category: security
+pattern: "\\.innerHTML\\s*=\\s*(?!.*(?:DOMPurify|sanitize|purify|escape))\\w"
+message: "Setting innerHTML with a variable that has not been sanitized with DOMPurify or a similar library creates XSS vulnerabilities. Even if the source seems safe now, future code changes could introduce user input. Always sanitize HTML before injecting it into the DOM."
+fix:
+  bad: "element.innerHTML = htmlContent"
+  good: "element.innerHTML = DOMPurify.sanitize(htmlContent)"

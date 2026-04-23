@@ -1,0 +1,9 @@
+id: php-weak-hash
+language: [php]
+severity: high
+category: security
+pattern: "\\b(?:md5|sha1)\\s*\\(.*(?:password|passwd|pwd)"
+message: "Using MD5 or SHA1 for password hashing is cryptographically weak. These algorithms are fast and vulnerable to rainbow table and brute-force attacks, making it trivial to crack hashed passwords. Use password_hash() with PASSWORD_BCRYPT or PASSWORD_ARGON2ID for secure password storage."
+fix:
+  bad: "md5($password)"
+  good: "password_hash($password, PASSWORD_ARGON2ID)"
